@@ -32,11 +32,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .lo-bar{width:160px;height:3px;background:var(--border2);border-radius:2px;overflow:hidden}
 .lo-fill{height:100%;background:var(--red);animation:lbar 1.4s ease-in-out infinite}
 @keyframes lbar{0%{width:0;margin-left:0}50%{width:55%;margin-left:10%}100%{width:0;margin-left:100%}}
-.ticker{background:var(--red);height:26px;display:flex;align-items:center;overflow:hidden}
-.ticker-lbl{background:#900;font-size:10px;font-weight:800;letter-spacing:.1em;padding:0 10px;height:100%;display:flex;align-items:center;white-space:nowrap;flex-shrink:0;text-transform:uppercase}
+.ticker{background:var(--red);height:32px;display:flex;align-items:center;overflow:hidden}
+.ticker-lbl{background:#900;font-size:11px;font-weight:800;letter-spacing:.1em;padding:0 12px;height:100%;display:flex;align-items:center;white-space:nowrap;flex-shrink:0;text-transform:uppercase}
 .ticker-wrap{overflow:hidden;flex:1}
-.ticker-inner{display:flex;animation:tick 50s linear infinite;white-space:nowrap}
-.ticker-inner span{font-size:10px;font-weight:600;color:#fff;padding:0 18px;text-transform:uppercase}
+.ticker-inner{display:flex;animation:tick 30s linear infinite;white-space:nowrap}
+.ticker-inner span{font-size:12px;font-weight:700;color:#fff;padding:0 20px;text-transform:uppercase}
 .ticker-inner span::before{content:'● ';opacity:.5}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .navbar{background:var(--bg2);border-bottom:3px solid var(--red);padding:0 12px;height:46px;display:flex;align-items:center;gap:8px}
@@ -161,25 +161,22 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 </div>
 
 <div class="ticker">
-  <div class="ticker-lbl">Seed Money Showdown 2026</div>
-  <div class="ticker-wrap"><div class="ticker-inner">
-    <span>Bryan: Duke · St.John's · Iowa · Vanderbilt · Illinois · Houston · BYU · Miami FL · Saint Louis · Iowa St</span>
-    <span>Nicole: Kentucky · Tennessee · UConn · Clemson · Vanderbilt · Purdue · Texas · Arkansas · Michigan St · Texas Tech</span>
-    <span>Bryan: Duke · St.John's · Iowa · Vanderbilt · Illinois · Houston · BYU · Miami FL · Saint Louis · Iowa St</span>
-    <span>Nicole: Kentucky · Tennessee · UConn · Clemson · Vanderbilt · Purdue · Texas · Arkansas · Michigan St · Texas Tech</span>
+  <div class="ticker-lbl">🌽 Still Standing</div>
+  <div class="ticker-wrap"><div class="ticker-inner" id="ticker-inner">
+    <span>Loading…</span>
   </div></div>
 </div>
 
 <div class="navbar">
-  <div class="nav-title">Seed Money Showdown 🏀</div>
+  <div class="nav-title">Seed Money Showdown 2026 🏀</div>
   <div class="nav-r">
-    <button class="btn" id="rbtn" onclick="location.reload()">↺ Refresh</button>
+    <button class="btn" id="rbtn" onclick="doFetch()">↺ Refresh</button>
     <button class="btn btn-muted" onclick="toggleSettings()">⚙</button>
   </div>
 </div>
 <div class="settings" id="settings">
   <input id="apiurl" value="https://project-r4phb.vercel.app/api/scores" />
-  <button class="btn" onclick="location.reload()">↺</button>
+  <button class="btn" onclick="doFetch()">↺</button>
 </div>
 
 <div class="ntabs">
@@ -242,7 +239,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
   <div class="updated" id="updated"></div>
 </div>
 
-<button class="fab" onclick="location.reload()">↺</button>
+<button class="fab" onclick="doFetch()">↺</button>
 
 <script>
 var PAYOUTS = {};
@@ -958,11 +955,35 @@ function renderLeaderboard() {
   document.getElementById('lbwrap').innerHTML = html;
 }
 
+function renderTicker() {
+  var inner = document.getElementById('ticker-inner');
+  if (!inner) return;
+  // Build one segment per tracked player showing only active (non-eliminated) picks
+  var segments = [];
+  TRACKED.forEach(function(id) {
+    var ent = null;
+    for (var i = 0; i < ENT.length; i++) { if (ENT[i].id === id) { ent = ENT[i]; break; } }
+    if (!ent) return;
+    var label = TLABELS[id] || id;
+    var active = ent.picks.filter(function(p) {
+      var t = TS[p.k];
+      return !t || !t.elim;
+    });
+    if (!active.length) return;
+    var names = active.map(function(p) { return p.n; }).join(' · ');
+    segments.push('<span>' + label + ': ' + names + '</span>');
+  });
+  // Double the segments so the seamless loop works
+  var html = segments.concat(segments).join('');
+  inner.innerHTML = html || '<span>No active picks</span>';
+}
+
 function render() {
   var ranked = getRankings();
   renderSummary(ranked);
   renderPlayerButtons();
   renderDetail();
+  renderTicker();
   if (currentView === 'leaderboard') renderLeaderboard();
 }
 
