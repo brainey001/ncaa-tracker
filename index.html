@@ -971,7 +971,8 @@ function renderTicker() {
     });
     if (!active.length) return;
     var names = active.map(function(p) { return p.n; }).join(' · ');
-    segments.push('<span>' + label + ': ' + names + '</span>');
+    var count = '(' + active.length + '/' + ent.picks.length + ')';
+    segments.push('<span>' + label + ' ' + count + ': ' + names + '</span>');
   });
   // Double the segments so the seamless loop works
   var html = segments.concat(segments).join('');
