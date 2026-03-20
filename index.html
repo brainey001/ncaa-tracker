@@ -11,10 +11,6 @@
 <link rel="icon" href="icon.png">
 <title>Seed Money Showdown 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
 <style>
 :root{
   --bg:#1a1a1a;--bg2:#222;--bg3:#2a2a2a;--card:#242424;
@@ -184,13 +180,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <div class="navbar">
   <div class="nav-title">Seed Money Showdown 🏀</div>
   <div class="nav-r">
-    <button class="btn" id="rbtn" onclick="doFetch()">↺ Refresh</button>
+    <button class="btn" id="rbtn" onclick="location.reload()">↺ Refresh</button>
     <button class="btn btn-muted" onclick="toggleSettings()">⚙</button>
   </div>
 </div>
 <div class="settings" id="settings">
   <input id="apiurl" value="https://project-r4phb.vercel.app/api/scores" />
-  <button class="btn" onclick="doFetch()">↺</button>
+  <button class="btn" onclick="location.reload()">↺</button>
 </div>
 
 <div class="ntabs">
@@ -265,7 +261,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
   <div class="updated" id="updated"></div>
 </div>
 
-<button class="fab" onclick="doFetch()">↺</button>
+<button class="fab" onclick="location.reload()">↺</button>
 
 <script>
 var PAYOUTS = {1:'$267.00',2:'$225.50',3:'$178.00',4:'$133.50',5:'$89.00'};
