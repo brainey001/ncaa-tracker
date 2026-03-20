@@ -688,6 +688,11 @@ function resolveKey(name) {
 }
 
 function processGames(games) {
+  // Reset state before processing fresh data
+  Object.keys(TS).forEach(function(k) {
+    TS[k] = {wins:[], elim:false, gs:'upcoming', matchup:'', nextGame:''};
+  });
+
   games.forEach(function(g) {
     var hN = (g.home && g.home.name) || '';
     var aN = (g.away && g.away.name) || '';
