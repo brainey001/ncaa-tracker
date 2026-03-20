@@ -35,9 +35,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .ticker{background:var(--red);height:32px;display:flex;align-items:center;overflow:hidden}
 .ticker-lbl{background:#900;font-size:11px;font-weight:800;letter-spacing:.1em;padding:0 12px;height:100%;display:flex;align-items:center;white-space:nowrap;flex-shrink:0;text-transform:uppercase}
 .ticker-wrap{overflow:hidden;flex:1}
-.ticker-inner{display:flex;animation:tick 30s linear infinite;white-space:nowrap}
+.ticker-inner{display:flex;animation:tick 30s linear infinite;white-space:nowrap;align-items:center}
 .ticker-inner span{font-size:12px;font-weight:700;color:#fff;padding:0 20px;text-transform:uppercase}
-.ticker-inner span::before{content:'● ';opacity:.5}
+.ticker-name{background:#000;color:#fff!important;padding:2px 8px!important;border-radius:3px;margin-right:4px}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .navbar{background:var(--bg2);border-bottom:3px solid var(--red);padding:0 12px;height:46px;display:flex;align-items:center;gap:8px}
 .nav-title{font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
@@ -988,9 +988,10 @@ function renderTicker() {
       return !t || !t.elim;
     });
     if (!active.length) return;
-    var names = active.map(function(p) { return p.n; }).join(' · ');
+    var names = active.map(function(p) { return p.n; }).join(' ● ');
     var count = '(' + active.length + '/' + ent.picks.length + ')';
-    segments.push('<span>' + label + ' ' + count + ': ' + names + '</span>');
+    var col = TCOLORS[id] || '#fff';
+    segments.push('<span><span class="ticker-name" style="color:' + col + '">' + label + ' ' + count + '</span> ' + names + '</span>');
   });
   // Double the segments so the seamless loop works
   var html = segments.concat(segments).join('');
