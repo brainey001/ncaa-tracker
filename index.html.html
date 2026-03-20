@@ -191,12 +191,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
     <input class="api-input" id="api-url" value="https://project-r4phb.vercel.app/api/scores" />
     <button class="refresh-btn" id="refresh-btn" onclick="doFetch()">↺ Refresh</button>
     <button class="refresh-btn" onclick="toggleNav()" id="nav-toggle" style="border-color:#555;color:#888">⚙</button>
+    <button class="refresh-btn" style="border-color:#cc0000;color:#cc0000" onclick="if(confirm('Close the app?'))window.close()">✕ Exit</button>
   </div>
 </div>
 <div id="settings-bar" style="display:none;background:#1e1e1e;border-bottom:1px solid #383838;padding:8px 12px;display:none;align-items:center;gap:8px;flex-wrap:wrap">
   <input style="flex:1;min-width:220px;background:#2a2a2a;border:1px solid #464646;border-radius:3px;color:#c8c8c8;font-family:'Barlow Condensed',sans-serif;font-size:11px;padding:6px 10px;outline:none" id="api-url-settings" value="https://project-r4phb.vercel.app/api/scores" oninput="document.getElementById('api-url').value=this.value" />
   <button class="refresh-btn" onclick="doFetch()">↺ Refresh</button>
-  <button class="refresh-btn" style="border-color:#cc0000;color:#cc0000" onclick="if(confirm('Close the app?'))window.close()">✕ Exit</button>
 </div>
 
 <div class="page">
