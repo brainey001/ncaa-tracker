@@ -54,10 +54,3 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: err.message });
   }
 }
-```
-
-**Two things to also update in your `index.html`** after deploying this:
-
-1. Change the API URL input default value to include the date range:
-```
-https://project-r4phb.vercel.app/api/scores?dates=20260319-20260408
