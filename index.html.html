@@ -143,7 +143,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 .lb-table th.r{text-align:right}
 .lb-table td{padding:8px 10px;border-bottom:1px solid var(--border);font-size:14px;font-weight:700;vertical-align:middle}
 .lb-table td.r{text-align:right}
-.lb-table tr:hover td{background:#1e1e1e}
+.lb-table tr{cursor:pointer}
+.lb-table tr.highlight-other td{background:#1e1a1a!important}
 .lb-table tr.highlight-bryan td{background:var(--bryan-dim)!important}
 .lb-table tr.highlight-nicole td{background:var(--nicole-dim)!important}
 .rank-num{font-size:16px;font-weight:800;color:var(--text3);width:28px;display:inline-block}
@@ -219,6 +220,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 
   <!-- TRACKER VIEW -->
   <div class="view active" id="view-tracker">
+    <!-- PLAYER SELECTOR -->
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="player-selector">
+      <button class="psel-btn active" onclick="selectPlayer('bryan')">🔵 Bryan</button>
+      <button class="psel-btn" onclick="selectPlayer('nicole')">🟣 Nicole</button>
+      <button class="psel-btn" onclick="selectPlayer('bethany')">Bethany</button>
+      <button class="psel-btn" onclick="selectPlayer('sam_c')">Sam C</button>
+      <button class="psel-btn" onclick="selectPlayer('bennett_c')">Bennett C</button>
+      <button class="psel-btn" onclick="selectPlayer('neil')">Neil</button>
+    </div>
     <div class="h2h">
       <div class="h2h-player bryan">
         <div class="h2h-name">Bryan</div>
@@ -243,31 +253,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
       <div class="f-txt"><b>Win earns Seed × Round#</b> · 5-seed R1=5, R2=10, S16=15…</div>
     </div>
 
-    <div class="ptabs">
-      <button class="ptab active-bryan" id="tab-bryan" onclick="switchTab('bryan')">🔵 Bryan</button>
-      <button class="ptab" id="tab-nicole" onclick="switchTab('nicole')">🟣 Nicole</button>
-    </div>
-
-    <div class="cols">
-      <div class="col-bryan visible" id="col-bryan">
-        <div class="player-hdr bryan">
-          <div><div class="ph-name">Bryan</div><div class="ph-sub" id="b-sub">0 wins</div></div>
-          <div class="ph-pts" id="b-hdr-pts">0 pts</div>
-        </div>
-        <div class="chips" id="b-chips"></div>
-        <div class="section-lbl">Bryan's 10 Picks</div>
-        <div id="bryan-grid"></div>
-      </div>
-      <div class="col-nicole" id="col-nicole">
-        <div class="player-hdr nicole">
-          <div><div class="ph-name">Nicole</div><div class="ph-sub" id="n-sub">0 wins</div></div>
-          <div class="ph-pts" id="n-hdr-pts">0 pts</div>
-        </div>
-        <div class="chips" id="n-chips"></div>
-        <div class="section-lbl">Nicole's 10 Picks</div>
-        <div id="nicole-grid"></div>
-      </div>
-    </div>
+    <!-- Single player detail panel -->
+    <div id="player-detail-panel"></div>
   </div>
 
   <!-- LEADERBOARD VIEW -->
