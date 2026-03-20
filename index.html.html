@@ -3,19 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Bryan & Nicole — NCAA 2026</title>
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="icon" href="icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="NCAA 2026">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="icon.png">
+<title>Bryan & Nicole — NCAA 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#1a1a1a;--bg2:#222;--bg3:#2a2a2a;--card:#242424;--border:#383838;--border2:#464646;--text:#fff;--text2:#c8c8c8;--text3:#888;--text4:#505050;--red:#cc0000;--green:#00a651;--green-dim:#0f2d1c;--red-dim:#2d0f0f;--amber:#f5a623;--amber-dim:#2d1f05;--blue:#4a90d9;--blue-dim:#0d1e30;--bryan:#3b82f6;--bryan-dim:#0d1e35;--nicole:#d946b8;--nicole-dim:#2d0f27;--font:'Barlow Condensed',sans-serif;--body:'Barlow',sans-serif}
+:root{--bg:#1a1a1a;--bg2:#222;--bg3:#2a2a2a;--card:#242424;--border:#383838;--border2:#464646;--text:#fff;--text2:#c8c8c8;--text3:#888;--text4:#505050;--red:#cc0000;--green:#00a651;--green-dim:#0f2d1c;--red-dim:#2d0f0f;--amber:#f5a623;--amber-dim:#2d1f05;--blue:#4a90d9;--blue-dim:#0d1e30;--bryan:#3b82f6;--bryan-dim:#0d1e35;--nicole:#d946b8;--nicole-dim:#2d0f27;--gold:#ffd700;--silver:#c0c0c0;--bronze:#cd7f32;--font:'Barlow Condensed',sans-serif;--body:'Barlow',sans-serif}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:100vh;-webkit-font-smoothing:antialiased}
-
-/* TICKER */
 .ticker{background:var(--red);height:28px;display:flex;align-items:center;overflow:hidden}
 .ticker-lbl{background:#900;color:#fff;font-family:var(--font);font-size:11px;font-weight:800;letter-spacing:.1em;padding:0 10px;height:100%;display:flex;align-items:center;white-space:nowrap;flex-shrink:0;text-transform:uppercase}
 .ticker-wrap{overflow:hidden;flex:1}
@@ -23,19 +21,21 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 .ticker-inner span{font-family:var(--font);font-size:10px;font-weight:600;letter-spacing:.05em;color:#fff;padding:0 20px;text-transform:uppercase}
 .ticker-inner span::before{content:'●';margin-right:8px;opacity:.55}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-/* NAVBAR */
 .navbar{background:var(--bg2);border-bottom:3px solid var(--red);padding:0 12px;height:48px;display:flex;align-items:center;gap:8px}
 .nav-title{font-family:var(--font);font-size:16px;font-weight:800;color:var(--text);letter-spacing:.02em;text-transform:uppercase;white-space:nowrap}
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:6px}
-.api-input{background:var(--bg3);border:1px solid var(--border2);border-radius:3px;color:var(--text2);font-family:var(--font);font-size:10px;font-weight:600;letter-spacing:.03em;padding:5px 8px;width:200px;outline:none}
-.api-input:focus{border-color:var(--red)}
 .api-input{display:none}
 .refresh-btn{font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:3px;border:1px solid var(--red);background:transparent;color:var(--red);cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0}
 .refresh-btn:hover,.refresh-btn:active{background:var(--red);color:#fff}
 .refresh-btn:disabled{opacity:.4}
+.settings-bar{display:none;background:#1e1e1e;border-bottom:1px solid #383838;padding:8px 12px;align-items:center;gap:8px;flex-wrap:wrap}
+.settings-bar input{flex:1;min-width:220px;background:#2a2a2a;border:1px solid #464646;border-radius:3px;color:#c8c8c8;font-family:var(--font);font-size:11px;padding:6px 10px;outline:none}
 
-/* PAGE */
+/* NAV TABS */
+.nav-tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border)}
+.nav-tab{flex:1;padding:10px 6px;font-family:var(--font);font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-align:center;cursor:pointer;border:none;background:transparent;color:var(--text3);border-bottom:3px solid transparent;transition:all .15s}
+.nav-tab.active{color:var(--red);border-bottom-color:var(--red);background:#1e1e1e}
+
 .page{max-width:1140px;margin:0 auto;padding:10px 10px 80px}
 
 /* H2H */
@@ -46,8 +46,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 .h2h-name{font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
 .h2h-player.bryan .h2h-name{color:var(--bryan)}
 .h2h-player.nicole .h2h-name{color:var(--nicole)}
-.h2h-pts{font-family:var(--font);font-size:48px;font-weight:800;line-height:1;letter-spacing:-.02em}
-.h2h-sub{font-family:var(--font);font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+.h2h-pts{font-family:var(--font);font-size:44px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.h2h-rank{font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+.h2h-payout{font-family:var(--font);font-size:13px;font-weight:800;margin-top:2px}
+.h2h-player.bryan .h2h-payout{color:var(--green)}
+.h2h-player.nicole .h2h-payout{color:var(--green)}
 .h2h-mid{padding:8px 12px;text-align:center;flex-shrink:0}
 .h2h-vs{font-family:var(--font);font-size:16px;font-weight:800;color:var(--text4)}
 .h2h-lead{font-family:var(--font);font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-top:5px;padding:2px 8px;border-radius:3px;display:inline-block}
@@ -58,27 +61,24 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 /* FORMULA */
 .formula{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:8px 12px;margin-bottom:10px;flex-wrap:wrap}
 .f-eq{font-family:var(--font);font-size:13px;font-weight:800;color:var(--red);letter-spacing:.02em;text-transform:uppercase;white-space:nowrap}
-.f-div{width:1px;height:20px;background:var(--border2);flex-shrink:0}
-@media(max-width:480px){.f-div{display:none}}
 .f-txt{font-family:var(--font);font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.03em;line-height:1.6;text-transform:uppercase}
 .f-txt b{color:var(--text2)}
 
-/* TABS (mobile) */
-.tabs{display:none;margin-bottom:10px;background:var(--bg2);border:1px solid var(--border);border-radius:4px;overflow:hidden}
-@media(max-width:680px){.tabs{display:flex}}
-.tab{flex:1;padding:10px 6px;font-family:var(--font);font-size:14px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;text-align:center;cursor:pointer;border:none;background:transparent;color:var(--text3);border-bottom:3px solid transparent;transition:all .15s}
-.tab.active-bryan{color:var(--bryan);border-bottom-color:var(--bryan);background:var(--bryan-dim)}
-.tab.active-nicole{color:var(--nicole);border-bottom-color:var(--nicole);background:var(--nicole-dim)}
+/* STATUS */
+.err{display:none;background:var(--red-dim);border:1px solid #cc000040;border-radius:4px;padding:8px 12px;font-family:var(--font);font-size:11px;font-weight:700;color:#ff8080;margin-bottom:10px;letter-spacing:.04em;text-transform:uppercase}
+.ok{display:none;background:var(--green-dim);border:1px solid #00a65140;border-radius:4px;padding:8px 12px;font-family:var(--font);font-size:11px;font-weight:700;color:var(--green);margin-bottom:10px;letter-spacing:.04em;text-transform:uppercase}
 
-/* COLUMNS */
+/* PLAYER TABS (mobile) */
+.ptabs{display:none;margin-bottom:10px;background:var(--bg2);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+@media(max-width:680px){.ptabs{display:flex}}
+.ptab{flex:1;padding:10px 6px;font-family:var(--font);font-size:13px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;text-align:center;cursor:pointer;border:none;background:transparent;color:var(--text3);border-bottom:3px solid transparent;transition:all .15s}
+.ptab.active-bryan{color:var(--bryan);border-bottom-color:var(--bryan);background:var(--bryan-dim)}
+.ptab.active-nicole{color:var(--nicole);border-bottom-color:var(--nicole);background:var(--nicole-dim)}
+
+/* COLS */
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:680px){
-  .cols{grid-template-columns:1fr}
-  .col-bryan,.col-nicole{display:none}
-  .col-bryan.visible,.col-nicole.visible{display:block}
-}
+@media(max-width:680px){.cols{grid-template-columns:1fr}.col-bryan,.col-nicole{display:none}.col-bryan.visible,.col-nicole.visible{display:block}}
 
-/* PLAYER HEADER */
 .player-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:8px 12px;border-radius:3px;border-left:4px solid}
 .player-hdr.bryan{background:var(--bryan-dim);border-color:var(--bryan)}
 .player-hdr.nicole{background:var(--nicole-dim);border-color:var(--nicole)}
@@ -89,7 +89,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 .player-hdr.bryan .ph-pts{color:var(--bryan)}
 .player-hdr.nicole .ph-pts{color:var(--nicole)}
 .ph-sub{font-family:var(--font);font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
-
 .section-lbl{font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:5px 10px;margin-bottom:8px;border-radius:0 3px 3px 0}
 .chips{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap}
 .chip{font-family:var(--font);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:3px;border:1px solid}
@@ -122,38 +121,43 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 .card.cl .cpts-n{color:var(--amber)}
 .card.ce .cpts-n{color:var(--text4)}
 .cpts-l{font-family:var(--font);font-size:9px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
-
-/* ROUND TRACK */
 .rtrack{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-bottom:8px}
 .rb{background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:4px 2px;text-align:center}
 .rb .rn{font-family:var(--font);font-size:8px;font-weight:700;color:var(--text4);letter-spacing:.04em;text-transform:uppercase}
 .rb .rp{font-family:var(--font);font-size:11px;font-weight:700;color:var(--text4);margin-top:1px}
-.rb.won{border-color:#00a65145;background:var(--green-dim)}
-.rb.won .rn{color:#00a65190}
-.rb.won .rp{color:var(--green)}
-.rb.live{border-color:#f5a62350;background:var(--amber-dim);animation:pulse 1.4s ease-in-out infinite}
-.rb.live .rp{color:var(--amber)}
-.rb.lost{background:#1c1c1c}
-.rb.lost .rp{color:var(--text4)}
-
+.rb.won{border-color:#00a65145;background:var(--green-dim)}.rb.won .rn{color:#00a65190}.rb.won .rp{color:var(--green)}
+.rb.live{border-color:#f5a62350;background:var(--amber-dim);animation:pulse 1.4s ease-in-out infinite}.rb.live .rp{color:var(--amber)}
+.rb.lost{background:#1c1c1c}.rb.lost .rp{color:var(--text4)}
 .matchup{background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:6px 8px;font-family:var(--font);font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.03em;text-transform:uppercase;line-height:1.5}
-.matchup .mw{color:var(--green)}
-.matchup .ml{color:#e05555}
-.matchup .mu{color:var(--amber)}
+.matchup .mw{color:var(--green)}.matchup .ml{color:#e05555}.matchup .mu{color:var(--amber)}
 .btns{display:flex;gap:4px;margin-top:6px}
 .bw,.bl{flex:1;padding:8px 5px;border-radius:3px;border:1px solid;font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:all .12s}
-.bw{color:var(--green);background:var(--green-dim);border-color:#00a65135}
-.bw:hover,.bw:active{background:var(--green);color:#fff;border-color:var(--green)}
-.bl{color:#e05555;background:var(--red-dim);border-color:#e0555535}
-.bl:hover,.bl:active{background:var(--red);color:#fff;border-color:var(--red)}
+.bw{color:var(--green);background:var(--green-dim);border-color:#00a65135}.bw:hover,.bw:active{background:var(--green);color:#fff}
+.bl{color:#e05555;background:var(--red-dim);border-color:#e0555535}.bl:hover,.bl:active{background:var(--red);color:#fff}
 .elim-note{margin-top:6px;font-family:var(--font);font-size:10px;font-weight:700;color:var(--text4);letter-spacing:.07em;text-transform:uppercase}
 .live-badge{font-family:var(--font);font-size:9px;font-weight:800;background:var(--amber-dim);color:var(--amber);border:1px solid #f5a62340;border-radius:2px;padding:1px 5px;letter-spacing:.08em;margin-left:6px;vertical-align:middle;text-transform:uppercase;animation:pulse 1.4s ease-in-out infinite}
 
-/* NOTICES */
-.notice{background:var(--bg2);border:1px solid var(--border2);border-left:3px solid var(--amber);border-radius:4px;padding:8px 12px;margin-bottom:10px;font-family:var(--font);font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.04em;line-height:1.7;text-transform:uppercase}
-.notice b{color:var(--amber)}
-.err{display:none;background:var(--red-dim);border:1px solid #cc000040;border-radius:4px;padding:8px 12px;font-family:var(--font);font-size:11px;font-weight:700;color:#ff8080;margin-bottom:10px;letter-spacing:.04em;text-transform:uppercase}
-.ok{display:none;background:var(--green-dim);border:1px solid #00a65140;border-radius:4px;padding:8px 12px;font-family:var(--font);font-size:11px;font-weight:700;color:var(--green);margin-bottom:10px;letter-spacing:.04em;text-transform:uppercase}
+/* LEADERBOARD */
+.lb-table{width:100%;border-collapse:collapse;font-family:var(--font)}
+.lb-table th{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);padding:7px 10px;background:var(--bg2);border-bottom:2px solid var(--red);text-align:left}
+.lb-table th.r{text-align:right}
+.lb-table td{padding:8px 10px;border-bottom:1px solid var(--border);font-size:14px;font-weight:700;vertical-align:middle}
+.lb-table td.r{text-align:right}
+.lb-table tr:hover td{background:#1e1e1e}
+.lb-table tr.highlight-bryan td{background:var(--bryan-dim)!important}
+.lb-table tr.highlight-nicole td{background:var(--nicole-dim)!important}
+.rank-num{font-size:16px;font-weight:800;color:var(--text3);width:28px;display:inline-block}
+.rank-num.r1{color:var(--gold)}
+.rank-num.r2{color:var(--silver)}
+.rank-num.r3{color:var(--bronze)}
+.rank-num.r4,.rank-num.r5{color:var(--green)}
+.ent-name{font-size:14px;font-weight:800;letter-spacing:.02em;text-transform:uppercase}
+.ent-name.is-bryan{color:var(--bryan)}
+.ent-name.is-nicole{color:var(--nicole)}
+.payout-badge{font-family:var(--font);font-size:12px;font-weight:800;color:var(--green);background:var(--green-dim);border:1px solid #00a65135;border-radius:3px;padding:2px 7px;white-space:nowrap}
+.pts-num{font-family:var(--font);font-size:16px;font-weight:800;color:var(--text)}
+.lb-sub{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.04em}
+.tied-badge{font-family:var(--font);font-size:9px;font-weight:700;color:var(--amber);background:var(--amber-dim);border:1px solid #f5a62330;border-radius:2px;padding:1px 5px;letter-spacing:.06em;margin-left:4px;vertical-align:middle}
 
 /* FOOTER */
 .footer{background:var(--bg2);border:1px solid var(--border);border-top:2px solid var(--red);border-radius:0 0 4px 4px;padding:10px 14px;font-family:var(--font);font-size:10px;font-weight:600;color:var(--text3);line-height:1.8;letter-spacing:.03em;text-transform:uppercase;margin-top:12px}
@@ -169,10 +173,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 .lo-fill{height:100%;background:var(--red);border-radius:2px;animation:lbar 1.4s ease-in-out infinite}
 @keyframes lbar{0%{width:0;margin-left:0}50%{width:55%;margin-left:10%}100%{width:0;margin-left:100%}}
 
-/* MOBILE FAB refresh */
 .fab{display:none;position:fixed;bottom:20px;right:20px;z-index:100;width:52px;height:52px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:22px;cursor:pointer;box-shadow:0 4px 16px #0008;align-items:center;justify-content:center;transition:transform .15s}
 .fab:active{transform:scale(.92)}
 @media(max-width:480px){.fab{display:flex}}
+
+.view{display:none}.view.active{display:block}
 </style>
 </head>
 <body>
@@ -190,121 +195,414 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
   </div></div>
 </div>
 
-<div class="navbar" id="navbar">
+<div class="navbar">
   <div class="nav-title">Bryan &amp; Nicole 🏀</div>
   <div class="nav-right">
     <input class="api-input" id="api-url" value="https://project-r4phb.vercel.app/api/scores" />
     <button class="refresh-btn" id="refresh-btn" onclick="doFetch()">↺ Refresh</button>
-    <button class="refresh-btn" onclick="toggleNav()" id="nav-toggle" style="border-color:#555;color:#888">⚙</button>
-
+    <button class="refresh-btn" onclick="toggleNav()" style="border-color:#555;color:#888">⚙</button>
   </div>
 </div>
-<div id="settings-bar" style="display:none;background:#1e1e1e;border-bottom:1px solid #383838;padding:8px 12px;display:none;align-items:center;gap:8px;flex-wrap:wrap">
-  <input style="flex:1;min-width:220px;background:#2a2a2a;border:1px solid #464646;border-radius:3px;color:#c8c8c8;font-family:'Barlow Condensed',sans-serif;font-size:11px;padding:6px 10px;outline:none" id="api-url-settings" value="https://project-r4phb.vercel.app/api/scores" oninput="document.getElementById('api-url').value=this.value" />
+<div class="settings-bar" id="settings-bar">
+  <input id="api-url-settings" value="https://project-r4phb.vercel.app/api/scores" oninput="document.getElementById('api-url').value=this.value" />
   <button class="refresh-btn" onclick="doFetch()">↺ Refresh</button>
 </div>
 
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="showView('tracker')">🏀 Tracker</button>
+  <button class="nav-tab" onclick="showView('leaderboard')">🏆 Standings</button>
+</div>
+
 <div class="page">
-  <div class="h2h">
-    <div class="h2h-player bryan">
-      <div class="h2h-name">Bryan</div>
-      <div class="h2h-pts" id="bryan-total">0</div>
-      <div class="h2h-sub" id="bryan-sub">0 wins · 0 active</div>
-    </div>
-    <div class="h2h-mid">
-      <div class="h2h-vs">VS</div>
-      <div class="h2h-lead lead-tied" id="lead-badge">Tied</div>
-    </div>
-    <div class="h2h-player nicole">
-      <div class="h2h-name">Nicole</div>
-      <div class="h2h-pts" id="nicole-total">0</div>
-      <div class="h2h-sub" id="nicole-sub">0 wins · 0 active</div>
-    </div>
-  </div>
-
-  <div class="formula">
-    <div class="f-eq">Score = Seed × Round</div>
-    <div class="f-div"></div>
-    <div class="f-txt"><b>Win earns Seed × Round#</b> · 5-seed R1=5, R2=10, S16=15…</div>
-  </div>
-
   <div class="err" id="err"></div>
   <div class="ok" id="ok"></div>
 
-  <!-- Mobile tabs -->
-  <div class="tabs">
-    <button class="tab active-bryan" id="tab-bryan" onclick="switchTab('bryan')">🔵 Bryan</button>
-    <button class="tab" id="tab-nicole" onclick="switchTab('nicole')">🟣 Nicole</button>
+  <!-- TRACKER VIEW -->
+  <div class="view active" id="view-tracker">
+    <div class="h2h">
+      <div class="h2h-player bryan">
+        <div class="h2h-name">Bryan</div>
+        <div class="h2h-pts" id="bryan-total">0</div>
+        <div class="h2h-rank" id="bryan-rank" style="color:var(--text3)">—</div>
+        <div class="h2h-payout" id="bryan-payout"></div>
+      </div>
+      <div class="h2h-mid">
+        <div class="h2h-vs">VS</div>
+        <div class="h2h-lead lead-tied" id="lead-badge">Tied</div>
+      </div>
+      <div class="h2h-player nicole" style="text-align:right">
+        <div class="h2h-name">Nicole</div>
+        <div class="h2h-pts" id="nicole-total">0</div>
+        <div class="h2h-rank" id="nicole-rank" style="color:var(--text3);text-align:right">—</div>
+        <div class="h2h-payout" id="nicole-payout" style="text-align:right"></div>
+      </div>
+    </div>
+
+    <div class="formula">
+      <div class="f-eq">Score = Seed × Round</div>
+      <div class="f-txt"><b>Win earns Seed × Round#</b> · 5-seed R1=5, R2=10, S16=15…</div>
+    </div>
+
+    <div class="ptabs">
+      <button class="ptab active-bryan" id="tab-bryan" onclick="switchTab('bryan')">🔵 Bryan</button>
+      <button class="ptab" id="tab-nicole" onclick="switchTab('nicole')">🟣 Nicole</button>
+    </div>
+
+    <div class="cols">
+      <div class="col-bryan visible" id="col-bryan">
+        <div class="player-hdr bryan">
+          <div><div class="ph-name">Bryan</div><div class="ph-sub" id="b-sub">0 wins</div></div>
+          <div class="ph-pts" id="b-hdr-pts">0 pts</div>
+        </div>
+        <div class="chips" id="b-chips"></div>
+        <div class="section-lbl">Bryan's 10 Picks</div>
+        <div id="bryan-grid"></div>
+      </div>
+      <div class="col-nicole" id="col-nicole">
+        <div class="player-hdr nicole">
+          <div><div class="ph-name">Nicole</div><div class="ph-sub" id="n-sub">0 wins</div></div>
+          <div class="ph-pts" id="n-hdr-pts">0 pts</div>
+        </div>
+        <div class="chips" id="n-chips"></div>
+        <div class="section-lbl">Nicole's 10 Picks</div>
+        <div id="nicole-grid"></div>
+      </div>
+    </div>
   </div>
 
-  <div class="cols">
-    <div class="col-bryan visible" id="col-bryan">
-      <div class="player-hdr bryan">
-        <div><div class="ph-name">Bryan</div><div class="ph-sub" id="b-sub">0 wins</div></div>
-        <div class="ph-pts" id="b-hdr-pts">0 pts</div>
-      </div>
-      <div class="chips" id="b-chips"></div>
-      <div class="section-lbl">Bryan's 10 Picks</div>
-      <div id="bryan-grid"></div>
-    </div>
-    <div class="col-nicole" id="col-nicole">
-      <div class="player-hdr nicole">
-        <div><div class="ph-name">Nicole</div><div class="ph-sub" id="n-sub">0 wins</div></div>
-        <div class="ph-pts" id="n-hdr-pts">0 pts</div>
-      </div>
-      <div class="chips" id="n-chips"></div>
-      <div class="section-lbl">Nicole's 10 Picks</div>
-      <div id="nicole-grid"></div>
-    </div>
+  <!-- LEADERBOARD VIEW -->
+  <div class="view" id="view-leaderboard">
+    <div id="lb-container"></div>
   </div>
 
   <div class="footer">
-    <b>Bryan:</b> Duke(1·E) · St.John's(5·E) · Iowa(9·S) · Vanderbilt(5·S) · Illinois(3·S) · Houston(2·S) · BYU(6·W) · Miami FL(7·W) · Saint Louis(9·MW) · Iowa State(2·MW)<br>
-    <b>Nicole:</b> Kentucky(7·MW) · Tennessee(6·MW) · UConn(2·E) · Clemson(8·S) · Vanderbilt(5·S) · Purdue(2·W) · Texas(11·W) · Arkansas(4·W) · Michigan St(3·E) · Texas Tech(5·MW)<br>
-    <b>Rounds:</b> R1=64 · R2=32 · S16=Sweet 16 · E8=Elite 8 · FF=Final Four · NC=Champ
+    <b>Payouts:</b> 1st $267 · 2nd $225.50 · 3rd $178 · 4th $133.50 · 5th $89<br>
+    <b>Score:</b> Seed × Round number, accumulating each round won
   </div>
   <div class="updated" id="updated">Last Updated: —</div>
 </div>
 
-<!-- Mobile FAB -->
-<button class="fab" onclick="doFetch()" title="Refresh scores">↺</button>
+<button class="fab" onclick="doFetch()">↺</button>
 
 <script>
-const ESPN_MAP={'Duke':'DUKE',"St. John's":'SJOH','Iowa':'IOWA','Vanderbilt':'VAN','Illinois':'ILL','Houston':'HOU','BYU':'BYU','Miami (FL)':'MIA','Miami FL':'MIA','Miami':'MIA','Saint Louis':'SLU','SLU':'SLU','Iowa St':'IAST','Iowa State':'IAST','Kentucky':'UK','Tennessee':'TENN','UConn':'UCON','Connecticut':'UCON','Clemson':'CLEM','Purdue':'PUR','Texas':'TEX','Arkansas':'ARK','Michigan St':'MSU','Michigan State':'MSU','Texas Tech':'TTU'};
-const BRYAN=[{name:"Duke",abbr:"DUKE",seed:1,region:"East"},{name:"St. John's",abbr:"SJOH",seed:5,region:"East"},{name:"Iowa",abbr:"IOWA",seed:9,region:"South"},{name:"Vanderbilt",abbr:"VAN",seed:5,region:"South"},{name:"Illinois",abbr:"ILL",seed:3,region:"South"},{name:"Houston",abbr:"HOU",seed:2,region:"South"},{name:"BYU",abbr:"BYU",seed:6,region:"West"},{name:"Miami FL",abbr:"MIA",seed:7,region:"West"},{name:"Saint Louis",abbr:"SLU",seed:9,region:"Midwest"},{name:"Iowa State",abbr:"IAST",seed:2,region:"Midwest"}];
-const NICOLE=[{name:"Kentucky",abbr:"UK",seed:7,region:"Midwest"},{name:"Tennessee",abbr:"TENN",seed:6,region:"Midwest"},{name:"UConn",abbr:"UCON",seed:2,region:"East"},{name:"Clemson",abbr:"CLEM",seed:8,region:"South"},{name:"Vanderbilt",abbr:"VAN2",seed:5,region:"South"},{name:"Purdue",abbr:"PUR",seed:2,region:"West"},{name:"Texas",abbr:"TEX",seed:11,region:"West"},{name:"Arkansas",abbr:"ARK",seed:4,region:"West"},{name:"Michigan St",abbr:"MSU",seed:3,region:"East"},{name:"Texas Tech",abbr:"TTU",seed:5,region:"Midwest"}];
-const ALL=[...BRYAN,...NICOLE];
-const RND={1:"R1",2:"R2",3:"S16",4:"E8",5:"FF",6:"NC"};
-const SHARED_PAIRS=[['VAN','VAN2']];
+// ── PAYOUTS ──────────────────────────────────────────────────────────────────
+const PAYOUTS={1:'$267.00',2:'$225.50',3:'$178.00',4:'$133.50',5:'$89.00'};
+
+// ── ESPN NAME MAP ─────────────────────────────────────────────────────────────
+const ESPN_MAP={'Duke':'DUKE',"St. John's":'SJOH','Iowa':'IOWA','Vanderbilt':'VAN','Illinois':'ILL','Houston':'HOU','BYU':'BYU','Miami (FL)':'MIA','Miami FL':'MIA','Miami':'MIA','Saint Louis':'SLU','SLU':'SLU','Iowa St':'IAST','Iowa State':'IAST','Kentucky':'UK','Tennessee':'TENN','UConn':'UCON','Connecticut':'UCON','Clemson':'CLEM','Purdue':'PUR','Texas':'TEX','Arkansas':'ARK','Michigan St':'MSU','Michigan State':'MSU','Texas Tech':'TTU','Arizona':'ARIZ','Florida':'FLA','Michigan':'MICH','Virginia':'UVA','Wisconsin':'WISC','Kansas':'KU','Alabama':'BAMA','Iowa St.':'IAST','North Carolina':'UNC','Gonzaga':'GONZ','Nebraska':'NEB','UCLA':'UCLA','South Florida':'USF','High Point':'HPU','VCU':'VCU','Akron':'AKR','Ohio St.':'OSU','TCU':'TCU','Louisville':'LOU','McNeese':'MCNS','UCF':'UCF','Santa Clara':'SCU','Saint Mary\'s':'SMC','Missouri':'MIZZ','Texas A&M':'TAMU','Utah St.':'USU','Georgia':'UGA','Wright St.':'WSU','Hofstra':'HOF','Troy':'TROY','Villanova':'NOVA','Penn':'PENN','UMBC':'UMBC','Northern Iowa':'UNI','Texas / NC State':'TXNC','Miami (OH) / SMU':'OHSMU','Texas Tech':'TTU','KJ Brown':'KJB'};
+
+// ── ALL ENTRANTS ──────────────────────────────────────────────────────────────
+const ENTRANTS=[
+  {id:'adam_1',name:'Adam Lenin',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Iowa',abbr:'IOWA',s:9,r:'South'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Vanderbilt',abbr:'VAN_adam',s:5,r:'South'},{n:'Gonzaga',abbr:'GONZ_adam',s:3,r:'West'},{n:'BYU',abbr:'BYU_adam',s:6,r:'West'},{n:'Purdue',abbr:'PUR_adam',s:2,r:'West'},{n:'Michigan',abbr:'MICH_adam',s:1,r:'Midwest'},{n:'Virginia',abbr:'UVA_adam',s:3,r:'Midwest'}]},
+  {id:'andrew_1',name:'Andrew Armstrong',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Arizona',abbr:'ARIZ_and1',s:1,r:'West'},{n:'South Florida',abbr:'USF_and1',s:11,r:'East'},{n:'Akron',abbr:'AKR_and1',s:12,r:'Midwest'},{n:'BYU',abbr:'BYU',s:6,r:'West'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Gonzaga',abbr:'GONZ_and1',s:3,r:'West'},{n:'Utah St.',abbr:'USU_and1',s:9,r:'West'},{n:'Texas A&M',abbr:'TAMU_and1',s:10,r:'South'},{n:'VCU',abbr:'VCU_and1',s:11,r:'South'}]},
+  {id:'andrew_2',name:'Andrew Armstrong 2',picks:[{n:'South Florida',abbr:'USF_and2',s:11,r:'East'},{n:'Miami OH/SMU',abbr:'OHSMU_and2',s:11,r:'Midwest'},{n:'UCF',abbr:'UCF_and2',s:10,r:'East'},{n:'Santa Clara',abbr:'SCU_and2',s:10,r:'Midwest'},{n:'High Point',abbr:'HPU_and2',s:12,r:'West'},{n:'Saint Louis',abbr:'SLU_and2',s:9,r:'Midwest'},{n:'Iowa',abbr:'IOWA_and2',s:9,r:'South'},{n:'Arkansas',abbr:'ARK_and2',s:4,r:'West'},{n:'UConn',abbr:'UCON_and2',s:2,r:'East'},{n:'Arizona',abbr:'ARIZ_and2',s:1,r:'West'}]},
+  {id:'bennett_c',name:'Bennett Carpenter',picks:[{n:'TX/NCST',abbr:'TXNC_bc',s:11,r:'West'},{n:'Virginia',abbr:'UVA_bc',s:3,r:'Midwest'},{n:'Wisconsin',abbr:'WISC_bc',s:5,r:'West'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Nebraska',abbr:'NEB_bc',s:4,r:'South'},{n:'Miami OH/SMU',abbr:'OHSMU_bc',s:11,r:'Midwest'},{n:'Alabama',abbr:'BAMA_bc',s:4,r:'Midwest'},{n:'Purdue',abbr:'PUR_bc',s:2,r:'West'},{n:'Kansas',abbr:'KU_bc',s:4,r:'East'}]},
+  {id:'bennett_r',name:'Bennett Rauch',picks:[{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Arizona',abbr:'ARIZ_br',s:1,r:'West'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Alabama',abbr:'BAMA_br',s:4,r:'Midwest'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'TCU',abbr:'TCU_br',s:9,r:'East'}]},
+  {id:'bethany',name:'Bethany Rose',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Florida',abbr:'FLA_beth',s:1,r:'South'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Michigan',abbr:'MICH_beth',s:1,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_beth',s:1,r:'West'},{n:'Wisconsin',abbr:'WISC_beth',s:5,r:'West'},{n:'Virginia',abbr:'UVA_beth',s:3,r:'Midwest'},{n:'Kansas',abbr:'KU_beth',s:4,r:'East'},{n:'BYU',abbr:'BYU',s:6,r:'West'}]},
+  {id:'brent',name:'Brent Cherkala',picks:[{n:'South Florida',abbr:'USF_brent',s:11,r:'East'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'},{n:'Virginia',abbr:'UVA_brent',s:3,r:'Midwest'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Michigan',abbr:'MICH_brent',s:1,r:'Midwest'},{n:'High Point',abbr:'HPU_brent',s:12,r:'West'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Clemson',abbr:'CLEM',s:8,r:'South'},{n:'Alabama',abbr:'BAMA_brent',s:4,r:'Midwest'},{n:'North Carolina',abbr:'UNC_brent',s:6,r:'South'}]},
+  {id:'brian_bu',name:'Brian Butler',picks:[{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'South Florida',abbr:'USF_bbu',s:11,r:'East'},{n:'Virginia',abbr:'UVA_bbu',s:3,r:'Midwest'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Wisconsin',abbr:'WISC_bbu',s:5,r:'West'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'VCU',abbr:'VCU_bbu',s:11,r:'South'},{n:'Alabama',abbr:'BAMA_bbu',s:4,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_bbu',s:1,r:'West'}]},
+  {id:'brian_di',name:'Brian Digman',picks:[{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:"Saint Mary's",abbr:'SMC_bdi',s:7,r:'South'},{n:'High Point',abbr:'HPU_bdi',s:12,r:'West'},{n:'Santa Clara',abbr:'SCU_bdi',s:10,r:'Midwest'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Florida',abbr:'FLA_bdi',s:1,r:'South'},{n:'UCLA',abbr:'UCLA_bdi',s:7,r:'East'},{n:'North Carolina',abbr:'UNC_bdi',s:6,r:'South'},{n:'Arizona',abbr:'ARIZ_bdi',s:1,r:'West'},{n:'Akron',abbr:'AKR_bdi',s:12,r:'Midwest'}]},
+  {id:'bryan',name:'Bryan Rainey',isBryan:true,picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Iowa',abbr:'IOWA',s:9,r:'South'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'BYU',abbr:'BYU',s:6,r:'West'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'},{n:'Saint Louis',abbr:'SLU',s:9,r:'Midwest'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'}]},
+  {id:'bryson',name:'Bryson Cherkala',picks:[{n:'Ohio St.',abbr:'OSU_bry',s:8,r:'East'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'South Florida',abbr:'USF_bry',s:11,r:'East'},{n:'Kentucky',abbr:'UK',s:7,r:'Midwest'},{n:'Texas Tech',abbr:'TTU',s:5,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_bry',s:1,r:'West'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'BYU',abbr:'BYU',s:6,r:'West'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'}]},
+  {id:'chris_e',name:'Chris Earp',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'TCU',abbr:'TCU_ce',s:9,r:'East'},{n:'Kansas',abbr:'KU_ce',s:4,r:'East'},{n:'Louisville',abbr:'LOU_ce',s:6,r:'East'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Florida',abbr:'FLA_ce',s:1,r:'South'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Virginia',abbr:'UVA_ce',s:3,r:'Midwest'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'}]},
+  {id:'chris_f',name:'Chris Falk',picks:[{n:'Santa Clara',abbr:'SCU_cf',s:10,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_cf',s:1,r:'West'},{n:'Iowa',abbr:'IOWA_cf',s:9,r:'South'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'VCU',abbr:'VCU_cf',s:11,r:'South'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Michigan',abbr:'MICH_cf',s:1,r:'Midwest'}]},
+  {id:'clay',name:'Clay Lohnes',picks:[{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'North Carolina',abbr:'UNC_clay',s:6,r:'South'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_clay',s:1,r:'West'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:"Hawai'i",abbr:'HAW_clay',s:13,r:'West'},{n:'Florida',abbr:'FLA_clay',s:1,r:'South'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Wright St.',abbr:'WSU_clay',s:14,r:'Midwest'},{n:'Wisconsin',abbr:'WISC_clay',s:5,r:'West'}]},
+  {id:'damon_1',name:'Damon Fleming 1',picks:[{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'McNeese',abbr:'MCNS_d1',s:12,r:'South'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'North Carolina',abbr:'UNC_d1',s:6,r:'South'},{n:'Gonzaga',abbr:'GONZ_d1',s:3,r:'West'},{n:"Saint Mary's",abbr:'SMC_d1',s:7,r:'South'}]},
+  {id:'damon_2',name:'Damon Fleming 2',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'McNeese',abbr:'MCNS_d2',s:12,r:'South'},{n:'Gonzaga',abbr:'GONZ_d2',s:3,r:'West'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:"Saint Mary's",abbr:'SMC_d2',s:7,r:'South'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Clemson',abbr:'CLEM_d2',s:8,r:'South'},{n:'VCU',abbr:'VCU_d2',s:11,r:'South'},{n:'Wisconsin',abbr:'WISC_d2',s:5,r:'West'}]},
+  {id:'damon_3',name:'Damon Fleming 3',picks:[{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Kentucky',abbr:'UK_d3',s:7,r:'Midwest'},{n:'Texas Tech',abbr:'TTU_d3',s:5,r:'Midwest'},{n:'Clemson',abbr:'CLEM_d3',s:8,r:'South'},{n:'Utah St.',abbr:'USU_d3',s:9,r:'West'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'McNeese',abbr:'MCNS_d3',s:12,r:'South'},{n:'UConn',abbr:'UCON',s:2,r:'East'}]},
+  {id:'dan_g',name:'Dan Gilley',picks:[{n:'North Carolina',abbr:'UNC_dg',s:6,r:'South'},{n:'Akron',abbr:'AKR_dg',s:12,r:'Midwest'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'},{n:'Michigan',abbr:'MICH_dg',s:1,r:'Midwest'},{n:'Florida',abbr:'FLA_dg',s:1,r:'South'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'}]},
+  {id:'daniel_1',name:'Daniel Hill',picks:[{n:'North Carolina',abbr:'UNC_dh1',s:6,r:'South'},{n:'Arizona',abbr:'ARIZ_dh1',s:1,r:'West'},{n:'Michigan',abbr:'MICH_dh1',s:1,r:'Midwest'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Kansas',abbr:'KU_dh1',s:4,r:'East'},{n:'Texas A&M',abbr:'TAMU_dh1',s:10,r:'South'},{n:'Nebraska',abbr:'NEB_dh1',s:4,r:'South'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Villanova',abbr:'NOVA_dh1',s:8,r:'West'}]},
+  {id:'daniel_2',name:'Daniel Hill 2',picks:[{n:'North Carolina',abbr:'UNC_dh2',s:6,r:'South'},{n:'Arizona',abbr:'ARIZ_dh2',s:1,r:'West'},{n:'Michigan',abbr:'MICH_dh2',s:1,r:'Midwest'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'High Point',abbr:'HPU_dh2',s:12,r:'West'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'},{n:'Santa Clara',abbr:'SCU_dh2',s:10,r:'Midwest'},{n:"Saint Mary's",abbr:'SMC_dh2',s:7,r:'South'}]},
+  {id:'darby',name:'Darby Wang',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Kansas',abbr:'KU_darby',s:4,r:'East'},{n:'Florida',abbr:'FLA_darby',s:1,r:'South'},{n:'Nebraska',abbr:'NEB_darby',s:4,r:'South'},{n:'Arizona',abbr:'ARIZ_darby',s:1,r:'West'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Michigan',abbr:'MICH_darby',s:1,r:'Midwest'},{n:'Alabama',abbr:'BAMA_darby',s:4,r:'Midwest'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:'Louisville',abbr:'LOU_darby',s:6,r:'East'}]},
+  {id:'darin',name:'Darin Brown',picks:[{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Kansas',abbr:'KU_darin',s:4,r:'East'},{n:'UCLA',abbr:'UCLA_darin',s:7,r:'East'},{n:'BYU',abbr:'BYU',s:6,r:'West'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Arizona',abbr:'ARIZ_darin',s:1,r:'West'},{n:'Miami OH/SMU',abbr:'OHSMU_darin',s:11,r:'Midwest'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'}]},
+  {id:'david',name:'David Bautz',picks:[{n:'McNeese',abbr:'MCNS_dav',s:12,r:'South'},{n:'Arizona',abbr:'ARIZ_dav',s:1,r:'West'},{n:'North Carolina',abbr:'UNC_dav',s:6,r:'South'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Kansas',abbr:'KU_dav',s:4,r:'East'},{n:'Kentucky',abbr:'UK_dav',s:7,r:'Midwest'},{n:'Alabama',abbr:'BAMA_dav',s:4,r:'Midwest'},{n:'Florida',abbr:'FLA_dav',s:1,r:'South'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'}]},
+  {id:'eric_r1',name:'Eric Rauch 1',picks:[{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Arizona',abbr:'ARIZ_er1',s:1,r:'West'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Akron',abbr:'AKR_er1',s:12,r:'Midwest'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Alabama',abbr:'BAMA_er1',s:4,r:'Midwest'},{n:'Wisconsin',abbr:'WISC_er1',s:5,r:'West'},{n:'Nebraska',abbr:'NEB_er1',s:4,r:'South'},{n:'VCU',abbr:'VCU_er1',s:11,r:'South'}]},
+  {id:'eric_r2',name:'Eric Rauch 2',picks:[{n:'Kansas',abbr:'KU_er2',s:4,r:'East'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Alabama',abbr:'BAMA_er2',s:4,r:'Midwest'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Gonzaga',abbr:'GONZ_er2',s:3,r:'West'},{n:'Arizona',abbr:'ARIZ_er2',s:1,r:'West'},{n:'Duke',abbr:'DUKE',s:1,r:'East'}]},
+  {id:'eric_s',name:'Eric Sampson',picks:[{n:'Arizona',abbr:'ARIZ_es',s:1,r:'West'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Virginia',abbr:'UVA_es',s:3,r:'Midwest'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Michigan',abbr:'MICH_es',s:1,r:'Midwest'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Duke',abbr:'DUKE',s:1,r:'East'}]},
+  {id:'erich_1',name:'Erich 1',picks:[{n:'Arizona',abbr:'ARIZ_e1',s:1,r:'West'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Kentucky',abbr:'UK_e1',s:7,r:'Midwest'},{n:'Florida',abbr:'FLA_e1',s:1,r:'South'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Michigan',abbr:'MICH_e1',s:1,r:'Midwest'},{n:'Gonzaga',abbr:'GONZ_e1',s:3,r:'West'}]},
+  {id:'erich_2',name:'Erich 2',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'UCF',abbr:'UCF_e2',s:10,r:'East'},{n:'High Point',abbr:'HPU_e2',s:12,r:'West'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'BYU',abbr:'BYU',s:6,r:'West'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Houston',abbr:'HOU',s:2,r:'South'}]},
+  {id:'erich_3',name:'Erich 3',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Arizona',abbr:'ARIZ_e3',s:1,r:'West'},{n:'Michigan',abbr:'MICH_e3',s:1,r:'Midwest'},{n:'Florida',abbr:'FLA_e3',s:1,r:'South'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Kansas',abbr:'KU_e3',s:4,r:'East'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Gonzaga',abbr:'GONZ_e3',s:3,r:'West'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'}]},
+  {id:'gray',name:'Gray Palmer',picks:[{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:'Gonzaga',abbr:'GONZ_gray',s:3,r:'West'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Texas Tech',abbr:'TTU_gray',s:5,r:'Midwest'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'},{n:'Texas A&M',abbr:'TAMU_gray',s:10,r:'South'},{n:'UConn',abbr:'UCON',s:2,r:'East'}]},
+  {id:'henry',name:'Henry Hogan',picks:[{n:'Akron',abbr:'AKR_henry',s:12,r:'Midwest'},{n:'High Point',abbr:'HPU_henry',s:12,r:'West'},{n:'Hofstra',abbr:'HOF_henry',s:13,r:'Midwest'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'BYU',abbr:'BYU',s:6,r:'West'},{n:'Kansas',abbr:'KU_henry',s:4,r:'East'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Virginia',abbr:'UVA_henry',s:3,r:'Midwest'},{n:'VCU',abbr:'VCU_henry',s:11,r:'South'},{n:'Michigan',abbr:'MICH_henry',s:1,r:'Midwest'}]},
+  {id:'ingo_1',name:'Ingo Meiners 1',picks:[{n:'Louisville',abbr:'LOU_i1',s:6,r:'East'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Michigan',abbr:'MICH_i1',s:1,r:'Midwest'},{n:'Florida',abbr:'FLA_i1',s:1,r:'South'},{n:'Arizona',abbr:'ARIZ_i1',s:1,r:'West'}]},
+  {id:'ingo_2',name:'Ingo Meiners 2',picks:[{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Florida',abbr:'FLA_i2',s:1,r:'South'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Arizona',abbr:'ARIZ_i2',s:1,r:'West'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Alabama',abbr:'BAMA_i2',s:4,r:'Midwest'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'}]},
+  {id:'ingo_3',name:'Ingo Meiners 3',picks:[{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Florida',abbr:'FLA_i3',s:1,r:'South'},{n:'North Carolina',abbr:'UNC_i3',s:6,r:'South'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:'UCLA',abbr:'UCLA_i3',s:7,r:'East'},{n:'Michigan',abbr:'MICH_i3',s:1,r:'Midwest'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Purdue',abbr:'PUR',s:2,r:'West'}]},
+  {id:'jeff',name:'Jeff Brown',picks:[{n:'VCU',abbr:'VCU_jeff',s:11,r:'South'},{n:'UCLA',abbr:'UCLA_jeff',s:7,r:'East'},{n:'Santa Clara',abbr:'SCU_jeff',s:10,r:'Midwest'},{n:'McNeese',abbr:'MCNS_jeff',s:12,r:'South'},{n:'Missouri',abbr:'MIZZ_jeff',s:10,r:'West'},{n:'TX/NCST',abbr:'TXNC_jeff',s:11,r:'West'},{n:'BYU',abbr:'BYU',s:6,r:'West'},{n:'South Florida',abbr:'USF_jeff',s:11,r:'East'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Northern Iowa',abbr:'UNI_jeff',s:12,r:'East'}]},
+  {id:'jen',name:'Jen Archer',picks:[{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Penn',abbr:'PENN_jen',s:14,r:'South'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:'Michigan',abbr:'MICH_jen',s:1,r:'Midwest'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Georgia',abbr:'UGA_jen',s:8,r:'Midwest'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Kansas',abbr:'KU_jen',s:4,r:'East'},{n:'Texas Tech',abbr:'TTU_jen',s:5,r:'Midwest'}]},
+  {id:'jenny',name:'Jenny Osborne',picks:[{n:'Arizona',abbr:'ARIZ_jenny',s:1,r:'West'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Gonzaga',abbr:'GONZ_jenny',s:3,r:'West'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'North Carolina',abbr:'UNC_jenny',s:6,r:'South'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Illinois',abbr:'ILL',s:3,r:'South'}]},
+  {id:'jeremy',name:'Jeremy Wang',picks:[{n:'UCLA',abbr:'UCLA_jer',s:7,r:'East'},{n:'Louisville',abbr:'LOU_jer',s:6,r:'East'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Clemson',abbr:'CLEM_jer',s:8,r:'South'},{n:'Ohio St.',abbr:'OSU_jer',s:8,r:'East'},{n:'Texas Tech',abbr:'TTU_jer',s:5,r:'Midwest'},{n:'Wisconsin',abbr:'WISC_jer',s:5,r:'West'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Saint Louis',abbr:'SLU',s:9,r:'Midwest'}]},
+  {id:'joe',name:'Joe Shumway',picks:[{n:'Texas Tech',abbr:'TTU_joe',s:5,r:'Midwest'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Kansas',abbr:'KU_joe',s:4,r:'East'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:'North Carolina',abbr:'UNC_joe',s:6,r:'South'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Alabama',abbr:'BAMA_joe',s:4,r:'Midwest'},{n:'Kentucky',abbr:'UK_joe',s:7,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_joe',s:1,r:'West'},{n:'Villanova',abbr:'NOVA_joe',s:8,r:'West'}]},
+  {id:'jordan',name:'Jordan Cremer',picks:[{n:'Louisville',abbr:'LOU_jc',s:6,r:'East'},{n:'North Carolina',abbr:'UNC_jc',s:6,r:'South'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Arizona',abbr:'ARIZ_jc',s:1,r:'West'},{n:'Alabama',abbr:'BAMA_jc',s:4,r:'Midwest'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Texas A&M',abbr:'TAMU_jc',s:10,r:'South'},{n:'Missouri',abbr:'MIZZ_jc',s:10,r:'West'},{n:'Wisconsin',abbr:'WISC_jc',s:5,r:'West'},{n:'Clemson',abbr:'CLEM_jc',s:8,r:'South'}]},
+  {id:'josh',name:'Josh Davis',picks:[{n:'Nebraska',abbr:'NEB_josh',s:4,r:'South'},{n:'Akron',abbr:'AKR_josh',s:12,r:'Midwest'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Kansas',abbr:'KU_josh',s:4,r:'East'},{n:'Florida',abbr:'FLA_josh',s:1,r:'South'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:'North Carolina',abbr:'UNC_josh',s:6,r:'South'},{n:'Miami OH/SMU',abbr:'OHSMU_josh',s:11,r:'Midwest'}]},
+  {id:'julie',name:'Julie Cherkala',picks:[{n:'Alabama',abbr:'BAMA_julie',s:4,r:'Midwest'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Georgia',abbr:'UGA_julie',s:8,r:'Midwest'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Miami OH/SMU',abbr:'OHSMU_julie',s:11,r:'Midwest'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'High Point',abbr:'HPU_julie',s:12,r:'West'},{n:'BYU',abbr:'BYU',s:6,r:'West'},{n:'Texas Tech',abbr:'TTU_julie',s:5,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_julie',s:1,r:'West'}]},
+  {id:'justin',name:'Justin Hudson',picks:[{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Arizona',abbr:'ARIZ_jh',s:1,r:'West'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Michigan',abbr:'MICH_jh',s:1,r:'Midwest'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'BYU',abbr:'BYU',s:6,r:'West'},{n:'Florida',abbr:'FLA_jh',s:1,r:'South'},{n:'South Florida',abbr:'USF_jh',s:11,r:'East'},{n:'Miami OH/SMU',abbr:'OHSMU_jh',s:11,r:'Midwest'}]},
+  {id:'kevin_b',name:'Kevin Bell',picks:[{n:'Michigan',abbr:'MICH_kb',s:1,r:'Midwest'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Gonzaga',abbr:'GONZ_kb',s:3,r:'West'},{n:'Virginia',abbr:'UVA_kb',s:3,r:'Midwest'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'VCU',abbr:'VCU_kb',s:11,r:'South'},{n:'TX/NCST',abbr:'TXNC_kb',s:11,r:'West'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Arizona',abbr:'ARIZ_kb',s:1,r:'West'}]},
+  {id:'kevin_e1',name:'Kevin Egan 1',picks:[{n:'Arizona',abbr:'ARIZ_ke1',s:1,r:'West'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Saint Louis',abbr:'SLU',s:9,r:'Midwest'},{n:'Santa Clara',abbr:'SCU_ke1',s:10,r:'Midwest'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Alabama',abbr:'BAMA_ke1',s:4,r:'Midwest'},{n:'Wisconsin',abbr:'WISC_ke1',s:5,r:'West'}]},
+  {id:'kevin_e2',name:'Kevin Egan 2',picks:[{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Wisconsin',abbr:'WISC_ke2',s:5,r:'West'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Texas Tech',abbr:'TTU_ke2',s:5,r:'Midwest'},{n:'TX/NCST',abbr:'TXNC_ke2',s:11,r:'West'},{n:'Troy',abbr:'TROY_ke2',s:13,r:'South'}]},
+  {id:'kevin_sh',name:'Kevin Shay',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Arizona',abbr:'ARIZ_ksh',s:1,r:'West'},{n:'Michigan',abbr:'MICH_ksh',s:1,r:'Midwest'},{n:'Florida',abbr:'FLA_ksh',s:1,r:'South'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Nebraska',abbr:'NEB_ksh',s:4,r:'South'},{n:'Wisconsin',abbr:'WISC_ksh',s:5,r:'West'},{n:'Utah St.',abbr:'USU_ksh',s:9,r:'West'}]},
+  {id:'kj_1',name:'KJ Brown',picks:[{n:'Virginia',abbr:'UVA_kj1',s:3,r:'Midwest'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Alabama',abbr:'BAMA_kj1',s:4,r:'Midwest'},{n:'Missouri',abbr:'MIZZ_kj1',s:10,r:'West'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Gonzaga',abbr:'GONZ_kj1',s:3,r:'West'},{n:'Wisconsin',abbr:'WISC_kj1',s:5,r:'West'},{n:'Nebraska',abbr:'NEB_kj1',s:4,r:'South'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'}]},
+  {id:'kj_2',name:'KJ Brown 2',picks:[{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Alabama',abbr:'BAMA_kj2',s:4,r:'Midwest'},{n:'Kansas',abbr:'KU_kj2',s:4,r:'East'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Nebraska',abbr:'NEB_kj2',s:4,r:'South'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'},{n:'Michigan',abbr:'MICH_kj2',s:1,r:'Midwest'},{n:'Texas Tech',abbr:'TTU_kj2',s:5,r:'Midwest'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:'Illinois',abbr:'ILL',s:3,r:'South'}]},
+  {id:'lane',name:'Lane Wood',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'South Florida',abbr:'USF_lane',s:11,r:'East'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Gonzaga',abbr:'GONZ_lane',s:3,r:'West'},{n:'VCU',abbr:'VCU_lane',s:11,r:'South'},{n:'Florida',abbr:'FLA_lane',s:1,r:'South'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'},{n:'Houston',abbr:'HOU',s:2,r:'South'}]},
+  {id:'larry',name:'Larry Rys',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Arizona',abbr:'ARIZ_larry',s:1,r:'West'},{n:'Wisconsin',abbr:'WISC_larry',s:5,r:'West'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Florida',abbr:'FLA_larry',s:1,r:'South'},{n:'Gonzaga',abbr:'GONZ_larry',s:3,r:'West'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'}]},
+  {id:'laskey',name:'Laskey',picks:[{n:'Arizona',abbr:'ARIZ_lask',s:1,r:'West'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Michigan',abbr:'MICH_lask',s:1,r:'Midwest'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Santa Clara',abbr:'SCU_lask',s:10,r:'Midwest'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Texas Tech',abbr:'TTU_lask',s:5,r:'Midwest'},{n:'Purdue',abbr:'PUR',s:2,r:'West'}]},
+  {id:'mac',name:'Mac Willard',picks:[{n:'Virginia',abbr:'UVA_mac',s:3,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_mac',s:1,r:'West'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'VCU',abbr:'VCU_mac',s:11,r:'South'},{n:'South Florida',abbr:'USF_mac',s:11,r:'East'}]},
+  {id:'marco',name:'Marco Moorfeld',picks:[{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'North Carolina',abbr:'UNC_marco',s:6,r:'South'},{n:'Wisconsin',abbr:'WISC_marco',s:5,r:'West'},{n:'Texas Tech',abbr:'TTU_marco',s:5,r:'Midwest'},{n:'High Point',abbr:'HPU_marco',s:12,r:'West'},{n:'Virginia',abbr:'UVA_marco',s:3,r:'Midwest'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Arizona',abbr:'ARIZ_marco',s:1,r:'West'}]},
+  {id:'mark_j',name:'Mark Jackson',picks:[{n:'South Florida',abbr:'USF_mj',s:11,r:'East'},{n:'Virginia',abbr:'UVA_mj',s:3,r:'Midwest'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Akron',abbr:'AKR_mj',s:12,r:'Midwest'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Arizona',abbr:'ARIZ_mj',s:1,r:'West'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Saint Louis',abbr:'SLU',s:9,r:'Midwest'}]},
+  {id:'matt_bl',name:'Matt Blackwell',picks:[{n:'South Florida',abbr:'USF_mbl',s:11,r:'East'},{n:'Akron',abbr:'AKR_mbl',s:12,r:'Midwest'},{n:'Florida',abbr:'FLA_mbl',s:1,r:'South'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Troy',abbr:'TROY_mbl',s:13,r:'South'},{n:'Gonzaga',abbr:'GONZ_mbl',s:3,r:'West'},{n:'Kentucky',abbr:'UK_mbl',s:7,r:'Midwest'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Texas A&M',abbr:'TAMU_mbl',s:10,r:'South'}]},
+  {id:'matt_ge',name:'Matt Getty',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Michigan',abbr:'MICH_mge',s:1,r:'Midwest'},{n:'Virginia',abbr:'UVA_mge',s:3,r:'Midwest'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Arizona',abbr:'ARIZ_mge',s:1,r:'West'},{n:'UCLA',abbr:'UCLA_mge',s:7,r:'East'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'}]},
+  {id:'mike_k1',name:'Michael Keller 1',picks:[{n:'Akron',abbr:'AKR_mk1',s:12,r:'Midwest'},{n:'North Carolina',abbr:'UNC_mk1',s:6,r:'South'},{n:'Gonzaga',abbr:'GONZ_mk1',s:3,r:'West'},{n:'Arizona',abbr:'ARIZ_mk1',s:1,r:'West'},{n:'Virginia',abbr:'UVA_mk1',s:3,r:'Midwest'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Kansas',abbr:'KU_mk1',s:4,r:'East'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'},{n:'High Point',abbr:'HPU_mk1',s:12,r:'West'}]},
+  {id:'mike_k2',name:'Michael Keller 2',picks:[{n:'Michigan',abbr:'MICH_mk2',s:1,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_mk2',s:1,r:'West'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Kansas',abbr:'KU_mk2',s:4,r:'East'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Kentucky',abbr:'UK_mk2',s:7,r:'Midwest'}]},
+  {id:'mike_ca',name:'Mike Carney',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Michigan',abbr:'MICH_mc',s:1,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_mc',s:1,r:'West'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Florida',abbr:'FLA_mc',s:1,r:'South'},{n:'South Florida',abbr:'USF_mc',s:11,r:'East'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Kentucky',abbr:'UK_mc',s:7,r:'Midwest'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Miami OH/SMU',abbr:'OHSMU_mc',s:11,r:'Midwest'}]},
+  {id:'neil',name:'Neil Foriska',picks:[{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Virginia',abbr:'UVA_neil',s:3,r:'Midwest'},{n:'Michigan',abbr:'MICH_neil',s:1,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_neil',s:1,r:'West'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Kansas',abbr:'KU_neil',s:4,r:'East'}]},
+  {id:'nick_f1',name:'Nick Frye 1',picks:[{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Arizona',abbr:'ARIZ_nf1',s:1,r:'West'},{n:'Gonzaga',abbr:'GONZ_nf1',s:3,r:'West'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Michigan',abbr:'MICH_nf1',s:1,r:'Midwest'}]},
+  {id:'nick_f2',name:'Nick Frye 2',picks:[{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'UCLA',abbr:'UCLA_nf2',s:7,r:'East'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Gonzaga',abbr:'GONZ_nf2',s:3,r:'West'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Michigan',abbr:'MICH_nf2',s:1,r:'Midwest'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Florida',abbr:'FLA_nf2',s:1,r:'South'}]},
+  {id:'nick_f3',name:'Nick Frye 3',picks:[{n:'Akron',abbr:'AKR_nf3',s:12,r:'Midwest'},{n:'Nebraska',abbr:'NEB_nf3',s:4,r:'South'},{n:'VCU',abbr:'VCU_nf3',s:11,r:'South'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_nf3',s:1,r:'West'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Kansas',abbr:'KU_nf3',s:4,r:'East'},{n:'BYU',abbr:'BYU',s:6,r:'West'},{n:'Virginia',abbr:'UVA_nf3',s:3,r:'Midwest'},{n:'TX/NCST',abbr:'TXNC_nf3',s:11,r:'West'}]},
+  {id:'nick_sc',name:'Nick Schweizer',picks:[{n:'UCLA',abbr:'UCLA_nsc',s:7,r:'East'},{n:'Miami OH/SMU',abbr:'OHSMU_nsc',s:11,r:'Midwest'},{n:'Louisville',abbr:'LOU_nsc',s:6,r:'East'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'South Florida',abbr:'USF_nsc',s:11,r:'East'},{n:'Utah St.',abbr:'USU_nsc',s:9,r:'West'},{n:'TCU',abbr:'TCU_nsc',s:9,r:'East'},{n:'Ohio St.',abbr:'OSU_nsc',s:8,r:'East'},{n:"Saint Mary's",abbr:'SMC_nsc',s:7,r:'South'}]},
+  {id:'nic_b',name:'Nicolas Briers',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Iowa',abbr:'IOWA',s:9,r:'South'},{n:'Akron',abbr:'AKR_nb',s:12,r:'Midwest'},{n:'Virginia',abbr:'UVA_nb',s:3,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_nb',s:1,r:'West'},{n:'Wisconsin',abbr:'WISC_nb',s:5,r:'West'},{n:'Saint Louis',abbr:'SLU',s:9,r:'Midwest'},{n:'Texas A&M',abbr:'TAMU_nb',s:10,r:'South'}]},
+  {id:'nicole',name:'Nicole Rainey',isNicole:true,picks:[{n:'Kentucky',abbr:'UK',s:7,r:'Midwest'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Clemson',abbr:'CLEM',s:8,r:'South'},{n:'Vanderbilt',abbr:'VAN2',s:5,r:'South'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Texas',abbr:'TEX',s:11,r:'West'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Texas Tech',abbr:'TTU',s:5,r:'Midwest'}]},
+  {id:'palmskey',name:'Palmskey',picks:[{n:'TCU',abbr:'TCU_palm',s:9,r:'East'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'McNeese',abbr:'MCNS_palm',s:12,r:'South'},{n:'Wisconsin',abbr:'WISC_palm',s:5,r:'West'},{n:'Saint Louis',abbr:'SLU',s:9,r:'Midwest'},{n:'Gonzaga',abbr:'GONZ_palm',s:3,r:'West'},{n:"Saint Mary's",abbr:'SMC_palm',s:7,r:'South'},{n:'North Carolina',abbr:'UNC_palm',s:6,r:'South'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Arizona',abbr:'ARIZ_palm',s:1,r:'West'}]},
+  {id:'pat',name:'Pat Hogan',picks:[{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:'VCU',abbr:'VCU_pat',s:11,r:'South'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Florida',abbr:'FLA_pat',s:1,r:'South'},{n:'Michigan',abbr:'MICH_pat',s:1,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_pat',s:1,r:'West'},{n:'Akron',abbr:'AKR_pat',s:12,r:'Midwest'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Purdue',abbr:'PUR',s:2,r:'West'}]},
+  {id:'peter',name:'Peter Winter',picks:[{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Nebraska',abbr:'NEB_pw',s:4,r:'South'},{n:'Virginia',abbr:'UVA_pw',s:3,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_pw',s:1,r:'West'},{n:'Alabama',abbr:'BAMA_pw',s:4,r:'Midwest'},{n:'UCLA',abbr:'UCLA_pw',s:7,r:'East'},{n:'Clemson',abbr:'CLEM_pw',s:8,r:'South'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'}]},
+  {id:'ryan_pr',name:'Ryan Privett',picks:[{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Akron',abbr:'AKR_rp',s:12,r:'Midwest'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'BYU',abbr:'BYU',s:6,r:'West'},{n:'Arizona',abbr:'ARIZ_rp',s:1,r:'West'},{n:'Virginia',abbr:'UVA_rp',s:3,r:'Midwest'},{n:'UConn',abbr:'UCON',s:2,r:'East'}]},
+  {id:'ryan_sm',name:'Ryan Smith',picks:[{n:'Gonzaga',abbr:'GONZ_rs',s:3,r:'West'},{n:'Louisville',abbr:'LOU_rs',s:6,r:'East'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'TCU',abbr:'TCU_rs',s:9,r:'East'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Kentucky',abbr:'UK_rs',s:7,r:'Midwest'},{n:'Kansas',abbr:'KU_rs',s:4,r:'East'},{n:'VCU',abbr:'VCU_rs',s:11,r:'South'},{n:'Villanova',abbr:'NOVA_rs',s:8,r:'West'}]},
+  {id:'ryan_ve',name:'Ryan Vehar',picks:[{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Gonzaga',abbr:'GONZ_rv',s:3,r:'West'},{n:'Miami OH/SMU',abbr:'OHSMU_rv',s:11,r:'Midwest'},{n:'North Carolina',abbr:'UNC_rv',s:6,r:'South'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Kentucky',abbr:'UK_rv',s:7,r:'Midwest'},{n:'Santa Clara',abbr:'SCU_rv',s:10,r:'Midwest'}]},
+  {id:'rylan',name:'Rylan Privett',picks:[{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Akron',abbr:'AKR_rylan',s:12,r:'Midwest'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Wisconsin',abbr:'WISC_rylan',s:5,r:'West'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'BYU',abbr:'BYU',s:6,r:'West'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:'Missouri',abbr:'MIZZ_rylan',s:10,r:'West'},{n:'Houston',abbr:'HOU',s:2,r:'South'}]},
+  {id:'sam_c',name:'Sam Carpenter',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Virginia',abbr:'UVA_sc',s:3,r:'Midwest'},{n:'Alabama',abbr:'BAMA_sc',s:4,r:'Midwest'},{n:'Louisville',abbr:'LOU_sc',s:6,r:'East'},{n:'Nebraska',abbr:'NEB_sc',s:4,r:'South'},{n:"Saint Mary's",abbr:'SMC_sc',s:7,r:'South'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'},{n:'Wisconsin',abbr:'WISC_sc',s:5,r:'West'},{n:'Villanova',abbr:'NOVA_sc',s:8,r:'West'},{n:'UMBC',abbr:'UMBC_sc',s:16,r:'Midwest'}]},
+  {id:'sara_t1',name:'Sara Taylor 1',picks:[{n:'BYU',abbr:'BYU',s:6,r:'West'},{n:"Saint Mary's",abbr:'SMC_st1',s:7,r:'South'},{n:'UCLA',abbr:'UCLA_st1',s:7,r:'East'},{n:'Missouri',abbr:'MIZZ_st1',s:10,r:'West'},{n:'Santa Clara',abbr:'SCU_st1',s:10,r:'Midwest'},{n:'South Florida',abbr:'USF_st1',s:11,r:'East'},{n:'Texas A&M',abbr:'TAMU_st1',s:10,r:'South'},{n:'Gonzaga',abbr:'GONZ_st1',s:3,r:'West'},{n:'Florida',abbr:'FLA_st1',s:1,r:'South'},{n:'Alabama',abbr:'BAMA_st1',s:4,r:'Midwest'}]},
+  {id:'sara_t2',name:'Sara Taylor 2',picks:[{n:'BYU',abbr:'BYU',s:6,r:'West'},{n:'Missouri',abbr:'MIZZ_st2',s:10,r:'West'},{n:'Santa Clara',abbr:'SCU_st2',s:10,r:'Midwest'},{n:'South Florida',abbr:'USF_st2',s:11,r:'East'},{n:"Saint Mary's",abbr:'SMC_st2',s:7,r:'South'},{n:'UCLA',abbr:'UCLA_st2',s:7,r:'East'},{n:'Texas A&M',abbr:'TAMU_st2',s:10,r:'South'},{n:'TX/NCST',abbr:'TXNC_st2',s:11,r:'West'},{n:'Alabama',abbr:'BAMA_st2',s:4,r:'Midwest'},{n:'Gonzaga',abbr:'GONZ_st2',s:3,r:'West'}]},
+  {id:'sara_t3',name:'Sara Taylor 3',picks:[{n:'Florida',abbr:'FLA_st3',s:1,r:'South'},{n:'Arizona',abbr:'ARIZ_st3',s:1,r:'West'},{n:'Gonzaga',abbr:'GONZ_st3',s:3,r:'West'},{n:'Alabama',abbr:'BAMA_st3',s:4,r:'Midwest'},{n:'Wisconsin',abbr:'WISC_st3',s:5,r:'West'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'BYU',abbr:'BYU',s:6,r:'West'},{n:'UCLA',abbr:'UCLA_st3',s:7,r:'East'},{n:'Missouri',abbr:'MIZZ_st3',s:10,r:'West'},{n:'Texas A&M',abbr:'TAMU_st3',s:10,r:'South'}]},
+  {id:'sarah_u',name:'Sarah Underwood',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Arizona',abbr:'ARIZ_su',s:1,r:'West'},{n:'Kansas',abbr:'KU_su',s:4,r:'East'},{n:'North Carolina',abbr:'UNC_su',s:6,r:'South'},{n:'Virginia',abbr:'UVA_su',s:3,r:'Midwest'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Texas Tech',abbr:'TTU_su',s:5,r:'Midwest'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Florida',abbr:'FLA_su',s:1,r:'South'}]},
+  {id:'steve',name:'Steve Miller',picks:[{n:'Miami OH/SMU',abbr:'OHSMU_steve',s:11,r:'Midwest'},{n:'VCU',abbr:'VCU_steve',s:11,r:'South'},{n:'Santa Clara',abbr:'SCU_steve',s:10,r:'Midwest'},{n:'South Florida',abbr:'USF_steve',s:11,r:'East'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Gonzaga',abbr:'GONZ_steve',s:3,r:'West'},{n:'Akron',abbr:'AKR_steve',s:12,r:'Midwest'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'}]},
+  {id:'taylor_b',name:'Taylor Barnhill',picks:[{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Texas Tech',abbr:'TTU_tb',s:5,r:'Midwest'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Virginia',abbr:'UVA_tb',s:3,r:'Midwest'},{n:'High Point',abbr:'HPU_tb',s:12,r:'West'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Louisville',abbr:'LOU_tb',s:6,r:'East'},{n:'Arizona',abbr:'ARIZ_tb',s:1,r:'West'},{n:'Duke',abbr:'DUKE',s:1,r:'East'}]},
+  {id:'taylor_h',name:'Taylor Hoffman',picks:[{n:'High Point',abbr:'HPU_th',s:12,r:'West'},{n:'Santa Clara',abbr:'SCU_th',s:10,r:'Midwest'},{n:'VCU',abbr:'VCU_th',s:11,r:'South'},{n:'Kansas',abbr:'KU_th',s:4,r:'East'},{n:'Michigan',abbr:'MICH_th',s:1,r:'Midwest'},{n:'Gonzaga',abbr:'GONZ_th',s:3,r:'West'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Iowa',abbr:'IOWA',s:9,r:'South'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'UConn',abbr:'UCON',s:2,r:'East'}]},
+  {id:'tim',name:'Tim Siebert',picks:[{n:'Arizona',abbr:'ARIZ_tim',s:1,r:'West'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'UCLA',abbr:'UCLA_tim',s:7,r:'East'},{n:'Gonzaga',abbr:'GONZ_tim',s:3,r:'West'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Virginia',abbr:'UVA_tim',s:3,r:'Midwest'},{n:'Miami OH/SMU',abbr:'OHSMU_tim',s:11,r:'Midwest'},{n:'Alabama',abbr:'BAMA_tim',s:4,r:'Midwest'},{n:'North Carolina',abbr:'UNC_tim',s:6,r:'South'}]},
+  {id:'travis',name:'Travis Bruner',picks:[{n:'Nebraska',abbr:'NEB_travis',s:4,r:'South'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Virginia',abbr:'UVA_travis',s:3,r:'Midwest'},{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'Alabama',abbr:'BAMA_travis',s:4,r:'Midwest'},{n:'TX/NCST',abbr:'TXNC_travis',s:11,r:'West'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Arizona',abbr:'ARIZ_travis',s:1,r:'West'},{n:'Miami FL',abbr:'MIA',s:7,r:'West'}]},
+  {id:'trevor_1',name:'Trevor 1',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Florida',abbr:'FLA_tr1',s:1,r:'South'},{n:'Alabama',abbr:'BAMA_tr1',s:4,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_tr1',s:1,r:'West'},{n:'Michigan',abbr:'MICH_tr1',s:1,r:'Midwest'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'Virginia',abbr:'UVA_tr1',s:3,r:'Midwest'}]},
+  {id:'trevor_2',name:'Trevor 2',picks:[{n:'Kansas',abbr:'KU_tr2',s:4,r:'East'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Michigan',abbr:'MICH_tr2',s:1,r:'Midwest'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'UCLA',abbr:'UCLA_tr2',s:7,r:'East'},{n:'Arizona',abbr:'ARIZ_tr2',s:1,r:'West'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'}]},
+  {id:'trey',name:'Trey Wiggins',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Wisconsin',abbr:'WISC_trey',s:5,r:'West'},{n:'Michigan St.',abbr:'MSU',s:3,r:'East'},{n:'TX/NCST',abbr:'TXNC_trey',s:11,r:'West'},{n:"St. John's",abbr:'SJOH',s:5,r:'East'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'UConn',abbr:'UCON',s:2,r:'East'},{n:'Arizona',abbr:'ARIZ_trey',s:1,r:'West'},{n:'UCF',abbr:'UCF_trey',s:10,r:'East'}]},
+  {id:'tyler',name:'Tyler Sudbay',picks:[{n:'Arkansas',abbr:'ARK',s:4,r:'West'},{n:'TX/NCST',abbr:'TXNC_tyler',s:11,r:'West'},{n:'Arizona',abbr:'ARIZ_tyler',s:1,r:'West'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'UCF',abbr:'UCF_tyler',s:10,r:'East'},{n:'Kansas',abbr:'KU_tyler',s:4,r:'East'},{n:'Georgia',abbr:'UGA_tyler',s:8,r:'Midwest'},{n:'Tennessee',abbr:'TENN',s:6,r:'Midwest'},{n:'VCU',abbr:'VCU_tyler',s:11,r:'South'},{n:'Texas Tech',abbr:'TTU_tyler',s:5,r:'Midwest'}]},
+  {id:'walker',name:'Walkerpatrickranger',picks:[{n:'Duke',abbr:'DUKE',s:1,r:'East'},{n:'Iowa St.',abbr:'IAST',s:2,r:'Midwest'},{n:'Arizona',abbr:'ARIZ_wpr',s:1,r:'West'},{n:'Illinois',abbr:'ILL',s:3,r:'South'},{n:'Vanderbilt',abbr:'VAN',s:5,r:'South'},{n:'Texas Tech',abbr:'TTU_wpr',s:5,r:'Midwest'},{n:'Purdue',abbr:'PUR',s:2,r:'West'},{n:'Houston',abbr:'HOU',s:2,r:'South'},{n:'Virginia',abbr:'UVA_wpr',s:3,r:'Midwest'},{n:'Kentucky',abbr:'UK_wpr',s:7,r:'Midwest'}]},
+];
+
+// ── SHARED ABBR GROUPS (same real team, different entrants) ───────────────────
+// Teams with the same abbr across entrants share win/elim state
+const SHARED_ABBRS=['DUKE','SJOH','IOWA','HOU','ILL','BYU','MIA','SLU','IAST','UK','TENN','UCON','CLEM','PUR','TEX','ARK','MSU','TTU','VAN','VAN2'];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
 let S={};
-ALL.forEach(p=>{S[p.abbr]={wins:[],elim:false,gs:"upcoming",matchup:"",nextGame:""};});
-
-const pts=p=>S[p.abbr].wins.reduce((a,r)=>a+p.seed*r,0);
-const maxR=p=>{const s=S[p.abbr];if(s.elim)return 0;const nr=s.wins.length?Math.max(...s.wins)+1:1;let t=0;for(let r=nr;r<=6;r++)t+=p.seed*r;return t;};
-
-function toggleNav(){const bar=document.getElementById('settings-bar');bar.style.display=bar.style.display==='none'?'flex':'none';}
-function switchTab(tab){
-  const bc=document.getElementById('col-bryan'),nc=document.getElementById('col-nicole');
-  const bt=document.getElementById('tab-bryan'),nt=document.getElementById('tab-nicole');
-  if(tab==='bryan'){bc.classList.add('visible');nc.classList.remove('visible');bt.className='tab active-bryan';nt.className='tab';}
-  else{nc.classList.add('visible');bc.classList.remove('visible');nt.className='tab active-nicole';bt.className='tab';}
-}
-
-function markResult(abbr,round,won){
-  const s=S[abbr];
-  if(won){if(!s.wins.includes(round))s.wins.push(round);s.wins.sort((a,b)=>a-b);s.elim=false;}
-  else s.elim=true;
-  s.gs='final';
-  SHARED_PAIRS.forEach(pair=>{if(pair.includes(abbr)){const other=pair.find(a=>a!==abbr);if(won){if(!S[other].wins.includes(round))S[other].wins.push(round);S[other].wins.sort((a,b)=>a-b);S[other].elim=false;}else S[other].elim=true;S[other].gs='final';}});
-  save();render();
+function initState(){
+  ENTRANTS.forEach(ent=>ent.picks.forEach(p=>{
+    if(!S[p.abbr])S[p.abbr]={wins:[],elim:false,gs:'upcoming',matchup:'',nextGame:''};
+  }));
 }
 
 const hasStorage=typeof window!=='undefined'&&window.storage&&typeof window.storage.get==='function';
-async function save(){if(!hasStorage)return;try{await window.storage.set('bncaa26v2',JSON.stringify(S));}catch(e){}}
-async function load(){if(!hasStorage)return;try{const r=await window.storage.get('bncaa26v2');if(r?.value)S=JSON.parse(r.value);}catch(e){}}
+async function save(){if(!hasStorage)return;try{await window.storage.set('bncaa26_full',JSON.stringify(S));}catch(e){}}
+async function load(){if(!hasStorage)return;try{const r=await window.storage.get('bncaa26_full');if(r?.value)S=JSON.parse(r.value);}catch(e){}}
 
-function resolveAbbr(n){if(ESPN_MAP[n])return ESPN_MAP[n];for(const[k,v]of Object.entries(ESPN_MAP)){if(n.toLowerCase().includes(k.toLowerCase())||k.toLowerCase().includes(n.toLowerCase()))return v;}return null;}
+// ── SCORING ───────────────────────────────────────────────────────────────────
+function entrantPts(ent){return ent.picks.reduce((a,p)=>{const st=S[p.abbr];if(!st)return a;return a+st.wins.reduce((b,r)=>b+p.s*r,0);},0);}
 
+// ── RANKINGS ─────────────────────────────────────────────────────────────────
+function getRankings(){
+  const scored=ENTRANTS.map(e=>({...e,pts:entrantPts(e)}));
+  scored.sort((a,b)=>b.pts-a.pts);
+  let rank=1;
+  scored.forEach((e,i)=>{
+    if(i>0&&e.pts<scored[i-1].pts)rank=i+1;
+    e.rank=rank;
+    e.tied=scored.filter(x=>x.pts===e.pts).length>1;
+  });
+  return scored;
+}
+
+// ── ESPN MATCHING ─────────────────────────────────────────────────────────────
+function resolveAbbrs(espnName){
+  // Returns all abbrs that match this ESPN name across all entrants
+  const matches=new Set();
+  if(ESPN_MAP[espnName]){
+    const base=ESPN_MAP[espnName];
+    ENTRANTS.forEach(ent=>ent.picks.forEach(p=>{
+      if(p.abbr===base||p.abbr.startsWith(base))matches.add(p.abbr);
+    }));
+    // Also check shared
+    if(SHARED_ABBRS.includes(base))matches.add(base);
+  }
+  // fuzzy
+  ENTRANTS.forEach(ent=>ent.picks.forEach(p=>{
+    const pname=p.n.toLowerCase();
+    const ename=espnName.toLowerCase();
+    if(pname.includes(ename.split(' ')[0])||ename.includes(pname.split(' ')[0]))matches.add(p.abbr);
+  }));
+  return [...matches];
+}
+
+function processGames(games){
+  games.forEach(g=>{
+    const hN=g.home?.name||'',aN=g.away?.name||'';
+    const hS=g.home?.score||0,aS=g.away?.score||0;
+    const rnd=getRound(new Date(g.start_time));if(rnd<1)return;
+    const status=g.status;
+    const hAbbrs=resolveAbbrs(hN);
+    const aAbbrs=resolveAbbrs(aN);
+    const update=(abbrs,score,oppScore,oppName,home)=>{
+      abbrs.forEach(abbr=>{
+        const st=S[abbr];if(!st)return;
+        if(status==='STATUS_FINAL'){
+          const w=score>oppScore;
+          if(w&&!st.wins.includes(rnd))st.wins.push(rnd);
+          else if(!w&&score<oppScore)st.elim=true;
+          st.wins.sort((a,b)=>a-b);st.gs='final';
+          st.matchup=`${score}-${oppScore} ${w?'W':'L'} vs ${oppName}`;
+        }else if(status==='STATUS_IN_PROGRESS'||status==='STATUS_HALFTIME'){
+          st.gs='live';st.matchup=`${score}-${oppScore} vs ${oppName} — Live`;
+        }else{
+          const dt=new Date(g.start_time).toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
+          if(!st.elim)st.nextGame=`${home?'vs':'@'} ${oppName} · ${dt}`;
+        }
+      });
+    };
+    update(hAbbrs,hS,aS,aN,true);
+    update(aAbbrs,aS,hS,hN,false);
+  });
+  save();
+}
+
+function getRound(d){const t=d.getTime();if(t<new Date('2026-03-19').getTime())return 0;if(t<new Date('2026-03-24').getTime())return 1;if(t<new Date('2026-03-28').getTime())return 2;if(t<new Date('2026-03-30').getTime())return 3;if(t<new Date('2026-04-05').getTime())return 4;if(t<new Date('2026-04-07').getTime())return 5;return 6;}
+
+// ── UI HELPERS ────────────────────────────────────────────────────────────────
+const RND={1:'R1',2:'R2',3:'S16',4:'E8',5:'FF',6:'NC'};
+let currentView='tracker',currentPlayerTab='bryan';
+
+function showView(v){
+  currentView=v;
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach((t,i)=>{t.classList.remove('active');if((v==='tracker'&&i===0)||(v==='leaderboard'&&i===1))t.classList.add('active');});
+  if(v==='leaderboard')renderLeaderboard();
+}
+
+function switchTab(t){
+  currentPlayerTab=t;
+  ['bryan','nicole'].forEach(p=>{
+    document.getElementById('col-'+p).classList.toggle('visible',p===t);
+    const tab=document.getElementById('tab-'+p);
+    tab.className='ptab'+(p===t?' active-'+p:'');
+  });
+}
+
+function toggleNav(){const b=document.getElementById('settings-bar');b.style.display=b.style.display==='flex'?'none':'flex';}
+
+function stamp(){document.getElementById('updated').textContent='Updated: '+new Date().toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});}
+
+// ── LEADERBOARD RENDER ────────────────────────────────────────────────────────
+function renderLeaderboard(){
+  const ranked=getRankings();
+  const medals=['🥇','🥈','🥉'];
+  let html=`<table class="lb-table"><thead><tr><th>Place</th><th>Entrant</th><th class="r">Points</th><th class="r">Payout</th></tr></thead><tbody>`;
+  ranked.forEach(e=>{
+    const isBryan=e.isBryan,isNicole=e.isNicole;
+    const rowCls=isBryan?'highlight-bryan':isNicole?'highlight-nicole':'';
+    const rankCls=e.rank<=3?'r'+e.rank:e.rank<=5?'r'+e.rank:'';
+    const medal=e.rank<=3?medals[e.rank-1]:'';
+    const payout=PAYOUTS[e.rank]||'';
+    const tiedBadge=e.tied&&e.pts>0?`<span class="tied-badge">TIE</span>`:'';
+    const nameCls=isBryan?'ent-name is-bryan':isNicole?'ent-name is-nicole':'ent-name';
+    html+=`<tr class="${rowCls}">
+      <td><span class="rank-num ${rankCls}">${medal||e.rank}</span>${tiedBadge}</td>
+      <td><span class="${nameCls}">${e.name}</span></td>
+      <td class="r"><span class="pts-num">${e.pts}</span></td>
+      <td class="r">${payout?`<span class="payout-badge">${payout}</span>`:''}</td>
+    </tr>`;
+  });
+  html+=`</tbody></table>`;
+  document.getElementById('lb-container').innerHTML=html;
+}
+
+// ── MARK RESULT (manual) ──────────────────────────────────────────────────────
+function markResult(abbr,round,won){
+  // Apply to all entrants sharing this base abbr
+  const base=abbr.split('_')[0];
+  Object.keys(S).forEach(a=>{
+    if(a===abbr||a.startsWith(base+'_')||a===base){
+      if(won){if(!S[a].wins.includes(round))S[a].wins.push(round);S[a].wins.sort((x,y)=>x-y);S[a].elim=false;}
+      else S[a].elim=true;
+      S[a].gs='final';
+    }
+  });
+  save();render();
+}
+
+// ── PLAYER CARD RENDER ────────────────────────────────────────────────────────
+const BRYAN_ENT=ENTRANTS.find(e=>e.isBryan);
+const NICOLE_ENT=ENTRANTS.find(e=>e.isNicole);
+
+function renderPlayerCards(ent,gridId,chipsId){
+  const grid=document.getElementById(gridId);grid.innerHTML='';
+  let total=0,wins=0,live=0,done=0,future=0,elim=0;
+  const sorted=[...ent.picks].sort((a,b)=>{
+    const pa=S[a.abbr]?.wins.reduce((s,r)=>s+a.s*r,0)||0;
+    const pb=S[b.abbr]?.wins.reduce((s,r)=>s+b.s*r,0)||0;
+    return pb-pa;
+  });
+  sorted.forEach((pick,idx)=>{
+    const st=S[pick.abbr]||{wins:[],elim:false,gs:'upcoming',matchup:'',nextGame:''};
+    const p=st.wins.reduce((a,r)=>a+pick.s*r,0);
+    total+=p;wins+=st.wins.length;
+    let sc='cf';
+    if(st.elim){sc='ce';elim++;}else if(st.gs==='live'){sc='cl';live++;}else if(st.wins.length>0){sc='ca';done++;}else future++;
+    const nr=st.elim?null:(st.wins.length?Math.max(...st.wins)+1:1);
+    let rboxes='';
+    for(let r=1;r<=6;r++){const ep=pick.s*r;let cls='',disp='+'+ep;if(st.wins.includes(r)){cls='won';disp=''+ep;}else if(st.elim&&r>Math.max(0,...st.wins)){cls='lost';disp='—';}else if(!st.elim&&r===nr&&st.gs==='live'){cls='live';disp=ep+'?';}rboxes+=`<div class="rb ${cls}"><div class="rn">${RND[r]}</div><div class="rp">${disp}</div></div>`;}
+    let mh='';
+    if(st.matchup){const c=st.matchup.includes(' W ')?'mw':st.matchup.includes(' L ')?'ml':'mu';mh=`<span class="${c}">${st.matchup}</span>`;}
+    else if(st.nextGame)mh=st.nextGame;
+    else mh=`${pick.r} · Awaiting R1`;
+    let action='';
+    if(nr&&nr<=6&&!st.elim){action=`<div class="btns"><button class="bw" onclick="markResult('${pick.abbr}',${nr},true)">✓ Win R${nr}</button><button class="bl" onclick="markResult('${pick.abbr}',${nr},false)">✗ Loss R${nr}</button></div>`;}
+    else if(st.elim){action=`<div class="elim-note">● Eliminated</div>`;}
+    const lb=st.gs==='live'?`<span class="live-badge">Live</span>`:'';
+    const card=document.createElement('div');
+    card.className=`card ${sc}`;card.style.animationDelay=(idx*.03)+'s';
+    card.innerHTML=`<div class="card-bar"></div><div class="card-body"><div class="ctop"><div class="seed-box">${pick.s}</div><div class="cinfo"><div class="cname">${pick.n}${lb}</div><div class="cregion">${pick.r} · ${st.wins.length} Win${st.wins.length!==1?'s':''}</div></div><div class="cpts-col"><div class="cpts-n">${p}</div><div class="cpts-l">PTS</div></div></div><div class="rtrack">${rboxes}</div><div class="matchup">${mh}</div>${action}</div>`;
+    grid.appendChild(card);
+  });
+  document.getElementById(chipsId).innerHTML=`<span class="chip ch-g">${done} Active</span><span class="chip ch-a">${live} Live</span><span class="chip ch-b">${future} Up</span><span class="chip ch-r">${elim} Out</span>`;
+  return{total,wins,done,live,future,elim};
+}
+
+function render(){
+  renderPlayerCards(BRYAN_ENT,'bryan-grid','b-chips');
+  renderPlayerCards(NICOLE_ENT,'nicole-grid','n-chips');
+  const bPts=entrantPts(BRYAN_ENT),nPts=entrantPts(NICOLE_ENT);
+  const ranked=getRankings();
+  const bRanked=ranked.find(e=>e.isBryan),nRanked=ranked.find(e=>e.isNicole);
+
+  document.getElementById('bryan-total').textContent=bPts;
+  document.getElementById('nicole-total').textContent=nPts;
+
+  const bRankTxt=bRanked?`#${bRanked.rank} of ${ENTRANTS.length}${bRanked.tied?' (tied)':''}`:'—';
+  const nRankTxt=nRanked?`#${nRanked.rank} of ${ENTRANTS.length}${nRanked.tied?' (tied)':''}`:'—';
+  document.getElementById('bryan-rank').textContent=bRankTxt;
+  document.getElementById('nicole-rank').textContent=nRankTxt;
+  document.getElementById('bryan-payout').textContent=bRanked&&PAYOUTS[bRanked.rank]?PAYOUTS[bRanked.rank]:'';
+  document.getElementById('nicole-payout').textContent=nRanked&&PAYOUTS[nRanked.rank]?PAYOUTS[nRanked.rank]:'';
+
+  document.getElementById('b-hdr-pts').textContent=bPts+' pts';
+  document.getElementById('n-hdr-pts').textContent=nPts+' pts';
+  document.getElementById('b-sub').textContent=bRankTxt;
+  document.getElementById('n-sub').textContent=nRankTxt;
+
+  const lead=document.getElementById('lead-badge');
+  if(bPts>nPts){lead.textContent='Bryan Leads';lead.className='h2h-lead lead-bryan';}
+  else if(nPts>bPts){lead.textContent='Nicole Leads';lead.className='h2h-lead lead-nicole';}
+  else{lead.textContent='Tied';lead.className='h2h-lead lead-tied';}
+
+  document.getElementById('loader').classList.add('gone');
+  if(currentView==='leaderboard')renderLeaderboard();
+}
+
+// ── FETCH ─────────────────────────────────────────────────────────────────────
 async function doFetch(){
   const btn=document.getElementById('refresh-btn');
   const errEl=document.getElementById('err'),okEl=document.getElementById('ok');
@@ -324,7 +622,6 @@ async function doFetch(){
     processGames(games);
     okEl.style.display='block';
     okEl.textContent=`✓ ${games.length} games loaded · ${new Date().toLocaleTimeString()}`;
-    document.getElementById('setup-notice')&&(document.getElementById('setup-notice').style.display='none');
     try{if(hasStorage)await window.storage.set('bncaa26_apiurl',apiUrl);}catch(e){}
   }catch(e){await minWait;errEl.style.display='block';errEl.textContent=`✗ ${e.message} — use Win/Loss buttons manually`;}
   loader.classList.add('gone');
@@ -332,91 +629,12 @@ async function doFetch(){
   stamp();render();
 }
 
-function processGames(games){
-  games.forEach(g=>{
-    const hN=g.home?.name||'',aN=g.away?.name||'';
-    const hS=g.home?.score||0,aS=g.away?.score||0;
-    const rnd=getRound(new Date(g.start_time));if(rnd<1)return;
-    const hAbbr=resolveAbbr(hN),aAbbr=resolveAbbr(aN);
-    const hPicks=hAbbr?ALL.filter(p=>p.abbr===hAbbr||SHARED_PAIRS.some(pair=>pair.includes(p.abbr)&&pair.includes(hAbbr))):[];
-    const aPicks=aAbbr?ALL.filter(p=>p.abbr===aAbbr||SHARED_PAIRS.some(pair=>pair.includes(p.abbr)&&pair.includes(aAbbr))):[];
-    const status=g.status;
-    hPicks.forEach(pick=>{
-      const s=S[pick.abbr];
-      if(status==='STATUS_FINAL'){const w=hS>aS;if(w&&!s.wins.includes(rnd))s.wins.push(rnd);else if(!w)s.elim=true;s.wins.sort((a,b)=>a-b);s.gs='final';s.matchup=`${hS}-${aS} ${w?'W':'L'} vs ${aN}`;}
-      else if(status==='STATUS_IN_PROGRESS'||status==='STATUS_HALFTIME'){s.gs='live';s.matchup=`${hS}-${aS} vs ${aN} — Live`;}
-      else{const dt=new Date(g.start_time).toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});if(!s.elim)s.nextGame=`vs ${aN} · ${dt}`;}
-    });
-    aPicks.forEach(pick=>{
-      const s=S[pick.abbr];
-      if(status==='STATUS_FINAL'){const w=aS>hS;if(w&&!s.wins.includes(rnd))s.wins.push(rnd);else if(!w)s.elim=true;s.wins.sort((a,b)=>a-b);s.gs='final';s.matchup=`${aS}-${hS} ${w?'W':'L'} vs ${hN}`;}
-      else if(status==='STATUS_IN_PROGRESS'||status==='STATUS_HALFTIME'){s.gs='live';s.matchup=`${aS}-${hS} vs ${hN} — Live`;}
-      else{const dt=new Date(g.start_time).toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});if(!s.elim)s.nextGame=`@ ${hN} · ${dt}`;}
-    });
-  });
-  save();
-}
-
-function getRound(d){const t=d.getTime();if(t<new Date('2026-03-19').getTime())return 0;if(t<new Date('2026-03-24').getTime())return 1;if(t<new Date('2026-03-28').getTime())return 2;if(t<new Date('2026-03-30').getTime())return 3;if(t<new Date('2026-04-05').getTime())return 4;if(t<new Date('2026-04-07').getTime())return 5;return 6;}
-function stamp(){document.getElementById('updated').textContent='Updated: '+new Date().toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});}
-
-function renderPlayer(picks,gridId,chipsId){
-  const grid=document.getElementById(gridId);grid.innerHTML='';
-  let total=0,wins=0,live=0,done=0,future=0,elim=0;
-  const sorted=[...picks].sort((a,b)=>pts(b)-pts(a));
-  sorted.forEach((pick,idx)=>{
-    const s=S[pick.abbr],p=pts(pick),mx=maxR(pick);
-    total+=p;wins+=s.wins.length;
-    let sc='cf';
-    if(s.elim){sc='ce';elim++;}else if(s.gs==='live'){sc='cl';live++;}else if(s.wins.length>0){sc='ca';done++;}else future++;
-    const nr=s.elim?null:(s.wins.length?Math.max(...s.wins)+1:1);
-    let rboxes='';
-    for(let r=1;r<=6;r++){const ep=pick.seed*r;let cls='',disp='+'+ep;if(s.wins.includes(r)){cls='won';disp=''+ep;}else if(s.elim&&r>Math.max(0,...s.wins)){cls='lost';disp='—';}else if(!s.elim&&r===nr&&s.gs==='live'){cls='live';disp=ep+'?';}rboxes+=`<div class="rb ${cls}"><div class="rn">${RND[r]}</div><div class="rp">${disp}</div></div>`;}
-    let mh='';
-    if(s.matchup){const c=s.matchup.includes(' W ')?'mw':s.matchup.includes(' L ')?'ml':'mu';mh=`<span class="${c}">${s.matchup}</span>`;}
-    else if(s.nextGame)mh=s.nextGame;
-    else mh=`${pick.region} · Awaiting R1`;
-    let action='';
-    if(nr&&nr<=6&&!s.elim){action=`<div class="btns"><button class="bw" onclick="markResult('${pick.abbr}',${nr},true)">✓ Win R${nr}</button><button class="bl" onclick="markResult('${pick.abbr}',${nr},false)">✗ Loss R${nr}</button></div>`;}
-    else if(s.elim){action=`<div class="elim-note">● Eliminated · Final: ${p} pts</div>`;}
-    const lb=s.gs==='live'?`<span class="live-badge">Live</span>`:'';
-    const mxt=(!s.elim&&mx>0)?`<span style="color:#444;font-size:9px;"> +${mx} max</span>`:'';
-    const card=document.createElement('div');
-    card.className=`card ${sc}`;card.style.animationDelay=(idx*.03)+'s';
-    card.innerHTML=`<div class="card-bar"></div><div class="card-body"><div class="ctop"><div class="seed-box">${pick.seed}</div><div class="cinfo"><div class="cname">${pick.name}${lb}</div><div class="cregion">${pick.region} · ${s.wins.length} Win${s.wins.length!==1?'s':''}${mxt}</div></div><div class="cpts-col"><div class="cpts-n">${p}</div><div class="cpts-l">PTS</div></div></div><div class="rtrack">${rboxes}</div><div class="matchup">${mh}</div>${action}</div>`;
-    grid.appendChild(card);
-  });
-  document.getElementById(chipsId).innerHTML=`<span class="chip ch-g">${done} Active</span><span class="chip ch-a">${live} Live</span><span class="chip ch-b">${future} Up</span><span class="chip ch-r">${elim} Out</span>`;
-  return{total,wins,done,live,future,elim};
-}
-
-function render(){
-  const b=renderPlayer(BRYAN,'bryan-grid','b-chips');
-  const n=renderPlayer(NICOLE,'nicole-grid','n-chips');
-  document.getElementById('bryan-total').textContent=b.total;
-  document.getElementById('nicole-total').textContent=n.total;
-  document.getElementById('bryan-sub').textContent=`${b.wins} wins · ${b.done+b.live} active`;
-  document.getElementById('nicole-sub').textContent=`${n.wins} wins · ${n.done+n.live} active`;
-  document.getElementById('b-hdr-pts').textContent=b.total+' pts';
-  document.getElementById('n-hdr-pts').textContent=n.total+' pts';
-  document.getElementById('b-sub').textContent=`${b.wins} wins`;
-  document.getElementById('n-sub').textContent=`${n.wins} wins`;
-  const lead=document.getElementById('lead-badge');
-  if(b.total>n.total){lead.textContent='Bryan Leads';lead.className='h2h-lead lead-bryan';}
-  else if(n.total>b.total){lead.textContent='Nicole Leads';lead.className='h2h-lead lead-nicole';}
-  else{lead.textContent='Tied';lead.className='h2h-lead lead-tied';}
-  document.getElementById('loader').classList.add('gone');
-}
-
-function seedSchedule(){
-  const sc={DUKE:'vs Siena · Thu Mar 19',SJOH:'vs N. Iowa · Thu Mar 19',IOWA:'vs Clemson · Thu Mar 19',VAN:'vs McNeese · Fri Mar 20',ILL:'vs Penn · Thu Mar 19',HOU:'vs Idaho · Fri Mar 20',BYU:'vs TX/NCST · Thu Mar 19',MIA:'vs Missouri · Thu Mar 19',SLU:'vs Georgia · Thu Mar 19',IAST:'vs Tennessee St · Fri Mar 20',UK:'vs Santa Clara · Fri Mar 20',TENN:'vs SMU/MiamiOH · Fri Mar 20',UCON:'vs Furman · Thu Mar 19',CLEM:'vs Iowa · Thu Mar 19',VAN2:'vs McNeese · Fri Mar 20',PUR:'vs Queens · Thu Mar 19',TEX:'vs BYU (First Four) · Wed Mar 18',ARK:'vs Hawaii · Fri Mar 20',MSU:'vs N. Dakota St · Thu Mar 19',TTU:'vs Akron · Fri Mar 20'};
-  Object.entries(sc).forEach(([a,g])=>{if(S[a]&&!S[a].wins.length&&!S[a].elim)S[a].nextGame=g;});
-}
-
+// ── INIT ──────────────────────────────────────────────────────────────────────
 (async()=>{
+  initState();
   await load();
   try{if(hasStorage){const r=await window.storage.get('bncaa26_apiurl');if(r?.value)document.getElementById('api-url').value=r.value;}}catch(e){}
-  seedSchedule();render();stamp();
+  render();stamp();
   doFetch();
 })();
 </script>
