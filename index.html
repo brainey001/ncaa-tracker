@@ -304,7 +304,9 @@ var EMAP = {
   'Penn':'PENN',
   'Troy':'TROY',
   'Northern Iowa':'UNI',
+  'Miami OH':'OHSMU',
   'Miami (OH)':'OHSMU',
+  'Miami (Ohio)':'OHSMU',
   'SMU':'OHSMU',
   'Howard':'HOWARD',
   'UMBC':'HOWARD',
@@ -864,8 +866,11 @@ function renderDetail() {
   var col = TCOLORS[currentPlayer] || 'var(--red)';
 
   var sorted = ent.picks.slice().sort(function(a, b) {
-    var pa = TS[a.k] ? TS[a.k].wins.reduce(function(s,r){return s+a.s*r;},0) : 0;
-    var pb = TS[b.k] ? TS[b.k].wins.reduce(function(s,r){return s+b.s*r;},0) : 0;
+    var ta = TS[a.k] || {}; var tb = TS[b.k] || {};
+    var elimA = ta.elim ? 1 : 0; var elimB = tb.elim ? 1 : 0;
+    if (elimA !== elimB) return elimA - elimB;
+    var pa = ta.wins ? ta.wins.reduce(function(s,r){return s+a.s*r;},0) : 0;
+    var pb = tb.wins ? tb.wins.reduce(function(s,r){return s+b.s*r;},0) : 0;
     return pb - pa;
   });
 
