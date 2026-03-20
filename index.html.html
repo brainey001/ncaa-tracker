@@ -25,7 +25,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:6px}
 .api-input{background:var(--bg3);border:1px solid var(--border2);border-radius:3px;color:var(--text2);font-family:var(--font);font-size:10px;font-weight:600;letter-spacing:.03em;padding:5px 8px;width:200px;outline:none}
 .api-input:focus{border-color:var(--red)}
-@media(max-width:480px){.api-input{display:none}}
+.api-input{display:none}
 .refresh-btn{font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:3px;border:1px solid var(--red);background:transparent;color:var(--red);cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0}
 .refresh-btn:hover,.refresh-btn:active{background:var(--red);color:#fff}
 .refresh-btn:disabled{opacity:.4}
@@ -185,12 +185,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
   </div></div>
 </div>
 
-<div class="navbar">
+<div class="navbar" id="navbar">
   <div class="nav-title">Bryan &amp; Nicole 🏀</div>
   <div class="nav-right">
     <input class="api-input" id="api-url" value="https://project-r4phb.vercel.app/api/scores" />
     <button class="refresh-btn" id="refresh-btn" onclick="doFetch()">↺ Refresh</button>
+    <button class="refresh-btn" onclick="toggleNav()" id="nav-toggle" style="border-color:#555;color:#888">⚙</button>
   </div>
+</div>
+<div id="settings-bar" style="display:none;background:#1e1e1e;border-bottom:1px solid #383838;padding:8px 12px;display:none;align-items:center;gap:8px;flex-wrap:wrap">
+  <input style="flex:1;min-width:220px;background:#2a2a2a;border:1px solid #464646;border-radius:3px;color:#c8c8c8;font-family:'Barlow Condensed',sans-serif;font-size:11px;padding:6px 10px;outline:none" id="api-url-settings" value="https://project-r4phb.vercel.app/api/scores" oninput="document.getElementById('api-url').value=this.value" />
+  <button class="refresh-btn" onclick="doFetch()">↺ Refresh</button>
+  <button class="refresh-btn" style="border-color:#cc0000;color:#cc0000" onclick="if(confirm('Close the app?'))window.close()">✕ Exit</button>
 </div>
 
 <div class="page">
@@ -271,6 +277,7 @@ ALL.forEach(p=>{S[p.abbr]={wins:[],elim:false,gs:"upcoming",matchup:"",nextGame:
 const pts=p=>S[p.abbr].wins.reduce((a,r)=>a+p.seed*r,0);
 const maxR=p=>{const s=S[p.abbr];if(s.elim)return 0;const nr=s.wins.length?Math.max(...s.wins)+1:1;let t=0;for(let r=nr;r<=6;r++)t+=p.seed*r;return t;};
 
+function toggleNav(){const bar=document.getElementById('settings-bar');bar.style.display=bar.style.display==='none'?'flex':'none';}
 function switchTab(tab){
   const bc=document.getElementById('col-bryan'),nc=document.getElementById('col-nicole');
   const bt=document.getElementById('tab-bryan'),nt=document.getElementById('tab-nicole');
@@ -287,8 +294,9 @@ function markResult(abbr,round,won){
   save();render();
 }
 
-async function save(){try{await window.storage.set('bncaa26v2',JSON.stringify(S));}catch(e){}}
-async function load(){try{const r=await window.storage.get('bncaa26v2');if(r?.value)S=JSON.parse(r.value);}catch(e){}}
+const hasStorage=typeof window!=='undefined'&&window.storage&&typeof window.storage.get==='function';
+async function save(){if(!hasStorage)return;try{await window.storage.set('bncaa26v2',JSON.stringify(S));}catch(e){}}
+async function load(){if(!hasStorage)return;try{const r=await window.storage.get('bncaa26v2');if(r?.value)S=JSON.parse(r.value);}catch(e){}}
 
 function resolveAbbr(n){if(ESPN_MAP[n])return ESPN_MAP[n];for(const[k,v]of Object.entries(ESPN_MAP)){if(n.toLowerCase().includes(k.toLowerCase())||k.toLowerCase().includes(n.toLowerCase()))return v;}return null;}
 
@@ -299,8 +307,11 @@ async function doFetch(){
   errEl.style.display='none';okEl.style.display='none';
   if(!apiUrl){errEl.style.display='block';errEl.textContent='⚠ No API URL set';return;}
   btn.disabled=true;btn.textContent='…';
+  const loader=document.getElementById('loader');
+  loader.classList.remove('gone');
+  const minWait=new Promise(res=>setTimeout(res,2000));
   try{
-    const r=await fetch(apiUrl);
+    const [r]=await Promise.all([fetch(apiUrl),minWait]);
     if(!r.ok)throw new Error(`HTTP ${r.status}`);
     const d=await r.json();
     const games=d.games||[];
@@ -309,8 +320,9 @@ async function doFetch(){
     okEl.style.display='block';
     okEl.textContent=`✓ ${games.length} games loaded · ${new Date().toLocaleTimeString()}`;
     document.getElementById('setup-notice')&&(document.getElementById('setup-notice').style.display='none');
-    try{await window.storage.set('bncaa26_apiurl',apiUrl);}catch(e){}
-  }catch(e){errEl.style.display='block';errEl.textContent=`✗ ${e.message} — use Win/Loss buttons manually`;}
+    try{if(hasStorage)await window.storage.set('bncaa26_apiurl',apiUrl);}catch(e){}
+  }catch(e){await minWait;errEl.style.display='block';errEl.textContent=`✗ ${e.message} — use Win/Loss buttons manually`;}
+  loader.classList.add('gone');
   btn.disabled=false;btn.textContent='↺ Refresh';
   stamp();render();
 }
@@ -398,9 +410,9 @@ function seedSchedule(){
 
 (async()=>{
   await load();
-  try{const r=await window.storage.get('bncaa26_apiurl');if(r?.value)document.getElementById('api-url').value=r.value;}catch(e){}
+  try{if(hasStorage){const r=await window.storage.get('bncaa26_apiurl');if(r?.value)document.getElementById('api-url').value=r.value;}}catch(e){}
   seedSchedule();render();stamp();
-  doFetch();
+  setTimeout(doFetch, 3000);
 })();
 </script>
 </body>
