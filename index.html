@@ -68,7 +68,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .dhdr-name{font-size:20px;font-weight:800;letter-spacing:.02em;text-transform:uppercase}
 .dhdr-pts{font-size:36px;font-weight:800;line-height:1;text-align:right}
 .dhdr-rank{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-top:3px;text-align:right}
-.dhdr-pay{font-size:13px;font-weight:800;color:var(--green);text-align:right;margin-top:2px}
 .chips{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
 .chip{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:3px;border:1px solid}
 .cg{color:var(--green);border-color:#00a65150;background:var(--gdim)}
@@ -125,7 +124,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .rk.r1{color:var(--gold)}.rk.r2{color:var(--silver)}.rk.r3{color:var(--bronze)}.rk.r4,.rk.r5{color:var(--green)}
 .ename{font-size:13px;font-weight:800;letter-spacing:.02em;text-transform:uppercase}
 .ename.eb{color:var(--bryan)}.ename.en{color:var(--nicole)}
-.paybadge{font-size:11px;font-weight:800;color:var(--green);background:var(--gdim);border:1px solid #00a65130;border-radius:3px;padding:2px 6px;white-space:nowrap}
 .tbadge{font-size:9px;font-weight:700;color:var(--amber);background:var(--adim);border:1px solid #f5a62325;border-radius:2px;padding:1px 4px;letter-spacing:.05em;margin-left:4px;vertical-align:middle}
 .msg{border-radius:3px;padding:7px 11px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:9px;display:none}
 .msg.err{background:var(--rdim);border:1px solid #cc000035;color:#ff8888;display:block}
@@ -148,11 +146,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .rules-table td{padding:6px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)}
 .rules-table td.rn{font-size:13px;font-weight:800;color:var(--amber);text-align:center}
 .rules-table tr:last-child td{border-bottom:none}
-.rules-payouts{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
-.rules-payout-row{display:flex;align-items:center;justify-content:space-between;background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:8px 12px}
-.rules-place{font-size:13px;font-weight:800;letter-spacing:.02em}
-.rules-place.r1{color:var(--gold)}.rules-place.r2{color:var(--silver)}.rules-place.r3{color:var(--bronze)}.rules-place.r4,.rules-place.r5{color:var(--green)}
-.rules-amount{font-size:16px;font-weight:800;color:var(--green)}
 .rules-rounds{display:flex;flex-direction:column;gap:0}
 .rules-round-row{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:600;color:var(--text2);padding:7px 0;border-bottom:1px solid var(--border)}
 .rules-round-row:last-child{border-bottom:none}
@@ -231,17 +224,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
         <p class="rules-note">💡 Upset picks are rewarded — a 12-seed reaching the Sweet 16 earns 36 pts vs just 3 pts for a 1-seed doing the same.</p>
       </div>
       <div class="rules-section">
-        <div class="rules-hdr">💰 Payouts</div>
-        <div class="rules-payouts">
-          <div class="rules-payout-row"><span class="rules-place r1">🥇 1st Place</span><span class="rules-amount">$267.00</span></div>
-          <div class="rules-payout-row"><span class="rules-place r2">🥈 2nd Place</span><span class="rules-amount">$225.50</span></div>
-          <div class="rules-payout-row"><span class="rules-place r3">🥉 3rd Place</span><span class="rules-amount">$178.00</span></div>
-          <div class="rules-payout-row"><span class="rules-place r4">4th Place</span><span class="rules-amount">$133.50</span></div>
-          <div class="rules-payout-row"><span class="rules-place r5">5th Place</span><span class="rules-amount">$89.00</span></div>
-        </div>
-        <p class="rules-note">In the event of a tie, payout positions are split equally between tied entrants.</p>
-      </div>
-      <div class="rules-section">
         <div class="rules-hdr">📅 Tournament Schedule</div>
         <div class="rules-rounds">
           <div class="rules-round-row"><span class="rules-round-lbl">R1</span><span>Round of 64 — Mar 19–20</span></div>
@@ -255,7 +237,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
     </div>
   </div>
   <div class="footer">
-    <b>Payouts:</b> 1st $267 · 2nd $225.50 · 3rd $178 · 4th $133.50 · 5th $89 &nbsp;|&nbsp;
     <b>Score:</b> Seed × Round (R1→R2→S16→E8→FF→NC)
   </div>
   <div class="updated" id="updated"></div>
@@ -264,7 +245,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <button class="fab" onclick="location.reload()">↺</button>
 
 <script>
-var PAYOUTS = {1:'$267.00',2:'$225.50',3:'$178.00',4:'$133.50',5:'$89.00'};
+var PAYOUTS = {};
 var RNDS = {1:'R1',2:'R2',3:'S16',4:'E8',5:'FF',6:'NC'};
 var TRACKED = ['bryan','nicole','bethany','sam_c','bennett_c','neil'];
 var TCOLORS = {bryan:'#3b82f6',nicole:'#d946b8',bethany:'#f5a623',sam_c:'#a78bfa',bennett_c:'#34d399',neil:'#cc0000'};
@@ -843,13 +824,12 @@ function renderSummary(ranked) {
     if (!e) return '';
     var col = TCOLORS[id] || '#888';
     var label = TLABELS[id] || id;
-    var pay = PAYOUTS[e.rank] || '';
     var active = currentPlayer === id;
     var bstyle = 'border-top-color:' + col + ';' + (active ? 'border-color:' + col + ';background:#1c1c1c' : '');
     return '<div class="scard" onclick="selectPlayer(\'' + id + '\')" style="' + bstyle + '">' +
       '<div class="scard-name" style="color:' + col + '">' + label + '</div>' +
       '<div class="scard-pts" style="color:' + col + '">' + e.pts + '</div>' +
-      '<div class="scard-rank">#' + e.rank + (e.tied ? ' T' : '') + (pay ? ' · ' + pay : '') + '</div>' +
+      '<div class="scard-rank">#' + e.rank + (e.tied ? ' T' : '') + '</div>' +
       '</div>';
   }).join('');
 }
@@ -879,7 +859,6 @@ function renderDetail() {
   for (var j = 0; j < ranked.length; j++) { if (ranked[j].id === currentPlayer) { er = ranked[j]; break; } }
   var pts = er ? er.pts : 0;
   var rankTxt = er ? '#' + er.rank + ' of ' + ENT.length + (er.tied ? ' (tied)' : '') : '—';
-  var pay = (er && PAYOUTS[er.rank]) ? PAYOUTS[er.rank] : '';
   var col = TCOLORS[currentPlayer] || 'var(--red)';
 
   var sorted = ent.picks.slice().sort(function(a, b) {
@@ -948,8 +927,7 @@ function renderDetail() {
       '<div><div class="dhdr-name" style="color:' + col + '">' + ent.name + '</div>' +
       '<div style="font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-top:3px">' + rankTxt + '</div></div>' +
       '<div><div class="dhdr-pts" style="color:' + col + '">' + pts + '</div>' +
-      '<div class="dhdr-pay">' + pay + '</div></div>' +
-    '</div>' +
+      '</div>' +
     '<div class="chips">' +
       '<span class="chip cg">' + nActive + ' Active</span>' +
       '<span class="chip ca">' + nLive + ' Live</span>' +
@@ -963,19 +941,17 @@ function renderDetail() {
 function renderLeaderboard() {
   var ranked = getRankings();
   var medals = ['🥇','🥈','🥉'];
-  var html = '<table class="lbtable"><thead><tr><th>Place</th><th>Entrant</th><th class="r">Pts</th><th class="r">Payout</th></tr></thead><tbody>';
+  var html = '<table class="lbtable"><thead><tr><th>Place</th><th>Entrant</th><th class="r">Pts</th></tr></thead><tbody>';
   ranked.forEach(function(e) {
     var rowCls = e.isBryan ? 'hl-b' : e.isNicole ? 'hl-n' : e.tracked ? 'hl-o' : '';
     var rkCls = e.rank<=5 ? 'r'+e.rank : '';
     var medal = e.rank<=3 ? medals[e.rank-1] : '';
-    var pay = PAYOUTS[e.rank] || '';
     var tied = (e.tied && e.pts>0) ? '<span class="tbadge">TIE</span>' : '';
     var nCls = e.isBryan ? 'ename eb' : e.isNicole ? 'ename en' : 'ename';
     html += '<tr class="' + rowCls + '" onclick="showView(\'tracker\');selectPlayer(\'' + e.id + '\')">' +
       '<td><span class="rk ' + rkCls + '">' + (medal||e.rank) + '</span>' + tied + '</td>' +
       '<td><span class="' + nCls + '">' + e.name + '</span></td>' +
       '<td class="r">' + e.pts + '</td>' +
-      '<td class="r">' + (pay ? '<span class="paybadge">' + pay + '</span>' : '') + '</td>' +
       '</tr>';
   });
   html += '</tbody></table>';
