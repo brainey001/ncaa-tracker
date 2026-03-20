@@ -135,6 +135,27 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .fab{display:none;position:fixed;bottom:20px;right:18px;z-index:100;width:50px;height:50px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:20px;cursor:pointer;box-shadow:0 4px 14px #0009;align-items:center;justify-content:center}
 @media(max-width:500px){.fab{display:flex}}
 .view{display:none}.view.on{display:block}
+.rules-wrap{max-width:640px;margin:0 auto}
+.rules-section{background:var(--bg2);border:1px solid var(--border);border-top:3px solid var(--red);border-radius:0 0 5px 5px;padding:14px 16px;margin-bottom:10px}
+.rules-hdr{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text);margin-bottom:10px}
+.rules-section p{font-size:12px;font-weight:600;color:var(--text2);line-height:1.7;margin-bottom:8px}
+.rules-section p:last-child{margin-bottom:0}
+.rules-note{font-size:11px!important;color:var(--text3)!important;background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:7px 10px;margin-top:8px!important}
+.rules-table-wrap{overflow-x:auto;margin:8px 0}
+.rules-table{width:100%;border-collapse:collapse;font-size:11px}
+.rules-table th{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);padding:5px 8px;background:var(--bg3);border-bottom:2px solid var(--red);text-align:left;white-space:nowrap}
+.rules-table td{padding:6px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)}
+.rules-table td.rn{font-size:13px;font-weight:800;color:var(--amber);text-align:center}
+.rules-table tr:last-child td{border-bottom:none}
+.rules-payouts{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.rules-payout-row{display:flex;align-items:center;justify-content:space-between;background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:8px 12px}
+.rules-place{font-size:13px;font-weight:800;letter-spacing:.02em}
+.rules-place.r1{color:var(--gold)}.rules-place.r2{color:var(--silver)}.rules-place.r3{color:var(--bronze)}.rules-place.r4,.rules-place.r5{color:var(--green)}
+.rules-amount{font-size:16px;font-weight:800;color:var(--green)}
+.rules-rounds{display:flex;flex-direction:column;gap:0}
+.rules-round-row{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:600;color:var(--text2);padding:7px 0;border-bottom:1px solid var(--border)}
+.rules-round-row:last-child{border-bottom:none}
+.rules-round-lbl{font-size:10px;font-weight:800;color:var(--red);background:var(--rdim);border:1px solid #cc000030;border-radius:3px;padding:2px 6px;letter-spacing:.06em;text-transform:uppercase;min-width:36px;text-align:center;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -170,6 +191,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <div class="ntabs">
   <button class="ntab on" id="nt-tracker" onclick="showView('tracker')">🏀 Tracker</button>
   <button class="ntab" id="nt-leaderboard" onclick="showView('leaderboard')">🏆 Standings</button>
+  <button class="ntab" id="nt-rules" onclick="showView('rules')">📋 Rules</button>
 </div>
 
 <div class="page">
@@ -181,6 +203,54 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
   </div>
   <div class="view" id="view-leaderboard">
     <div id="lbwrap"></div>
+  </div>
+  <div class="view" id="view-rules">
+    <div class="rules-wrap">
+      <div class="rules-section">
+        <div class="rules-hdr">🏀 How It Works</div>
+        <p>Each entrant picks <b>10 teams</b> before the tournament begins. You earn points every time one of your teams wins a game. Points cannot be lost — every win adds to your total.</p>
+      </div>
+      <div class="rules-section">
+        <div class="rules-hdr">🧮 Scoring Formula</div>
+        <p>Points = <b>Seed × Round Number</b>. Higher seeds (bigger upsets) earn more points. Deeper runs earn more per win.</p>
+        <div class="rules-table-wrap">
+          <table class="rules-table">
+            <thead><tr><th>Round</th><th>Multiplier</th><th>#1 Seed</th><th>#5 Seed</th><th>#12 Seed</th></tr></thead>
+            <tbody>
+              <tr><td>Round of 64 (R1)</td><td class="rn">×1</td><td>1 pt</td><td>5 pts</td><td>12 pts</td></tr>
+              <tr><td>Round of 32 (R2)</td><td class="rn">×2</td><td>2 pts</td><td>10 pts</td><td>24 pts</td></tr>
+              <tr><td>Sweet 16</td><td class="rn">×3</td><td>3 pts</td><td>15 pts</td><td>36 pts</td></tr>
+              <tr><td>Elite 8</td><td class="rn">×4</td><td>4 pts</td><td>20 pts</td><td>48 pts</td></tr>
+              <tr><td>Final Four</td><td class="rn">×5</td><td>5 pts</td><td>25 pts</td><td>60 pts</td></tr>
+              <tr><td>Championship</td><td class="rn">×6</td><td>6 pts</td><td>30 pts</td><td>72 pts</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="rules-note">💡 Upset picks are rewarded — a 12-seed reaching the Sweet 16 earns 36 pts vs just 3 pts for a 1-seed doing the same.</p>
+      </div>
+      <div class="rules-section">
+        <div class="rules-hdr">💰 Payouts</div>
+        <div class="rules-payouts">
+          <div class="rules-payout-row"><span class="rules-place r1">🥇 1st Place</span><span class="rules-amount">$267.00</span></div>
+          <div class="rules-payout-row"><span class="rules-place r2">🥈 2nd Place</span><span class="rules-amount">$225.50</span></div>
+          <div class="rules-payout-row"><span class="rules-place r3">🥉 3rd Place</span><span class="rules-amount">$178.00</span></div>
+          <div class="rules-payout-row"><span class="rules-place r4">4th Place</span><span class="rules-amount">$133.50</span></div>
+          <div class="rules-payout-row"><span class="rules-place r5">5th Place</span><span class="rules-amount">$89.00</span></div>
+        </div>
+        <p class="rules-note">In the event of a tie, payout positions are split equally between tied entrants.</p>
+      </div>
+      <div class="rules-section">
+        <div class="rules-hdr">📅 Tournament Schedule</div>
+        <div class="rules-rounds">
+          <div class="rules-round-row"><span class="rules-round-lbl">R1</span><span>Round of 64 — Mar 19–20</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">R2</span><span>Round of 32 — Mar 22–23</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">S16</span><span>Sweet 16 — Mar 27–28</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">E8</span><span>Elite 8 — Mar 29–30</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">FF</span><span>Final Four — Apr 5</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">NC</span><span>Championship — Apr 7</span></div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="footer">
     <b>Payouts:</b> 1st $267 · 2nd $225.50 · 3rd $178 · 4th $133.50 · 5th $89 &nbsp;|&nbsp;
@@ -198,102 +268,76 @@ var TRACKED = ['bryan','nicole','bethany','sam_c','bennett_c','neil'];
 var TCOLORS = {bryan:'#3b82f6',nicole:'#d946b8',bethany:'#f5a623',sam_c:'#a78bfa',bennett_c:'#34d399',neil:'#cc0000'};
 var TLABELS = {bryan:'Bryan',nicole:'Nicole',bethany:'Bethany',sam_c:'Sam C',bennett_c:'Bennett C',neil:'Neil'};
 
-// ESPN name -> canonical key (exact match + common variants)
+// ESPN name -> canonical key (exact match only, no fuzzy)
 var EMAP = {
-  // ── A ──
-  'Akron':'AKR',
-  'Alabama':'BAMA',
-  'Arizona':'ARIZ',
-  'Arkansas':'ARK',
-  // ── B ──
-  'BYU':'BYU',
-  // ── C ──
-  'Clemson':'CLEM',
-  'Connecticut':'UCON',
-  // ── D ──
   'Duke':'DUKE',
-  // ── F ──
-  'Florida':'FLA',
-  // ── G ──
-  'Georgia':'UGA',
-  'Gonzaga':'GONZ',
-  // ── H ──
-  "Hawai'i":'HAW',
-  "Hawaii":'HAW',
-  'High Point':'HPU',
-  'Hofstra':'HOF',
-  'Houston':'HOU',
-  'Howard':'HOWARD',
-  // ── I ──
-  'Illinois':'ILL',
-  'Iowa':'IOWA',
-  'Iowa St':'IAST',
-  'Iowa St.':'IAST',
-  'Iowa State':'IAST',
-  // ── K ──
-  'Kansas':'KU',
-  'Kentucky':'UK',
-  // ── L ──
-  'Louisville':'LOU',
-  // ── M ──
-  'McNeese':'MCNS',
-  'Michigan':'MICH',
-  'Michigan St':'MSU',
-  'Michigan St.':'MSU',
-  'Michigan State':'MSU',
-  'Miami':'MIA',
-  'Miami FL':'MIA',
-  'Miami (FL)':'MIA',
-  'Miami (Ohio)':'OHSMU',
-  'Miami (OH)':'OHSMU',
-  'Miami OH':'OHSMU',
-  'Missouri':'MIZZ',
-  // ── N ──
-  'Nebraska':'NEB',
-  'North Carolina':'UNC',
-  'Northern Iowa':'UNI',
-  // ── O ──
-  'Ohio St':'OSU',
-  'Ohio St.':'OSU',
-  'Ohio State':'OSU',
-  // ── P ──
-  'Penn':'PENN',
-  'Purdue':'PUR',
-  // ── S ──
-  'Saint Louis':'SLU',
-  "Saint Mary's":'SMC',
-  "Saint Mary's":'SMC',
-  'Santa Clara':'SCU',
-  'SMU':'OHSMU',
   "St. John's":'SJOH',
-  "St John's":'SJOH',
-  "St. Johns":'SJOH',
-  "St Johns":'SJOH',
-  'South Florida':'USF',
-  // ── T ──
-  'TCU':'TCU',
-  'Tennessee':'TENN',
-  'Texas':'TEX',
-  'Texas A&M':'TAMU',
-  'Texas Tech':'TTU',
-  'Troy':'TROY',
-  // ── U ──
-  'UCF':'UCF',
-  'UConn':'UCON',
-  'UCLA':'UCLA',
-  'UMBC':'HOWARD',
-  'Utah St.':'USU',
-  'Utah St':'USU',
-  'Utah State':'USU',
-  // ── V ──
+  'Iowa':'IOWA',
   'Vanderbilt':'VAN',
-  'VCU':'VCU',
-  'Villanova':'NOVA',
+  'Illinois':'ILL',
+  'Houston':'HOU',
+  'BYU':'BYU',
+  'Miami (FL)':'MIA',
+  'Saint Louis':'SLU',
+  'Iowa St':'IAST',
+  'Kentucky':'UK',
+  'Tennessee':'TENN',
+  'UConn':'UCON',
+  'Connecticut':'UCON',
+  'Clemson':'CLEM',
+  'Purdue':'PUR',
+  'Texas':'TEX',
+  'Texas Tech':'TTU',
+  'Texas A&M':'TAMU',
+  'Arkansas':'ARK',
+  'Michigan St':'MSU',
+  'Michigan State':'MSU',
+  'Arizona':'ARIZ',
+  'Florida':'FLA',
+  'Michigan':'MICH',
   'Virginia':'UVA',
-  // ── W ──
   'Wisconsin':'WISC',
+  'Kansas':'KU',
+  'Alabama':'BAMA',
+  'North Carolina':'UNC',
+  'Gonzaga':'GONZ',
+  'Nebraska':'NEB',
+  'UCLA':'UCLA',
+  'South Florida':'USF',
+  'High Point':'HPU',
+  'VCU':'VCU',
+  'Akron':'AKR',
+  'Ohio St.':'OSU',
+  'TCU':'TCU',
+  'Louisville':'LOU',
+  'McNeese':'MCNS',
+  'UCF':'UCF',
+  'Santa Clara':'SCU',
+  "Saint Mary's":'SMC',
+  'Missouri':'MIZZ',
+  'Utah St.':'USU',
+  'Georgia':'UGA',
+  'Villanova':'NOVA',
+  'Penn':'PENN',
+  'Troy':'TROY',
+  'Northern Iowa':'UNI',
+  'Miami (OH)':'OHSMU',
+  'SMU':'OHSMU',
+  'Howard':'HOWARD',
+  'UMBC':'HOWARD',
   'Wright St.':'WST',
-  'Wright St':'WST',
+  'Ohio St':'OSU',
+  'Ohio State':'OSU',
+  'Iowa State':'IAST',
+  'Saint Mary\'s':'SMC',
+  "Hawai'i":'HAW',
+  'Hofstra':'HOF',
+  'Villanova':'NOVA',
+  'Northern Iowa':'UNI',
+  'Penn':'PENN',
+  'Missouri':'MIZZ',
+  'Miami (FL)':'MIA',
+  'Miami FL':'MIA'
 };
 
 var ENT = [
@@ -714,10 +758,6 @@ function resolveKey(name) {
 }
 
 function processGames(games) {
-  // Reset all team state before processing fresh data so stale results don't persist
-  Object.keys(TS).forEach(function(k) {
-    TS[k] = {wins:[], elim:false, gs:'upcoming', matchup:'', nextGame:''};
-  });
   games.forEach(function(g) {
     var hN = (g.home && g.home.name) || '';
     var aN = (g.away && g.away.name) || '';
@@ -781,6 +821,7 @@ function showView(v) {
   document.getElementById('view-' + v).classList.add('on');
   document.getElementById('nt-tracker').classList.toggle('on', v === 'tracker');
   document.getElementById('nt-leaderboard').classList.toggle('on', v === 'leaderboard');
+  document.getElementById('nt-rules').classList.toggle('on', v === 'rules');
   if (v === 'leaderboard') renderLeaderboard();
 }
 
@@ -947,55 +988,26 @@ function render() {
   if (currentView === 'leaderboard') renderLeaderboard();
 }
 
-// All tournament dates — R1 through NC
-var TOURNEY_DATES = [
-  '20260319','20260320','20260321', // R1
-  '20260322','20260323',            // R1 cont / R2 start
-  '20260326','20260327','20260328', // R2 / S16
-  '20260329','20260330',            // S16 / E8
-  '20260402','20260403',            // E8
-  '20260405','20260406',            // FF
-  '20260408'                        // NC
-];
-
 async function doFetch() {
   var btn = document.getElementById('rbtn');
   var msgEl = document.getElementById('statusmsg');
-  var baseUrl = document.getElementById('apiurl').value.trim();
+  var url = document.getElementById('apiurl').value.trim();
   msgEl.className = 'msg';
-  if (!baseUrl) { msgEl.className='msg err'; msgEl.textContent='⚠ No API URL — tap ⚙ to set it'; return; }
+  if (!url) { msgEl.className='msg err'; msgEl.textContent='⚠ No API URL — tap ⚙ to set it'; return; }
   btn.disabled = true; btn.textContent = '…';
   document.getElementById('loader').classList.remove('gone');
   var minWait = new Promise(function(res) { setTimeout(res, 2000); });
-
   try {
-    // Build one URL per tournament date, fetch all in parallel
-    var urls = TOURNEY_DATES.map(function(d) {
-      return baseUrl + (baseUrl.indexOf('?') === -1 ? '?' : '&') + 'date=' + d;
-    });
-    // Also always fetch the base URL (today's games, no date param)
-    urls.unshift(baseUrl);
-
-    var fetches = urls.map(function(u) {
-      return fetch(u).then(function(r) {
-        return r.ok ? r.json() : {games:[]};
-      }).catch(function() { return {games:[]}; });
-    });
-
-    var responses = await Promise.all([Promise.all(fetches), minWait]);
-    var allGames = [];
-    var seen = {};
-    responses[0].forEach(function(data) {
-      (data.games || []).forEach(function(g) {
-        if (!seen[g.id]) { seen[g.id] = true; allGames.push(g); }
-      });
-    });
-
-    if (!allGames.length) throw new Error('No games returned');
-    processGames(allGames);
+    var results = await Promise.all([fetch(url), minWait]);
+    var resp = results[0];
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    var data = await resp.json();
+    var games = data.games || [];
+    if (!games.length) throw new Error('No games returned');
+    processGames(games);
     msgEl.className = 'msg ok';
-    msgEl.textContent = '✓ ' + allGames.length + ' games loaded · ' + new Date().toLocaleTimeString();
-    try { if (hasStor) await window.storage.set('ncaa26_apiurl', baseUrl); } catch(e) {}
+    msgEl.textContent = '✓ ' + games.length + ' games loaded · ' + new Date().toLocaleTimeString();
+    try { if (hasStor) await window.storage.set('ncaa26_apiurl', url); } catch(e) {}
   } catch(err) {
     await minWait;
     msgEl.className = 'msg err';
