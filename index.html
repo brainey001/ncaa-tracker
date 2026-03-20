@@ -198,76 +198,102 @@ var TRACKED = ['bryan','nicole','bethany','sam_c','bennett_c','neil'];
 var TCOLORS = {bryan:'#3b82f6',nicole:'#d946b8',bethany:'#f5a623',sam_c:'#a78bfa',bennett_c:'#34d399',neil:'#cc0000'};
 var TLABELS = {bryan:'Bryan',nicole:'Nicole',bethany:'Bethany',sam_c:'Sam C',bennett_c:'Bennett C',neil:'Neil'};
 
-// ESPN name -> canonical key (exact match only, no fuzzy)
+// ESPN name -> canonical key (exact match + common variants)
 var EMAP = {
-  'Duke':'DUKE',
-  "St. John's":'SJOH',
-  'Iowa':'IOWA',
-  'Vanderbilt':'VAN',
-  'Illinois':'ILL',
-  'Houston':'HOU',
-  'BYU':'BYU',
-  'Miami (FL)':'MIA',
-  'Saint Louis':'SLU',
-  'Iowa St':'IAST',
-  'Kentucky':'UK',
-  'Tennessee':'TENN',
-  'UConn':'UCON',
-  'Connecticut':'UCON',
-  'Clemson':'CLEM',
-  'Purdue':'PUR',
-  'Texas':'TEX',
-  'Texas Tech':'TTU',
-  'Texas A&M':'TAMU',
-  'Arkansas':'ARK',
-  'Michigan St':'MSU',
-  'Michigan State':'MSU',
-  'Arizona':'ARIZ',
-  'Florida':'FLA',
-  'Michigan':'MICH',
-  'Virginia':'UVA',
-  'Wisconsin':'WISC',
-  'Kansas':'KU',
-  'Alabama':'BAMA',
-  'North Carolina':'UNC',
-  'Gonzaga':'GONZ',
-  'Nebraska':'NEB',
-  'UCLA':'UCLA',
-  'South Florida':'USF',
-  'High Point':'HPU',
-  'VCU':'VCU',
+  // ── A ──
   'Akron':'AKR',
-  'Ohio St.':'OSU',
-  'TCU':'TCU',
-  'Louisville':'LOU',
-  'McNeese':'MCNS',
-  'UCF':'UCF',
-  'Santa Clara':'SCU',
-  "Saint Mary's":'SMC',
-  'Missouri':'MIZZ',
-  'Utah St.':'USU',
+  'Alabama':'BAMA',
+  'Arizona':'ARIZ',
+  'Arkansas':'ARK',
+  // ── B ──
+  'BYU':'BYU',
+  // ── C ──
+  'Clemson':'CLEM',
+  'Connecticut':'UCON',
+  // ── D ──
+  'Duke':'DUKE',
+  // ── F ──
+  'Florida':'FLA',
+  // ── G ──
   'Georgia':'UGA',
-  'Villanova':'NOVA',
-  'Penn':'PENN',
-  'Troy':'TROY',
-  'Northern Iowa':'UNI',
-  'Miami (OH)':'OHSMU',
-  'SMU':'OHSMU',
-  'Howard':'HOWARD',
-  'UMBC':'HOWARD',
-  'Wright St.':'WST',
-  'Ohio St':'OSU',
-  'Ohio State':'OSU',
-  'Iowa State':'IAST',
-  'Saint Mary\'s':'SMC',
+  'Gonzaga':'GONZ',
+  // ── H ──
   "Hawai'i":'HAW',
+  "Hawaii":'HAW',
+  'High Point':'HPU',
   'Hofstra':'HOF',
-  'Villanova':'NOVA',
-  'Northern Iowa':'UNI',
-  'Penn':'PENN',
-  'Missouri':'MIZZ',
+  'Houston':'HOU',
+  'Howard':'HOWARD',
+  // ── I ──
+  'Illinois':'ILL',
+  'Iowa':'IOWA',
+  'Iowa St':'IAST',
+  'Iowa St.':'IAST',
+  'Iowa State':'IAST',
+  // ── K ──
+  'Kansas':'KU',
+  'Kentucky':'UK',
+  // ── L ──
+  'Louisville':'LOU',
+  // ── M ──
+  'McNeese':'MCNS',
+  'Michigan':'MICH',
+  'Michigan St':'MSU',
+  'Michigan St.':'MSU',
+  'Michigan State':'MSU',
+  'Miami':'MIA',
+  'Miami FL':'MIA',
   'Miami (FL)':'MIA',
-  'Miami FL':'MIA'
+  'Miami (Ohio)':'OHSMU',
+  'Miami (OH)':'OHSMU',
+  'Miami OH':'OHSMU',
+  'Missouri':'MIZZ',
+  // ── N ──
+  'Nebraska':'NEB',
+  'North Carolina':'UNC',
+  'Northern Iowa':'UNI',
+  // ── O ──
+  'Ohio St':'OSU',
+  'Ohio St.':'OSU',
+  'Ohio State':'OSU',
+  // ── P ──
+  'Penn':'PENN',
+  'Purdue':'PUR',
+  // ── S ──
+  'Saint Louis':'SLU',
+  "Saint Mary's":'SMC',
+  "Saint Mary's":'SMC',
+  'Santa Clara':'SCU',
+  'SMU':'OHSMU',
+  "St. John's":'SJOH',
+  "St John's":'SJOH',
+  "St. Johns":'SJOH',
+  "St Johns":'SJOH',
+  'South Florida':'USF',
+  // ── T ──
+  'TCU':'TCU',
+  'Tennessee':'TENN',
+  'Texas':'TEX',
+  'Texas A&M':'TAMU',
+  'Texas Tech':'TTU',
+  'Troy':'TROY',
+  // ── U ──
+  'UCF':'UCF',
+  'UConn':'UCON',
+  'UCLA':'UCLA',
+  'UMBC':'HOWARD',
+  'Utah St.':'USU',
+  'Utah St':'USU',
+  'Utah State':'USU',
+  // ── V ──
+  'Vanderbilt':'VAN',
+  'VCU':'VCU',
+  'Villanova':'NOVA',
+  'Virginia':'UVA',
+  // ── W ──
+  'Wisconsin':'WISC',
+  'Wright St.':'WST',
+  'Wright St':'WST',
 };
 
 var ENT = [
@@ -688,11 +714,10 @@ function resolveKey(name) {
 }
 
 function processGames(games) {
-  // Reset state before processing fresh data
+  // Reset all team state before processing fresh data so stale results don't persist
   Object.keys(TS).forEach(function(k) {
     TS[k] = {wins:[], elim:false, gs:'upcoming', matchup:'', nextGame:''};
   });
-
   games.forEach(function(g) {
     var hN = (g.home && g.home.name) || '';
     var aN = (g.away && g.away.name) || '';
@@ -922,26 +947,55 @@ function render() {
   if (currentView === 'leaderboard') renderLeaderboard();
 }
 
+// All tournament dates — R1 through NC
+var TOURNEY_DATES = [
+  '20260319','20260320','20260321', // R1
+  '20260322','20260323',            // R1 cont / R2 start
+  '20260326','20260327','20260328', // R2 / S16
+  '20260329','20260330',            // S16 / E8
+  '20260402','20260403',            // E8
+  '20260405','20260406',            // FF
+  '20260408'                        // NC
+];
+
 async function doFetch() {
   var btn = document.getElementById('rbtn');
   var msgEl = document.getElementById('statusmsg');
-  var url = document.getElementById('apiurl').value.trim();
+  var baseUrl = document.getElementById('apiurl').value.trim();
   msgEl.className = 'msg';
-  if (!url) { msgEl.className='msg err'; msgEl.textContent='⚠ No API URL — tap ⚙ to set it'; return; }
+  if (!baseUrl) { msgEl.className='msg err'; msgEl.textContent='⚠ No API URL — tap ⚙ to set it'; return; }
   btn.disabled = true; btn.textContent = '…';
   document.getElementById('loader').classList.remove('gone');
   var minWait = new Promise(function(res) { setTimeout(res, 2000); });
+
   try {
-    var results = await Promise.all([fetch(url), minWait]);
-    var resp = results[0];
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    var data = await resp.json();
-    var games = data.games || [];
-    if (!games.length) throw new Error('No games returned');
-    processGames(games);
+    // Build one URL per tournament date, fetch all in parallel
+    var urls = TOURNEY_DATES.map(function(d) {
+      return baseUrl + (baseUrl.indexOf('?') === -1 ? '?' : '&') + 'date=' + d;
+    });
+    // Also always fetch the base URL (today's games, no date param)
+    urls.unshift(baseUrl);
+
+    var fetches = urls.map(function(u) {
+      return fetch(u).then(function(r) {
+        return r.ok ? r.json() : {games:[]};
+      }).catch(function() { return {games:[]}; });
+    });
+
+    var responses = await Promise.all([Promise.all(fetches), minWait]);
+    var allGames = [];
+    var seen = {};
+    responses[0].forEach(function(data) {
+      (data.games || []).forEach(function(g) {
+        if (!seen[g.id]) { seen[g.id] = true; allGames.push(g); }
+      });
+    });
+
+    if (!allGames.length) throw new Error('No games returned');
+    processGames(allGames);
     msgEl.className = 'msg ok';
-    msgEl.textContent = '✓ ' + games.length + ' games loaded · ' + new Date().toLocaleTimeString();
-    try { if (hasStor) await window.storage.set('ncaa26_apiurl', url); } catch(e) {}
+    msgEl.textContent = '✓ ' + allGames.length + ' games loaded · ' + new Date().toLocaleTimeString();
+    try { if (hasStor) await window.storage.set('ncaa26_apiurl', baseUrl); } catch(e) {}
   } catch(err) {
     await minWait;
     msgEl.className = 'msg err';
