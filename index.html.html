@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Bryan & Nicole — NCAA 2026</title>
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="NCAA 2026">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#1a1a1a;--bg2:#222;--bg3:#2a2a2a;--card:#242424;--border:#383838;--border2:#464646;--text:#fff;--text2:#c8c8c8;--text3:#888;--text4:#505050;--red:#cc0000;--green:#00a651;--green-dim:#0f2d1c;--red-dim:#2d0f0f;--amber:#f5a623;--amber-dim:#2d1f05;--blue:#4a90d9;--blue-dim:#0d1e30;--bryan:#3b82f6;--bryan-dim:#0d1e35;--nicole:#d946b8;--nicole-dim:#2d0f27;--font:'Barlow Condensed',sans-serif;--body:'Barlow',sans-serif}
@@ -191,7 +196,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--body);min-height:1
     <input class="api-input" id="api-url" value="https://project-r4phb.vercel.app/api/scores" />
     <button class="refresh-btn" id="refresh-btn" onclick="doFetch()">↺ Refresh</button>
     <button class="refresh-btn" onclick="toggleNav()" id="nav-toggle" style="border-color:#555;color:#888">⚙</button>
-    <button class="refresh-btn" style="border-color:#cc0000;color:#cc0000" onclick="if(confirm('Close the app?'))window.close()">✕ Exit</button>
+    <button class="refresh-btn" style="border-color:#cc0000;color:#cc0000" onclick="if(confirm('Exit the app?')){window.location.href='about:blank'}">✕ Exit</button>
   </div>
 </div>
 <div id="settings-bar" style="display:none;background:#1e1e1e;border-bottom:1px solid #383838;padding:8px 12px;display:none;align-items:center;gap:8px;flex-wrap:wrap">
@@ -412,7 +417,7 @@ function seedSchedule(){
   await load();
   try{if(hasStorage){const r=await window.storage.get('bncaa26_apiurl');if(r?.value)document.getElementById('api-url').value=r.value;}}catch(e){}
   seedSchedule();render();stamp();
-  setTimeout(doFetch, 3000);
+  doFetch();
 })();
 </script>
 </body>
