@@ -840,7 +840,7 @@ function processGames(games) {
         t.gs = 'live';
         t.matchup = score + '-' + oScore + ' vs ' + oName + ' — Live';
       } else {
-        // Scheduled — show upcoming game time
+        // Scheduled — always update nextGame regardless of prior results
         var dt = new Date(g.start_time).toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
         if (!t.elim) t.nextGame = (isHome ? 'vs ' : '@ ') + oName + ' · ' + dt;
       }
@@ -953,11 +953,17 @@ function renderDetail() {
     }
 
     var mh = '';
-    if (t.matchup) {
-      var mc = t.matchup.indexOf(' W ') !== -1 ? 'mw' : t.matchup.indexOf(' L ') !== -1 ? 'ml' : 'mu';
+    if (t.gs === 'live') {
+      // Live: show live score
+      var mc = 'mu';
       mh = '<span class="' + mc + '">' + t.matchup + '</span>';
     } else if (t.nextGame) {
+      // Has an upcoming game scheduled — always show it (takes priority over old final result)
       mh = t.nextGame;
+    } else if (t.matchup) {
+      // No upcoming game yet, show last result
+      var mc2 = t.matchup.indexOf(' W ') !== -1 ? 'mw' : t.matchup.indexOf(' L ') !== -1 ? 'ml' : 'mu';
+      mh = '<span class="' + mc2 + '">' + t.matchup + '</span>';
     } else {
       mh = 'Awaiting next game';
     }
