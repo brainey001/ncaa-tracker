@@ -262,19 +262,34 @@ function getRound(d) {
   var y = d.getUTCFullYear();
   var m = d.getUTCMonth(); // 0-indexed: 2=Mar, 3=Apr
   var day = d.getUTCDate();
+  var hour = d.getUTCHours();
 
   if (y !== 2026) return 0;
 
+  // Noon ET = 16:00 UTC (EDT). Games never start before noon ET on their scheduled day,
+  // so anything before 16:00 UTC on a transition day is the prior round finishing late.
+  var isAM = hour < 16; // before noon ET
+
   if (m === 2) { // March
-    if (day === 19 || day === 20) return 1; // R1
-    if (day === 21 || day === 22) return 2; // R2
-    if (day === 26 || day === 27) return 3; // S16
-    if (day === 28 || day === 29) return 4; // E8
-    return 0; // off days in March
+    if (day === 19) return 1;
+    if (day === 20) return 1;
+    if (day === 21 && isAM) return 1;  // late R1 game finishing after midnight ET
+    if (day === 21 && !isAM) return 2;
+    if (day === 22) return 2;
+    if (day === 23 && isAM) return 2;  // late R2 game finishing after midnight ET
+    if (day === 26) return 3;
+    if (day === 27) return 3;
+    if (day === 28 && isAM) return 3;  // late S16 game
+    if (day === 28 && !isAM) return 4;
+    if (day === 29) return 4;
+    if (day === 30 && isAM) return 4;  // late E8 game
+    return 0;
   }
   if (m === 3) { // April
-    if (day === 4 || day === 5) return 5;  // FF (games tipoff Apr 4, may run into Apr 5 UTC)
-    if (day === 6 || day === 7) return 6;  // NC (tipoff Apr 6, may run into Apr 7 UTC)
+    if (day === 4) return 5;
+    if (day === 5 && isAM) return 5;   // late FF game
+    if (day === 6) return 6;
+    if (day === 7 && isAM) return 6;   // late NC game
     return 0;
   }
   return 0;
