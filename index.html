@@ -223,12 +223,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       <div class="rules-section">
         <div class="rules-hdr">📅 Tournament Schedule</div>
         <div class="rules-rounds">
-          <div class="rules-round-row"><span class="rules-round-lbl">R1</span><span>Round of 64 — Mar 19–20</span></div>
-          <div class="rules-round-row"><span class="rules-round-lbl">R2</span><span>Round of 32 — Mar 22–23</span></div>
-          <div class="rules-round-row"><span class="rules-round-lbl">S16</span><span>Sweet 16 — Mar 27–28</span></div>
-          <div class="rules-round-row"><span class="rules-round-lbl">E8</span><span>Elite 8 — Mar 29–30</span></div>
-          <div class="rules-round-row"><span class="rules-round-lbl">FF</span><span>Final Four — Apr 5</span></div>
-          <div class="rules-round-row"><span class="rules-round-lbl">NC</span><span>Championship — Apr 7</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">R1</span><span>Round of 64 — Thu Mar 19 &amp; Fri Mar 20</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">R2</span><span>Round of 32 — Sat Mar 21 &amp; Sun Mar 22</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">S16</span><span>Sweet 16 — Thu Mar 26 &amp; Fri Mar 27</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">E8</span><span>Elite 8 — Sat Mar 28 &amp; Sun Mar 29</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">FF</span><span>Final Four — Sat Apr 4</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">NC</span><span>Championship — Mon Apr 6</span></div>
         </div>
       </div>
     </div>
@@ -242,97 +242,131 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <button class="fab" onclick="doFetch()">↺</button>
 
 <script>
-var PAYOUTS = {};
 var RNDS = {1:'R1',2:'R2',3:'S16',4:'E8',5:'FF',6:'NC'};
 var TRACKED = ['bryan','nicole','bethany','sam_c','bennett_c','neil'];
 var TCOLORS = {bryan:'#3b82f6',nicole:'#d946b8',bethany:'#f5a623',sam_c:'#a78bfa',bennett_c:'#34d399',neil:'#cc0000'};
 var TLABELS = {bryan:'Bryan',nicole:'Nicole',bethany:'Bethany',sam_c:'Sam C',bennett_c:'Bennett C',neil:'Neil 🐔'};
 
-// ESPN name -> canonical key (exact match only, no fuzzy)
+// ── ROUND DETECTION ──────────────────────────────────────────────────────────
+// Schedule (all times UTC, day boundaries):
+//   R1  = Mar 19–20  (Thu/Fri)
+//   R2  = Mar 21–22  (Sat/Sun)
+//   S16 = Mar 26–27  (Thu/Fri)
+//   E8  = Mar 28–29  (Sat/Sun)
+//   FF  = Apr 4      (Sat)
+//   NC  = Apr 6      (Mon)
+//
+// Strategy: assign round by game date, with fallback for STATUS_FINAL games
+// that may appear in the feed after their round has passed.
+function getRound(d) {
+  var y = d.getUTCFullYear();
+  var m = d.getUTCMonth(); // 0-indexed: 2=Mar, 3=Apr
+  var day = d.getUTCDate();
+
+  if (y !== 2026) return 0;
+
+  if (m === 2) { // March
+    if (day === 19 || day === 20) return 1; // R1
+    if (day === 21 || day === 22) return 2; // R2
+    if (day === 26 || day === 27) return 3; // S16
+    if (day === 28 || day === 29) return 4; // E8
+    return 0; // off days in March
+  }
+  if (m === 3) { // April
+    if (day === 4 || day === 5) return 5;  // FF (games tipoff Apr 4, may run into Apr 5 UTC)
+    if (day === 6 || day === 7) return 6;  // NC (tipoff Apr 6, may run into Apr 7 UTC)
+    return 0;
+  }
+  return 0;
+}
+
+// Fallback: if a STATUS_FINAL game has round=0, infer round from team state
+// (how many wins does that team already have?)
+function inferRound(key) {
+  var t = TS[key];
+  if (!t) return 0;
+  return t.wins.length + 1; // next expected round
+}
+
+// ── ESPN NAME MAP ─────────────────────────────────────────────────────────────
 var EMAP = {
-  'Duke':'DUKE',
-  "St. John's":'SJOH',
-  "St John's":'SJOH',
-  'Iowa':'IOWA',
-  'Vanderbilt':'VAN',
-  'Illinois':'ILL',
-  'Houston':'HOU',
-  'BYU':'BYU',
-  'Miami':'MIA',
-  'Miami FL':'MIA',
-  'Miami (FL)':'MIA',
-  'Saint Louis':'SLU',
-  'Iowa St':'IAST',
-  'Kentucky':'UK',
-  'Tennessee':'TENN',
-  'UConn':'UCON',
-  'Connecticut':'UCON',
-  'Clemson':'CLEM',
-  'Purdue':'PUR',
-  'Texas':'TEX',
-  'Texas Tech':'TTU',
-  'Texas A&M':'TAMU',
-  'Arkansas':'ARK',
-  'Michigan St':'MSU',
-  'Michigan State':'MSU',
-  'Arizona':'ARIZ',
-  'Florida':'FLA',
-  'Michigan':'MICH',
-  'Virginia':'UVA',
-  'Wisconsin':'WISC',
-  'Kansas':'KU',
-  'Alabama':'BAMA',
-  'North Carolina':'UNC',
-  'Gonzaga':'GONZ',
-  'Nebraska':'NEB',
-  'UCLA':'UCLA',
-  'South Florida':'USF',
-  'High Point':'HPU',
-  'VCU':'VCU',
-  'Akron':'AKR',
-  'Ohio St.':'OSU',
-  'TCU':'TCU',
-  'Louisville':'LOU',
-  'McNeese':'MCNS',
-  'UCF':'UCF',
-  'Santa Clara':'SCU',
-  "Saint Mary's":'SMC',
-  'Missouri':'MIZZ',
-  'Utah St.':'USU',
-  'Georgia':'UGA',
-  'Villanova':'NOVA',
-  'Penn':'PENN',
-  'Troy':'TROY',
-  'Northern Iowa':'UNI',
-  'Miami OH':'OHSMU',
-  'Miami (OH)':'OHSMU',
-  'Miami (Ohio)':'OHSMU',
-  'SMU':'OHSMU',
-  'Howard':'HOWARD',
-  'UMBC':'HOWARD',
-  'Wright St.':'WST',
-  'Ohio St':'OSU',
-  'Ohio State':'OSU',
-  'Iowa State':'IAST',
-  'Saint Mary\'s':'SMC',
-  "Hawai'i":'HAW',
-  'Hofstra':'HOF',
-  'Villanova':'NOVA',
-  'Northern Iowa':'UNI',
-  'Penn':'PENN',
-  'Missouri':'MIZZ',
-  'Miami':'MIA',
-  'Miami FL':'MIA',
-  'Miami (FL)':'MIA',
-  'Miami FL':'MIA',
-  "St John's":'SJOH',
-  "Hawai'i":'HAW',
-  'Hawaii':'HAW',
-  "Saint Mary's":'SMC',
-  'Utah State':'USU',
-  'Utah St':'USU',
-  'Wright St':'WST',
-  'Wright St.':'WST'
+  "Duke":"DUKE",
+  "St. John's":"SJOH",
+  "St John's":"SJOH",
+  "Iowa":"IOWA",
+  "Vanderbilt":"VAN",
+  "Illinois":"ILL",
+  "Houston":"HOU",
+  "BYU":"BYU",
+  "Miami":"MIA",
+  "Miami FL":"MIA",
+  "Miami (FL)":"MIA",
+  "Saint Louis":"SLU",
+  "Iowa St":"IAST",
+  "Iowa State":"IAST",
+  "Kentucky":"UK",
+  "Tennessee":"TENN",
+  "UConn":"UCON",
+  "Connecticut":"UCON",
+  "Clemson":"CLEM",
+  "Purdue":"PUR",
+  "Texas":"TEX",
+  "Texas Tech":"TTU",
+  "Texas A&M":"TAMU",
+  "Arkansas":"ARK",
+  "Michigan St":"MSU",
+  "Michigan State":"MSU",
+  "Arizona":"ARIZ",
+  "Florida":"FLA",
+  "Michigan":"MICH",
+  "Virginia":"UVA",
+  "Wisconsin":"WISC",
+  "Kansas":"KU",
+  "Alabama":"BAMA",
+  "North Carolina":"UNC",
+  "Gonzaga":"GONZ",
+  "Nebraska":"NEB",
+  "UCLA":"UCLA",
+  "South Florida":"USF",
+  "High Point":"HPU",
+  "VCU":"VCU",
+  "Akron":"AKR",
+  "Ohio State":"OSU",
+  "Ohio St":"OSU",
+  "Ohio St.":"OSU",
+  "TCU":"TCU",
+  "Louisville":"LOU",
+  "McNeese":"MCNS",
+  "UCF":"UCF",
+  "Santa Clara":"SCU",
+  "Saint Mary's":"SMC",
+  "Missouri":"MIZZ",
+  "Utah St.":"USU",
+  "Utah St":"USU",
+  "Utah State":"USU",
+  "Georgia":"UGA",
+  "Villanova":"NOVA",
+  "Penn":"PENN",
+  "Troy":"TROY",
+  "Northern Iowa":"UNI",
+  "Miami OH":"OHSMU",
+  "Miami (OH)":"OHSMU",
+  "Miami (Ohio)":"OHSMU",
+  "SMU":"OHSMU",
+  "Howard":"HOWARD",
+  "UMBC":"HOWARD",
+  "Wright St.":"WST",
+  "Wright St":"WST",
+  "Hawai'i":"HAW",
+  "Hawaii":"HAW",
+  "Hofstra":"HOF",
+  "Saint Mary's":"SMC",
+  "Kennesaw St":"KENN",
+  "Idaho":"IDAHO",
+  "Siena":"SIENA",
+  "N Dakota St":"NDST",
+  "McNeese St":"MCNS",
+  "Penn St":"PSU"
 };
 
 var ENT = [
@@ -759,12 +793,20 @@ function processGames(games) {
     var hS = parseInt(g.home && g.home.score) || 0;
     var aS = parseInt(g.away && g.away.score) || 0;
     var rnd = getRound(new Date(g.start_time));
-    // If round detection fails but game is final, default to R1
-    if (rnd < 1) {
-      if (g.status === 'STATUS_FINAL') rnd = 1;
-      else return;
-    }
     var status = g.status;
+
+    // For STATUS_FINAL games that fall on off-days in the feed,
+    // infer round from how many wins the team already has
+    if (rnd < 1 && status === 'STATUS_FINAL') {
+      var hKey2 = resolveKey(hN);
+      var aKey2 = resolveKey(aN);
+      var hWins = (hKey2 && TS[hKey2]) ? TS[hKey2].wins.length : 0;
+      var aWins = (aKey2 && TS[aKey2]) ? TS[aKey2].wins.length : 0;
+      rnd = Math.max(hWins, aWins) + 1;
+      if (rnd < 1 || rnd > 6) return;
+    }
+    if (rnd < 1) return;
+
     var hKey = resolveKey(hN);
     var aKey = resolveKey(aN);
 
@@ -783,6 +825,7 @@ function processGames(games) {
         t.gs = 'live';
         t.matchup = score + '-' + oScore + ' vs ' + oName + ' — Live';
       } else {
+        // Scheduled — show upcoming game time
         var dt = new Date(g.start_time).toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
         if (!t.elim) t.nextGame = (isHome ? 'vs ' : '@ ') + oName + ' · ' + dt;
       }
@@ -792,18 +835,6 @@ function processGames(games) {
     upd(aKey, aS, hS, hN, false);
   });
   saveState();
-}
-
-function getRound(d) {
-  var t = d.getTime();
-  // Use UTC dates to avoid timezone issues
-  if (t < Date.UTC(2026,2,18)) return 0;       // before Mar 18 = invalid
-  if (t < Date.UTC(2026,2,24)) return 1;       // Mar 18-23 = R1
-  if (t < Date.UTC(2026,2,28)) return 2;       // Mar 24-27 = R2
-  if (t < Date.UTC(2026,2,30)) return 3;       // Mar 28-29 = S16
-  if (t < Date.UTC(2026,3,5))  return 4;       // Mar 30-Apr 4 = E8
-  if (t < Date.UTC(2026,3,7))  return 5;       // Apr 5-6 = FF
-  return 6;                                     // Apr 7+ = NC
 }
 
 // ── UI ────────────────────────────────────────────────────────────────────────
@@ -913,7 +944,7 @@ function renderDetail() {
     } else if (t.nextGame) {
       mh = t.nextGame;
     } else {
-      mh = 'Awaiting R1';
+      mh = 'Awaiting next game';
     }
 
     var action = t.elim ? '<div class="elimnote">● Eliminated</div>' : '';
@@ -976,7 +1007,6 @@ function renderLeaderboard() {
 function renderTicker() {
   var inner = document.getElementById('ticker-inner');
   if (!inner) return;
-  // Build one segment per tracked player showing only active (non-eliminated) picks
   var segments = [];
   TRACKED.forEach(function(id) {
     var ent = null;
@@ -989,10 +1019,8 @@ function renderTicker() {
     });
     if (!active.length) return;
     var names = active.map(function(p) { return p.n; }).join(' · ');
-    var count = '(' + active.length + '/' + ent.picks.length + ')';
-    segments.push('<span>' + label + ' ' + count + ': ' + names + '</span>');
+    segments.push('<span>' + label + ' (' + active.length + '/' + ent.picks.length + '): ' + names + '</span>');
   });
-  // Double the segments so the seamless loop works
   var html = segments.concat(segments).join('');
   inner.innerHTML = html || '<span>No active picks</span>';
 }
