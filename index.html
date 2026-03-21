@@ -5,11 +5,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="NCAA 2026">
+<meta name="apple-mobile-web-app-title" content="Seed Money Showdown">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="icon" href="icon.png">
-<title>NCAA 2026 Tracker</title>
+<title>Seed Money Showdown 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -32,11 +32,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .lo-bar{width:160px;height:3px;background:var(--border2);border-radius:2px;overflow:hidden}
 .lo-fill{height:100%;background:var(--red);animation:lbar 1.4s ease-in-out infinite}
 @keyframes lbar{0%{width:0;margin-left:0}50%{width:55%;margin-left:10%}100%{width:0;margin-left:100%}}
-.ticker{background:var(--red);height:26px;display:flex;align-items:center;overflow:hidden}
-.ticker-lbl{background:#900;font-size:10px;font-weight:800;letter-spacing:.1em;padding:0 10px;height:100%;display:flex;align-items:center;white-space:nowrap;flex-shrink:0;text-transform:uppercase}
+.ticker{background:var(--red);height:32px;display:flex;align-items:center;overflow:hidden}
+.ticker-lbl{background:#900;font-size:11px;font-weight:800;letter-spacing:.1em;padding:0 12px;height:100%;display:flex;align-items:center;white-space:nowrap;flex-shrink:0;text-transform:uppercase}
 .ticker-wrap{overflow:hidden;flex:1}
-.ticker-inner{display:flex;animation:tick 50s linear infinite;white-space:nowrap}
-.ticker-inner span{font-size:10px;font-weight:600;color:#fff;padding:0 18px;text-transform:uppercase}
+.ticker-inner{display:flex;animation:tick 30s linear infinite;white-space:nowrap}
+.ticker-inner span{font-size:12px;font-weight:700;color:#fff;padding:0 20px;text-transform:uppercase}
 .ticker-inner span::before{content:'● ';opacity:.5}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .navbar{background:var(--bg2);border-bottom:3px solid var(--red);padding:0 12px;height:46px;display:flex;align-items:center;gap:8px}
@@ -49,9 +49,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .btn-muted:hover,.btn-muted:active{background:var(--border2);color:var(--text)}
 .settings{display:none;background:#1e1e1e;border-bottom:1px solid var(--border);padding:8px 12px;align-items:center;gap:8px}
 .settings input{flex:1;min-width:200px;background:var(--bg3);border:1px solid var(--border2);border-radius:3px;color:var(--text2);font-family:var(--font);font-size:11px;padding:5px 9px;outline:none}
-.ntabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border)}
-.ntab{flex:1;padding:9px 4px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-align:center;cursor:pointer;border:none;background:transparent;color:var(--text3);border-bottom:3px solid transparent;font-family:var(--font)}
-.ntab.on{color:var(--red);border-bottom-color:var(--red);background:#1e1e1e}
+.ntabs{display:flex;background:#111;border-bottom:3px solid var(--red);padding:8px 8px 0 8px;gap:5px}
+.ntab{flex:1;padding:10px 8px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-align:center;cursor:pointer;border:2px solid var(--border2);background:var(--bg3);color:var(--text3);border-radius:5px 5px 0 0;border-bottom:none;font-family:var(--font);transition:all .15s;box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}
+.ntab:hover{background:var(--bg2);color:var(--text);border-color:#666}
+.ntab.on{color:#fff;background:var(--red);border-color:var(--red);margin-bottom:-3px;padding-bottom:13px;box-shadow:none}
 .page{max-width:960px;margin:0 auto;padding:10px 10px 80px}
 .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
 @media(max-width:400px){.summary{grid-template-columns:repeat(2,1fr)}}
@@ -67,7 +68,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .dhdr-name{font-size:20px;font-weight:800;letter-spacing:.02em;text-transform:uppercase}
 .dhdr-pts{font-size:36px;font-weight:800;line-height:1;text-align:right}
 .dhdr-rank{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-top:3px;text-align:right}
-.dhdr-pay{font-size:13px;font-weight:800;color:var(--green);text-align:right;margin-top:2px}
 .chips{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
 .chip{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:3px;border:1px solid}
 .cg{color:var(--green);border-color:#00a65150;background:var(--gdim)}
@@ -124,7 +124,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .rk.r1{color:var(--gold)}.rk.r2{color:var(--silver)}.rk.r3{color:var(--bronze)}.rk.r4,.rk.r5{color:var(--green)}
 .ename{font-size:13px;font-weight:800;letter-spacing:.02em;text-transform:uppercase}
 .ename.eb{color:var(--bryan)}.ename.en{color:var(--nicole)}
-.paybadge{font-size:11px;font-weight:800;color:var(--green);background:var(--gdim);border:1px solid #00a65130;border-radius:3px;padding:2px 6px;white-space:nowrap}
 .tbadge{font-size:9px;font-weight:700;color:var(--amber);background:var(--adim);border:1px solid #f5a62325;border-radius:2px;padding:1px 4px;letter-spacing:.05em;margin-left:4px;vertical-align:middle}
 .msg{border-radius:3px;padding:7px 11px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:9px;display:none}
 .msg.err{background:var(--rdim);border:1px solid #cc000035;color:#ff8888;display:block}
@@ -135,28 +134,41 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .fab{display:none;position:fixed;bottom:20px;right:18px;z-index:100;width:50px;height:50px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:20px;cursor:pointer;box-shadow:0 4px 14px #0009;align-items:center;justify-content:center}
 @media(max-width:500px){.fab{display:flex}}
 .view{display:none}.view.on{display:block}
+.rules-wrap{max-width:640px;margin:0 auto}
+.rules-section{background:var(--bg2);border:1px solid var(--border);border-top:3px solid var(--red);border-radius:0 0 5px 5px;padding:14px 16px;margin-bottom:10px}
+.rules-hdr{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text);margin-bottom:10px}
+.rules-section p{font-size:12px;font-weight:600;color:var(--text2);line-height:1.7;margin-bottom:8px}
+.rules-section p:last-child{margin-bottom:0}
+.rules-note{font-size:11px!important;color:var(--text3)!important;background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:7px 10px;margin-top:8px!important}
+.rules-table-wrap{overflow-x:auto;margin:8px 0}
+.rules-table{width:100%;border-collapse:collapse;font-size:11px}
+.rules-table th{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);padding:5px 8px;background:var(--bg3);border-bottom:2px solid var(--red);text-align:left;white-space:nowrap}
+.rules-table td{padding:6px 8px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)}
+.rules-table td.rn{font-size:13px;font-weight:800;color:var(--amber);text-align:center}
+.rules-table tr:last-child td{border-bottom:none}
+.rules-rounds{display:flex;flex-direction:column;gap:0}
+.rules-round-row{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:600;color:var(--text2);padding:7px 0;border-bottom:1px solid var(--border)}
+.rules-round-row:last-child{border-bottom:none}
+.rules-round-lbl{font-size:10px;font-weight:800;color:var(--red);background:var(--rdim);border:1px solid #cc000030;border-radius:3px;padding:2px 6px;letter-spacing:.06em;text-transform:uppercase;min-width:36px;text-align:center;flex-shrink:0}
 </style>
 </head>
 <body>
 
 <div id="loader">
-  <div class="lo-title">NCAA 2026 🏀</div>
+  <div class="lo-title">Seed Money Showdown 🏀</div>
   <div class="lo-sub">Loading Scores…</div>
   <div class="lo-bar"><div class="lo-fill"></div></div>
 </div>
 
 <div class="ticker">
-  <div class="ticker-lbl">NCAA 2026</div>
-  <div class="ticker-wrap"><div class="ticker-inner">
-    <span>Bryan: Duke · St.John's · Iowa · Vanderbilt · Illinois · Houston · BYU · Miami FL · Saint Louis · Iowa St</span>
-    <span>Nicole: Kentucky · Tennessee · UConn · Clemson · Vanderbilt · Purdue · Texas · Arkansas · Michigan St · Texas Tech</span>
-    <span>Bryan: Duke · St.John's · Iowa · Vanderbilt · Illinois · Houston · BYU · Miami FL · Saint Louis · Iowa St</span>
-    <span>Nicole: Kentucky · Tennessee · UConn · Clemson · Vanderbilt · Purdue · Texas · Arkansas · Michigan St · Texas Tech</span>
+  <div class="ticker-lbl">🌽 Still Standing</div>
+  <div class="ticker-wrap"><div class="ticker-inner" id="ticker-inner">
+    <span>Loading…</span>
   </div></div>
 </div>
 
 <div class="navbar">
-  <div class="nav-title">NCAA 2026 🏀</div>
+  <div class="nav-title">Seed Money Showdown 2026 🏀</div>
   <div class="nav-r">
     <button class="btn" id="rbtn" onclick="doFetch()">↺ Refresh</button>
     <button class="btn btn-muted" onclick="toggleSettings()">⚙</button>
@@ -170,11 +182,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <div class="ntabs">
   <button class="ntab on" id="nt-tracker" onclick="showView('tracker')">🏀 Tracker</button>
   <button class="ntab" id="nt-leaderboard" onclick="showView('leaderboard')">🏆 Standings</button>
+  <button class="ntab" id="nt-rules" onclick="showView('rules')">📋 Rules</button>
 </div>
 
 <div class="page">
   <div id="statusmsg" class="msg"></div>
   <div class="view on" id="view-tracker">
+    <div class="slbl">🌽 Cream of the Crop</div>
     <div class="summary" id="summary"></div>
     <div class="pbwrap" id="pbwrap"></div>
     <div id="detail"></div>
@@ -182,8 +196,44 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
   <div class="view" id="view-leaderboard">
     <div id="lbwrap"></div>
   </div>
+  <div class="view" id="view-rules">
+    <div class="rules-wrap">
+      <div class="rules-section">
+        <div class="rules-hdr">🏀 How It Works</div>
+        <p>Each entrant picks <b>10 teams</b> before the tournament begins. You earn points every time one of your teams wins a game. Points cannot be lost — every win adds to your total.</p>
+      </div>
+      <div class="rules-section">
+        <div class="rules-hdr">🧮 Scoring Formula</div>
+        <p>Points = <b>Seed × Round Number</b>. Higher seeds (bigger upsets) earn more points. Deeper runs earn more per win.</p>
+        <div class="rules-table-wrap">
+          <table class="rules-table">
+            <thead><tr><th>Round</th><th>Multiplier</th><th>#1 Seed</th><th>#5 Seed</th><th>#12 Seed</th></tr></thead>
+            <tbody>
+              <tr><td>Round of 64 (R1)</td><td class="rn">×1</td><td>1 pt</td><td>5 pts</td><td>12 pts</td></tr>
+              <tr><td>Round of 32 (R2)</td><td class="rn">×2</td><td>2 pts</td><td>10 pts</td><td>24 pts</td></tr>
+              <tr><td>Sweet 16</td><td class="rn">×3</td><td>3 pts</td><td>15 pts</td><td>36 pts</td></tr>
+              <tr><td>Elite 8</td><td class="rn">×4</td><td>4 pts</td><td>20 pts</td><td>48 pts</td></tr>
+              <tr><td>Final Four</td><td class="rn">×5</td><td>5 pts</td><td>25 pts</td><td>60 pts</td></tr>
+              <tr><td>Championship</td><td class="rn">×6</td><td>6 pts</td><td>30 pts</td><td>72 pts</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="rules-note">💡 Upset picks are rewarded — a 12-seed reaching the Sweet 16 earns 36 pts vs just 3 pts for a 1-seed doing the same.</p>
+      </div>
+      <div class="rules-section">
+        <div class="rules-hdr">📅 Tournament Schedule</div>
+        <div class="rules-rounds">
+          <div class="rules-round-row"><span class="rules-round-lbl">R1</span><span>Round of 64 — Mar 19–20</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">R2</span><span>Round of 32 — Mar 22–23</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">S16</span><span>Sweet 16 — Mar 27–28</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">E8</span><span>Elite 8 — Mar 29–30</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">FF</span><span>Final Four — Apr 5</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">NC</span><span>Championship — Apr 7</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="footer">
-    <b>Payouts:</b> 1st $267 · 2nd $225.50 · 3rd $178 · 4th $133.50 · 5th $89 &nbsp;|&nbsp;
     <b>Score:</b> Seed × Round (R1→R2→S16→E8→FF→NC)
   </div>
   <div class="updated" id="updated"></div>
@@ -192,75 +242,97 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <button class="fab" onclick="doFetch()">↺</button>
 
 <script>
-var PAYOUTS = {1:'$267.00',2:'$225.50',3:'$178.00',4:'$133.50',5:'$89.00'};
+var PAYOUTS = {};
 var RNDS = {1:'R1',2:'R2',3:'S16',4:'E8',5:'FF',6:'NC'};
 var TRACKED = ['bryan','nicole','bethany','sam_c','bennett_c','neil'];
 var TCOLORS = {bryan:'#3b82f6',nicole:'#d946b8',bethany:'#f5a623',sam_c:'#a78bfa',bennett_c:'#34d399',neil:'#cc0000'};
-var TLABELS = {bryan:'Bryan',nicole:'Nicole',bethany:'Bethany',sam_c:'Sam C',bennett_c:'Bennett C',neil:'Neil'};
+var TLABELS = {bryan:'Bryan',nicole:'Nicole',bethany:'Bethany',sam_c:'Sam C',bennett_c:'Bennett C',neil:'Neil 🐔'};
 
 // ESPN name -> canonical key (exact match only, no fuzzy)
 var EMAP = {
-  "Duke":"DUKE",
-  "St. John's":"SJOH",
-  "Iowa":"IOWA",
-  "Vanderbilt":"VAN",
-  "Illinois":"ILL",
-  "Houston":"HOU",
-  "BYU":"BYU",
-  "Miami (FL)":"MIA",
-  "Miami FL":"MIA",
-  "Saint Louis":"SLU",
-  "Iowa St":"IAST",
-  "Iowa State":"IAST",
-  "Kentucky":"UK",
-  "Tennessee":"TENN",
-  "UConn":"UCON",
-  "Connecticut":"UCON",
-  "Clemson":"CLEM",
-  "Purdue":"PUR",
-  "Texas":"TEX",
-  "Texas Tech":"TTU",
-  "Texas A&M":"TAMU",
-  "Arkansas":"ARK",
-  "Michigan St":"MSU",
-  "Michigan State":"MSU",
-  "Arizona":"ARIZ",
-  "Florida":"FLA",
-  "Michigan":"MICH",
-  "Virginia":"UVA",
-  "Wisconsin":"WISC",
-  "Kansas":"KU",
-  "Alabama":"BAMA",
-  "North Carolina":"UNC",
-  "Gonzaga":"GONZ",
-  "Nebraska":"NEB",
-  "UCLA":"UCLA",
-  "South Florida":"USF",
-  "High Point":"HPU",
-  "VCU":"VCU",
-  "Akron":"AKR",
-  "Ohio State":"OSU",
-  "Ohio St":"OSU",
-  "TCU":"TCU",
-  "Louisville":"LOU",
-  "McNeese":"MCNS",
-  "UCF":"UCF",
-  "Santa Clara":"SCU",
-  "Saint Mary's":"SMC",
-  "Missouri":"MIZZ",
-  "Utah St.":"USU",
-  "Georgia":"UGA",
-  "Villanova":"NOVA",
-  "Penn":"PENN",
-  "Troy":"TROY",
-  "Northern Iowa":"UNI",
-  "Miami (OH)":"OHSMU",
-  "SMU":"OHSMU",
-  "Howard":"HOWARD",
-  "UMBC":"HOWARD",
-  "Wright St.":"WST",
-  "Hawai'i":"HAW",
-  "Hofstra":"HOF"
+  'Duke':'DUKE',
+  "St. John's":'SJOH',
+  "St John's":'SJOH',
+  'Iowa':'IOWA',
+  'Vanderbilt':'VAN',
+  'Illinois':'ILL',
+  'Houston':'HOU',
+  'BYU':'BYU',
+  'Miami':'MIA',
+  'Miami FL':'MIA',
+  'Miami (FL)':'MIA',
+  'Saint Louis':'SLU',
+  'Iowa St':'IAST',
+  'Kentucky':'UK',
+  'Tennessee':'TENN',
+  'UConn':'UCON',
+  'Connecticut':'UCON',
+  'Clemson':'CLEM',
+  'Purdue':'PUR',
+  'Texas':'TEX',
+  'Texas Tech':'TTU',
+  'Texas A&M':'TAMU',
+  'Arkansas':'ARK',
+  'Michigan St':'MSU',
+  'Michigan State':'MSU',
+  'Arizona':'ARIZ',
+  'Florida':'FLA',
+  'Michigan':'MICH',
+  'Virginia':'UVA',
+  'Wisconsin':'WISC',
+  'Kansas':'KU',
+  'Alabama':'BAMA',
+  'North Carolina':'UNC',
+  'Gonzaga':'GONZ',
+  'Nebraska':'NEB',
+  'UCLA':'UCLA',
+  'South Florida':'USF',
+  'High Point':'HPU',
+  'VCU':'VCU',
+  'Akron':'AKR',
+  'Ohio St.':'OSU',
+  'TCU':'TCU',
+  'Louisville':'LOU',
+  'McNeese':'MCNS',
+  'UCF':'UCF',
+  'Santa Clara':'SCU',
+  "Saint Mary's":'SMC',
+  'Missouri':'MIZZ',
+  'Utah St.':'USU',
+  'Georgia':'UGA',
+  'Villanova':'NOVA',
+  'Penn':'PENN',
+  'Troy':'TROY',
+  'Northern Iowa':'UNI',
+  'Miami OH':'OHSMU',
+  'Miami (OH)':'OHSMU',
+  'Miami (Ohio)':'OHSMU',
+  'SMU':'OHSMU',
+  'Howard':'HOWARD',
+  'UMBC':'HOWARD',
+  'Wright St.':'WST',
+  'Ohio St':'OSU',
+  'Ohio State':'OSU',
+  'Iowa State':'IAST',
+  'Saint Mary\'s':'SMC',
+  "Hawai'i":'HAW',
+  'Hofstra':'HOF',
+  'Villanova':'NOVA',
+  'Northern Iowa':'UNI',
+  'Penn':'PENN',
+  'Missouri':'MIZZ',
+  'Miami':'MIA',
+  'Miami FL':'MIA',
+  'Miami (FL)':'MIA',
+  'Miami FL':'MIA',
+  "St John's":'SJOH',
+  "Hawai'i":'HAW',
+  'Hawaii':'HAW',
+  "Saint Mary's":'SMC',
+  'Utah State':'USU',
+  'Utah St':'USU',
+  'Wright St':'WST',
+  'Wright St.':'WST'
 };
 
 var ENT = [
@@ -687,7 +759,11 @@ function processGames(games) {
     var hS = parseInt(g.home && g.home.score) || 0;
     var aS = parseInt(g.away && g.away.score) || 0;
     var rnd = getRound(new Date(g.start_time));
-    if (rnd < 1) return;
+    // If round detection fails but game is final, default to R1
+    if (rnd < 1) {
+      if (g.status === 'STATUS_FINAL') rnd = 1;
+      else return;
+    }
     var status = g.status;
     var hKey = resolveKey(hN);
     var aKey = resolveKey(aN);
@@ -720,17 +796,14 @@ function processGames(games) {
 
 function getRound(d) {
   var t = d.getTime();
-  if (t < Date.UTC(2026,2,19))  return 0;  // before Mar 19 = invalid
-  if (t < Date.UTC(2026,2,21))  return 1;  // Mar 19-20 = R1
-  if (t < Date.UTC(2026,2,23))  return 2;  // Mar 21-22 = R2
-  if (t < Date.UTC(2026,2,26))  return 0;  // Mar 23-25 = off
-  if (t < Date.UTC(2026,2,28))  return 3;  // Mar 26-27 = S16
-  if (t < Date.UTC(2026,2,30))  return 4;  // Mar 28-29 = E8
-  if (t < Date.UTC(2026,3,4))   return 0;  // Mar 30-Apr 3 = off
-  if (t < Date.UTC(2026,3,5))   return 5;  // Apr 4 = FF
-  if (t < Date.UTC(2026,3,6))   return 0;  // Apr 5 = off
-  if (t < Date.UTC(2026,3,7))   return 6;  // Apr 6 = NC
-  return 0;
+  // Use UTC dates to avoid timezone issues
+  if (t < Date.UTC(2026,2,18)) return 0;       // before Mar 18 = invalid
+  if (t < Date.UTC(2026,2,24)) return 1;       // Mar 18-23 = R1
+  if (t < Date.UTC(2026,2,28)) return 2;       // Mar 24-27 = R2
+  if (t < Date.UTC(2026,2,30)) return 3;       // Mar 28-29 = S16
+  if (t < Date.UTC(2026,3,5))  return 4;       // Mar 30-Apr 4 = E8
+  if (t < Date.UTC(2026,3,7))  return 5;       // Apr 5-6 = FF
+  return 6;                                     // Apr 7+ = NC
 }
 
 // ── UI ────────────────────────────────────────────────────────────────────────
@@ -743,6 +816,7 @@ function showView(v) {
   document.getElementById('view-' + v).classList.add('on');
   document.getElementById('nt-tracker').classList.toggle('on', v === 'tracker');
   document.getElementById('nt-leaderboard').classList.toggle('on', v === 'leaderboard');
+  document.getElementById('nt-rules').classList.toggle('on', v === 'rules');
   if (v === 'leaderboard') renderLeaderboard();
 }
 
@@ -762,13 +836,12 @@ function renderSummary(ranked) {
     if (!e) return '';
     var col = TCOLORS[id] || '#888';
     var label = TLABELS[id] || id;
-    var pay = PAYOUTS[e.rank] || '';
     var active = currentPlayer === id;
     var bstyle = 'border-top-color:' + col + ';' + (active ? 'border-color:' + col + ';background:#1c1c1c' : '');
     return '<div class="scard" onclick="selectPlayer(\'' + id + '\')" style="' + bstyle + '">' +
       '<div class="scard-name" style="color:' + col + '">' + label + '</div>' +
       '<div class="scard-pts" style="color:' + col + '">' + e.pts + '</div>' +
-      '<div class="scard-rank">#' + e.rank + (e.tied ? ' T' : '') + (pay ? ' · ' + pay : '') + '</div>' +
+      '<div class="scard-rank">#' + e.rank + (e.tied ? ' T' : '') + '</div>' +
       '</div>';
   }).join('');
 }
@@ -798,12 +871,14 @@ function renderDetail() {
   for (var j = 0; j < ranked.length; j++) { if (ranked[j].id === currentPlayer) { er = ranked[j]; break; } }
   var pts = er ? er.pts : 0;
   var rankTxt = er ? '#' + er.rank + ' of ' + ENT.length + (er.tied ? ' (tied)' : '') : '—';
-  var pay = (er && PAYOUTS[er.rank]) ? PAYOUTS[er.rank] : '';
   var col = TCOLORS[currentPlayer] || 'var(--red)';
 
   var sorted = ent.picks.slice().sort(function(a, b) {
-    var pa = TS[a.k] ? TS[a.k].wins.reduce(function(s,r){return s+a.s*r;},0) : 0;
-    var pb = TS[b.k] ? TS[b.k].wins.reduce(function(s,r){return s+b.s*r;},0) : 0;
+    var ta = TS[a.k] || {}; var tb = TS[b.k] || {};
+    var elimA = ta.elim ? 1 : 0; var elimB = tb.elim ? 1 : 0;
+    if (elimA !== elimB) return elimA - elimB;
+    var pa = ta.wins ? ta.wins.reduce(function(s,r){return s+a.s*r;},0) : 0;
+    var pb = tb.wins ? tb.wins.reduce(function(s,r){return s+b.s*r;},0) : 0;
     return pb - pa;
   });
 
@@ -866,8 +941,7 @@ function renderDetail() {
     '<div class="dhdr">' +
       '<div><div class="dhdr-name" style="color:' + col + '">' + ent.name + '</div>' +
       '<div style="font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-top:3px">' + rankTxt + '</div></div>' +
-      '<div><div class="dhdr-pts" style="color:' + col + '">' + pts + '</div>' +
-      '<div class="dhdr-pay">' + pay + '</div></div>' +
+      '<div><div class="dhdr-pts" style="color:' + col + '">' + pts + '</div></div>' +
     '</div>' +
     '<div class="chips">' +
       '<span class="chip cg">' + nActive + ' Active</span>' +
@@ -882,23 +956,45 @@ function renderDetail() {
 function renderLeaderboard() {
   var ranked = getRankings();
   var medals = ['🥇','🥈','🥉'];
-  var html = '<table class="lbtable"><thead><tr><th>Place</th><th>Entrant</th><th class="r">Pts</th><th class="r">Payout</th></tr></thead><tbody>';
+  var html = '<table class="lbtable"><thead><tr><th>Place</th><th>Entrant</th><th class="r">Pts</th></tr></thead><tbody>';
   ranked.forEach(function(e) {
     var rowCls = e.isBryan ? 'hl-b' : e.isNicole ? 'hl-n' : e.tracked ? 'hl-o' : '';
     var rkCls = e.rank<=5 ? 'r'+e.rank : '';
     var medal = e.rank<=3 ? medals[e.rank-1] : '';
-    var pay = PAYOUTS[e.rank] || '';
     var tied = (e.tied && e.pts>0) ? '<span class="tbadge">TIE</span>' : '';
     var nCls = e.isBryan ? 'ename eb' : e.isNicole ? 'ename en' : 'ename';
     html += '<tr class="' + rowCls + '" onclick="showView(\'tracker\');selectPlayer(\'' + e.id + '\')">' +
       '<td><span class="rk ' + rkCls + '">' + (medal||e.rank) + '</span>' + tied + '</td>' +
       '<td><span class="' + nCls + '">' + e.name + '</span></td>' +
       '<td class="r">' + e.pts + '</td>' +
-      '<td class="r">' + (pay ? '<span class="paybadge">' + pay + '</span>' : '') + '</td>' +
       '</tr>';
   });
   html += '</tbody></table>';
   document.getElementById('lbwrap').innerHTML = html;
+}
+
+function renderTicker() {
+  var inner = document.getElementById('ticker-inner');
+  if (!inner) return;
+  // Build one segment per tracked player showing only active (non-eliminated) picks
+  var segments = [];
+  TRACKED.forEach(function(id) {
+    var ent = null;
+    for (var i = 0; i < ENT.length; i++) { if (ENT[i].id === id) { ent = ENT[i]; break; } }
+    if (!ent) return;
+    var label = TLABELS[id] || id;
+    var active = ent.picks.filter(function(p) {
+      var t = TS[p.k];
+      return !t || !t.elim;
+    });
+    if (!active.length) return;
+    var names = active.map(function(p) { return p.n; }).join(' · ');
+    var count = '(' + active.length + '/' + ent.picks.length + ')';
+    segments.push('<span>' + label + ' ' + count + ': ' + names + '</span>');
+  });
+  // Double the segments so the seamless loop works
+  var html = segments.concat(segments).join('');
+  inner.innerHTML = html || '<span>No active picks</span>';
 }
 
 function render() {
@@ -906,6 +1002,7 @@ function render() {
   renderSummary(ranked);
   renderPlayerButtons();
   renderDetail();
+  renderTicker();
   if (currentView === 'leaderboard') renderLeaderboard();
 }
 
