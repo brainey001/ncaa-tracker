@@ -129,10 +129,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .ename{font-size:13px;font-weight:800;letter-spacing:.02em;text-transform:uppercase}
 .ename.eb{color:var(--bryan)}.ename.en{color:var(--nicole)}
 .tbadge{font-size:9px;font-weight:700;color:var(--amber);background:var(--adim);border:1px solid #f5a62325;border-radius:2px;padding:1px 4px;letter-spacing:.05em;margin-left:4px;vertical-align:middle}
-.alive-badge{font-size:11px;font-weight:800;border-radius:3px;padding:2px 6px;letter-spacing:.04em;border:1px solid}
-.alive-badge.alive-ok{color:var(--green);background:var(--gdim);border-color:#00a65140}
-.alive-badge.alive-low{color:var(--amber);background:var(--adim);border-color:#f5a62340}
-.alive-badge.alive-zero{color:var(--text4);background:#1c1c1c;border-color:var(--border)}
 .msg{border-radius:3px;padding:7px 11px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:9px;display:none}
 .msg.err{background:var(--rdim);border:1px solid #cc000035;color:#ff8888;display:block}
 .msg.ok{background:var(--gdim);border:1px solid #00a65135;color:var(--green);display:block}
@@ -256,43 +252,59 @@ var TCOLORS = {bryan:'#3b82f6',nicole:'#d946b8',bethany:'#f5a623',sam_c:'#a78bfa
 var TLABELS = {bryan:'Bryan',nicole:'Nicole',bethany:'Bethany',sam_c:'Sam C',bennett_c:'Bennett C',neil:'Neil 🐔'};
 
 // ── ROUND DETECTION ──────────────────────────────────────────────────────────
+// Schedule (all times UTC, day boundaries):
+//   R1  = Mar 19–20  (Thu/Fri)
+//   R2  = Mar 21–22  (Sat/Sun)
+//   S16 = Mar 26–27  (Thu/Fri)
+//   E8  = Mar 28–29  (Sat/Sun)
+//   FF  = Apr 4      (Sat)
+//   NC  = Apr 6      (Mon)
+//
+// Strategy: assign round by game date, with fallback for STATUS_FINAL games
+// that may appear in the feed after their round has passed.
 function getRound(d) {
   var y = d.getUTCFullYear();
-  var m = d.getUTCMonth();
+  var m = d.getUTCMonth(); // 0-indexed: 2=Mar, 3=Apr
   var day = d.getUTCDate();
   var hour = d.getUTCHours();
 
   if (y !== 2026) return 0;
 
-  var isAM = hour < 16;
+  // Noon ET = 16:00 UTC (EDT). Games never start before noon ET on their scheduled day,
+  // so anything before 16:00 UTC on a transition day is the prior round finishing late.
+  var isAM = hour < 16; // before noon ET
 
-  if (m === 2) {
+  if (m === 2) { // March
     if (day === 19) return 1;
     if (day === 20) return 1;
-    if (day === 21) return 2;  // covers late R1 and start of R2
+    if (day === 21 && isAM) return 1;  // late R1 game finishing after midnight ET
+    if (day === 21 && !isAM) return 2;
     if (day === 22) return 2;
-    if (day === 23) return 2;  // late R2 finishers
+    if (day === 23 && isAM) return 2;  // late R2 game finishing after midnight ET
     if (day === 26) return 3;
     if (day === 27) return 3;
-    if (day === 28) return 4;  // covers late S16 and start of E8
+    if (day === 28 && isAM) return 3;  // late S16 game
+    if (day === 28 && !isAM) return 4;
     if (day === 29) return 4;
-    if (day === 30) return 4;  // late E8 finishers
+    if (day === 30 && isAM) return 4;  // late E8 game
     return 0;
   }
-  if (m === 3) {
+  if (m === 3) { // April
     if (day === 4) return 5;
-    if (day === 5) return 5;   // late FF finishers
+    if (day === 5 && isAM) return 5;   // late FF game
     if (day === 6) return 6;
-    if (day === 7) return 6;   // late NC finishers
+    if (day === 7 && isAM) return 6;   // late NC game
     return 0;
   }
   return 0;
 }
 
+// Fallback: if a STATUS_FINAL game has round=0, infer round from team state
+// (how many wins does that team already have?)
 function inferRound(key) {
   var t = TS[key];
   if (!t) return 0;
-  return t.wins.length + 1;
+  return t.wins.length + 1; // next expected round
 }
 
 // ── ESPN NAME MAP ─────────────────────────────────────────────────────────────
@@ -310,7 +322,6 @@ var EMAP = {
   "Miami (FL)":"MIA",
   "Saint Louis":"SLU",
   "Iowa St":"IAST",
-  "Iowa St.":"IAST",
   "Iowa State":"IAST",
   "Kentucky":"UK",
   "Tennessee":"TENN",
@@ -323,7 +334,6 @@ var EMAP = {
   "Texas A&M":"TAMU",
   "Arkansas":"ARK",
   "Michigan St":"MSU",
-  "Michigan St.":"MSU",
   "Michigan State":"MSU",
   "Arizona":"ARIZ",
   "Florida":"FLA",
@@ -371,15 +381,11 @@ var EMAP = {
   "Hofstra":"HOF",
   "Saint Mary's":"SMC",
   "Kennesaw St":"KENN",
-  "Kennesaw St.":"KENN",
   "Idaho":"IDAHO",
   "Siena":"SIENA",
   "N Dakota St":"NDST",
-  "N Dakota St.":"NDST",
   "McNeese St":"MCNS",
-  "McNeese St.":"MCNS",
-  "Penn St":"PSU",
-  "Penn St.":"PSU"
+  "Penn St":"PSU"
 };
 
 var ENT = [
@@ -777,15 +783,8 @@ function entPts(e) {
   }, 0);
 }
 
-function entAlive(e) {
-  return e.picks.filter(function(p) {
-    var t = TS[p.k];
-    return !t || !t.elim;
-  }).length;
-}
-
 function getRankings() {
-  var sc = ENT.map(function(e) { return Object.assign({}, e, {pts: entPts(e), alive: entAlive(e)}); });
+  var sc = ENT.map(function(e) { return Object.assign({}, e, {pts: entPts(e)}); });
   sc.sort(function(a, b) { return b.pts - a.pts; });
   var rank = 1;
   sc.forEach(function(e, i) {
@@ -797,18 +796,11 @@ function getRankings() {
 }
 
 function resolveKey(name) {
-  if (!name) return null;
   if (EMAP[name]) return EMAP[name];
   var nl = name.toLowerCase();
   var keys = Object.keys(EMAP);
   for (var i = 0; i < keys.length; i++) {
     if (keys[i].toLowerCase() === nl) return EMAP[keys[i]];
-  }
-  // Normalize: strip periods, extra spaces, try again
-  var norm = name.replace(/\./g,'').replace(/\s+/g,' ').trim().toLowerCase();
-  for (var j = 0; j < keys.length; j++) {
-    var kn = keys[j].replace(/\./g,'').replace(/\s+/g,' ').trim().toLowerCase();
-    if (kn === norm) return EMAP[keys[j]];
   }
   return null;
 }
@@ -822,6 +814,16 @@ function processGames(games) {
     var rnd = getRound(new Date(g.start_time));
     var status = g.status;
 
+    // For STATUS_FINAL games that fall on off-days in the feed,
+    // infer round from how many wins the team already has
+    if (rnd < 1 && status === 'STATUS_FINAL') {
+      var hKey2 = resolveKey(hN);
+      var aKey2 = resolveKey(aN);
+      var hWins = (hKey2 && TS[hKey2]) ? TS[hKey2].wins.length : 0;
+      var aWins = (aKey2 && TS[aKey2]) ? TS[aKey2].wins.length : 0;
+      rnd = Math.max(hWins, aWins) + 1;
+      if (rnd < 1 || rnd > 6) return;
+    }
     if (rnd < 1) return;
 
     var hKey = resolveKey(hN);
@@ -842,6 +844,7 @@ function processGames(games) {
         t.gs = 'live';
         t.matchup = score + '-' + oScore + ' vs ' + oName + ' — Live';
       } else {
+        // Scheduled — always update nextGame regardless of prior results
         var dt = new Date(g.start_time).toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
         if (!t.elim) t.nextGame = (isHome ? 'vs ' : '@ ') + oName + ' · ' + dt;
       }
@@ -955,11 +958,14 @@ function renderDetail() {
 
     var mh = '';
     if (t.gs === 'live') {
+      // Live: show live score
       var mc = 'mu';
       mh = '<span class="' + mc + '">' + t.matchup + '</span>';
     } else if (t.nextGame) {
+      // Has an upcoming game scheduled — always show it (takes priority over old final result)
       mh = t.nextGame;
     } else if (t.matchup) {
+      // No upcoming game yet, show last result
       var mc2 = t.matchup.indexOf(' W ') !== -1 ? 'mw' : t.matchup.indexOf(' L ') !== -1 ? 'ml' : 'mu';
       mh = '<span class="' + mc2 + '">' + t.matchup + '</span>';
     } else {
@@ -1006,20 +1012,16 @@ function renderDetail() {
 function renderLeaderboard() {
   var ranked = getRankings();
   var medals = ['🥇','🥈','🥉'];
-  var html = '<table class="lbtable"><thead><tr><th>Place</th><th>Entrant</th><th class="r">Alive</th><th class="r">Pts</th></tr></thead><tbody>';
+  var html = '<table class="lbtable"><thead><tr><th>Place</th><th>Entrant</th><th class="r">Pts</th></tr></thead><tbody>';
   ranked.forEach(function(e) {
     var rowCls = e.isBryan ? 'hl-b' : e.isNicole ? 'hl-n' : e.tracked ? 'hl-o' : '';
     var rkCls = e.rank<=5 ? 'r'+e.rank : '';
     var medal = e.rank<=3 ? medals[e.rank-1] : '';
     var tied = (e.tied && e.pts>0) ? '<span class="tbadge">TIE</span>' : '';
     var nCls = e.isBryan ? 'ename eb' : e.isNicole ? 'ename en' : 'ename';
-    var total = e.picks.length;
-    var alive = e.alive;
-    var aliveCls = alive === 0 ? 'alive-zero' : alive <= Math.floor(total / 2) ? 'alive-low' : 'alive-ok';
     html += '<tr class="' + rowCls + '" onclick="showView(\'tracker\');selectPlayer(\'' + e.id + '\')">' +
       '<td><span class="rk ' + rkCls + '">' + (medal||e.rank) + '</span>' + tied + '</td>' +
       '<td><span class="' + nCls + '">' + e.name + '</span></td>' +
-      '<td class="r"><span class="alive-badge ' + aliveCls + '">' + alive + '/' + total + '</span></td>' +
       '<td class="r">' + e.pts + '</td>' +
       '</tr>';
   });
