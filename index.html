@@ -267,8 +267,6 @@ function getRound(d) {
   var isAM = hour < 16;
 
   if (m === 2) {
-    if (day === 17) return 1;  // First Four
-    if (day === 18) return 1;  // First Four
     if (day === 19) return 1;
     if (day === 20) return 1;
     if (day === 21 && isAM) return 1;
@@ -801,11 +799,18 @@ function getRankings() {
 }
 
 function resolveKey(name) {
+  if (!name) return null;
   if (EMAP[name]) return EMAP[name];
   var nl = name.toLowerCase();
   var keys = Object.keys(EMAP);
   for (var i = 0; i < keys.length; i++) {
     if (keys[i].toLowerCase() === nl) return EMAP[keys[i]];
+  }
+  // Normalize: strip periods, extra spaces, try again
+  var norm = name.replace(/\./g,'').replace(/\s+/g,' ').trim().toLowerCase();
+  for (var j = 0; j < keys.length; j++) {
+    var kn = keys[j].replace(/\./g,'').replace(/\s+/g,' ').trim().toLowerCase();
+    if (kn === norm) return EMAP[keys[j]];
   }
   return null;
 }
@@ -819,14 +824,6 @@ function processGames(games) {
     var rnd = getRound(new Date(g.start_time));
     var status = g.status;
 
-    if (rnd < 1 && status === 'STATUS_FINAL') {
-      var hKey2 = resolveKey(hN);
-      var aKey2 = resolveKey(aN);
-      var hWins = (hKey2 && TS[hKey2]) ? TS[hKey2].wins.length : 0;
-      var aWins = (aKey2 && TS[aKey2]) ? TS[aKey2].wins.length : 0;
-      rnd = Math.max(hWins, aWins) + 1;
-      if (rnd < 1 || rnd > 6) return;
-    }
     if (rnd < 1) return;
 
     var hKey = resolveKey(hN);
