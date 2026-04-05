@@ -1,63 +1,54 @@
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  if (req.method === 'OPTIONS') return res.status(200).end();
+res.setHeader(‘Access-Control-Allow-Origin’, ‘*’);
+res.setHeader(‘Access-Control-Allow-Methods’, ‘GET’);
+try {
+// Fetch both the general scoreboard AND today’s specific date
+// ESPN’s scoreboard endpoint without a date returns ~current window
+// Adding a date param forces it to return that day’s games
+const today = new Date();
+const yyyy = today.getUTCFullYear();
+const mm = String(today.getUTCMonth() + 1).padStart(2, ‘0’);
+const dd = String(today.getUTCDate()).padStart(2, ‘0’);
+const dateStr = `${yyyy}${mm}${dd}`;
 
-  // All NCAA Tournament dates 2026
-  const DATES = [
-    '20260319', '20260320', '20260321', '20260322', '20260323',
-    '20260326', '20260327', '20260328', '20260329', '20260330',
-    '20260402', '20260403', '20260405', '20260406', '20260408'
-  ];
+```
+const BASE = 'https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard';
 
-  const BASE = 'https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard';
+// Fetch general feed (gets historical completed games) + today's feed
+const [r1, r2] = await Promise.all([
+  fetch(`${BASE}?limit=100&groups=50`),
+  fetch(`${BASE}?limit=100&groups=50&dates=${dateStr}`)
+]);
 
-  try {
-    // Fetch all dates in parallel
-    const responses = await Promise.all(
-      DATES.map(d =>
-        fetch(`${BASE}?dates=${d}&groups=100&limit=50`, {
-          headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'application/json' }
-        })
-        .then(r => r.ok ? r.json() : { events: [] })
-        .catch(() => ({ events: [] }))
-      )
-    );
+const [d1, d2] = await Promise.all([r1.json(), r2.json()]);
 
-    // Merge all events, deduplicate by id
-    const seen = new Set();
-    const allGames = [];
+const allEvents = [...(d1.events || []), ...(d2.events || [])];
 
-    for (const data of responses) {
-      for (const event of (data.events || [])) {
-        if (seen.has(event.id)) continue;
-        seen.add(event.id);
+// Deduplicate by event id
+const seen = new Set();
+const events = allEvents.filter(ev => {
+  if (seen.has(ev.id)) return false;
+  seen.add(ev.id);
+  return true;
+});
 
-        const comp = (event.competitions || [])[0] || {};
-        const competitors = comp.competitors || [];
-        const home = competitors.find(c => c.homeAway === 'home') || {};
-        const away = competitors.find(c => c.homeAway === 'away') || {};
-        const statusName = (comp.status && comp.status.type && comp.status.type.name) || 'STATUS_SCHEDULED';
+const games = events.map(ev => {
+  const c = ev.competitions[0];
+  const home = c.competitors.find(x => x.homeAway === 'home');
+  const away = c.competitors.find(x => x.homeAway === 'away');
+  return {
+    id: ev.id,
+    status: c.status.type.name,
+    home: { name: home.team.shortDisplayName, score: parseInt(home.score) || 0 },
+    away: { name: away.team.shortDisplayName, score: parseInt(away.score) || 0 },
+    start_time: ev.date,
+  };
+});
 
-        allGames.push({
-          id: event.id,
-          status: statusName,
-          start_time: event.date,
-          home: {
-            name: (home.team && (home.team.shortDisplayName || home.team.displayName)) || '',
-            score: parseInt(home.score) || 0,
-          },
-          away: {
-            name: (away.team && (away.team.shortDisplayName || away.team.displayName)) || '',
-            score: parseInt(away.score) || 0,
-          },
-        });
-      }
-    }
+res.json({ games, _total: games.length });
+```
 
-    return res.status(200).json({ games: allGames, _total: allGames.length });
-
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
-  }
+} catch(e) {
+res.status(500).json({ error: e.message });
+}
 }
