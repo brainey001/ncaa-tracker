@@ -9,49 +9,48 @@ const dd = String(today.getUTCDate()).padStart(2, ‘0’);
 const dateStr = `${yyyy}${mm}${dd}`;
 
 ```
-const BASE = 'https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?limit=100&groups=50';
+// Fetch two date windows and merge: the rolling general feed + today specifically
+const urls = [
+  'https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?limit=100&groups=50',
+  `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?limit=100&groups=50&dates=${dateStr}`
+];
 
-const safeJson = async (url) => {
-  try {
-    const r = await fetch(url);
-    if (!r.ok) return [];
-    const d = await r.json();
-    return d.events || [];
-  } catch(e) {
-    return [];
-  }
-};
+const responses = await Promise.allSettled(urls.map(u => fetch(u)));
 
-const [general, todayEvents] = await Promise.all([
-  safeJson(BASE),
-  safeJson(`${BASE}&dates=${dateStr}`)
-]);
+const allEvents = [];
+for (const result of responses) {
+  if (result.status !== 'fulfilled') continue;
+  const r = result.value;
+  if (!r.ok) continue;
+  const d = await r.json();
+  if (d.events) allEvents.push(...d.events);
+}
 
-// Merge and deduplicate by event id
+// Deduplicate by id
 const seen = new Set();
-const allEvents = [...general, ...todayEvents].filter(ev => {
-  if (!ev || !ev.id) return false;
-  if (seen.has(ev.id)) return false;
+const events = allEvents.filter(ev => {
+  if (!ev || !ev.id || seen.has(ev.id)) return false;
   seen.add(ev.id);
   return true;
 });
 
-const games = allEvents.map(ev => {
+const games = [];
+for (const ev of events) {
   try {
     const c = ev.competitions[0];
     const home = c.competitors.find(x => x.homeAway === 'home');
     const away = c.competitors.find(x => x.homeAway === 'away');
-    return {
+    games.push({
       id: ev.id,
       status: c.status.type.name,
       home: { name: home.team.shortDisplayName, score: parseInt(home.score) || 0 },
       away: { name: away.team.shortDisplayName, score: parseInt(away.score) || 0 },
       start_time: ev.date,
-    };
+    });
   } catch(e) {
-    return null;
+    // skip malformed events
   }
-}).filter(Boolean);
+}
 
 res.json({ games, _total: games.length });
 ```
