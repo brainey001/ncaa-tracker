@@ -9,8 +9,7 @@ const dd = String(today.getUTCDate()).padStart(2, ‘0’);
 const dateStr = yyyy + mm + dd;
 
 ```
-// groups=100 = NCAA tournament, groups=50 = general/conference tournaments
-const BASE = 'https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?limit=100&groups=100';
+const BASE = 'https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?limit=100';
 const TODAY = BASE + '&dates=' + dateStr;
 
 const [r1, r2] = await Promise.allSettled([fetch(BASE), fetch(TODAY)]);
