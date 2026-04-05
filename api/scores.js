@@ -1,54 +1,63 @@
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  if (req.method === 'OPTIONS') return res.status(200).end();
+
+  // All NCAA Tournament dates 2026
+  const DATES = [
+    '20260319', '20260320', '20260321', '20260322', '20260323',
+    '20260326', '20260327', '20260328', '20260329', '20260330',
+    '20260402', '20260403', '20260405', '20260406', '20260408'
+  ];
+
+  const BASE = 'https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard';
+
   try {
-    const r = await fetch("https://ncaa-api.henrygd.me/brackets/basketball-men/d1/2026");
-    const d = await r.json();
+    // Fetch all dates in parallel
+    const responses = await Promise.all(
+      DATES.map(d =>
+        fetch(`${BASE}?dates=${d}&groups=100&limit=50`, {
+          headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'application/json' }
+        })
+        .then(r => r.ok ? r.json() : { events: [] })
+        .catch(() => ({ events: [] }))
+      )
+    );
 
-    const championship = d.championships?.[0];
-    if (!championship) return res.status(500).json({ error: "No championship data" });
+    // Merge all events, deduplicate by id
+    const seen = new Set();
+    const allGames = [];
 
-    // Build a round lookup: bracketPositionId range → roundNumber
-    // Positions 101-104 = round 1, 201-232 = round 2, 301-316 = round 3, etc.
-    const roundMap = {
-      1: [100, 199],
-      2: [200, 299],
-      3: [300, 399],
-      4: [400, 499],
-      5: [500, 599],
-      6: [600, 699],
-      7: [700, 799],
-    };
+    for (const data of responses) {
+      for (const event of (data.events || [])) {
+        if (seen.has(event.id)) continue;
+        seen.add(event.id);
 
-    const getRound = (bracketPositionId) => {
-      for (const [round, [min, max]] of Object.entries(roundMap)) {
-        if (bracketPositionId >= min && bracketPositionId <= max) return parseInt(round);
+        const comp = (event.competitions || [])[0] || {};
+        const competitors = comp.competitors || [];
+        const home = competitors.find(c => c.homeAway === 'home') || {};
+        const away = competitors.find(c => c.homeAway === 'away') || {};
+        const statusName = (comp.status && comp.status.type && comp.status.type.name) || 'STATUS_SCHEDULED';
+
+        allGames.push({
+          id: event.id,
+          status: statusName,
+          start_time: event.date,
+          home: {
+            name: (home.team && (home.team.shortDisplayName || home.team.displayName)) || '',
+            score: parseInt(home.score) || 0,
+          },
+          away: {
+            name: (away.team && (away.team.shortDisplayName || away.team.displayName)) || '',
+            score: parseInt(away.score) || 0,
+          },
+        });
       }
-      return 0;
-    };
-
-    const games = [];
-    for (const game of (championship.games || [])) {
-      const top = game.teams?.find(t => t.isTop);
-      const bottom = game.teams?.find(t => !t.isTop);
-      if (!top?.nameShort || !bottom?.nameShort) continue;
-
-      games.push({
-        id: game.contestId?.toString() || `${top.nameShort}${bottom.nameShort}`,
-        status: game.gameState === "F" ? "STATUS_FINAL"
-              : game.gameState === "I" ? "STATUS_IN_PROGRESS"
-              : "STATUS_SCHEDULED",
-        home: { name: top.nameShort, score: top.score ?? 0, seed: top.seed, winner: top.isWinner },
-        away: { name: bottom.nameShort, score: bottom.score ?? 0, seed: bottom.seed, winner: bottom.isWinner },
-        start_time: game.startDate || "",
-        round: getRound(game.bracketPositionId),
-        period: game.currentPeriod || "",
-        clock: game.contestClock || "",
-        broadcaster: game.broadcaster?.name || "",
-      });
     }
 
-    res.json({ games, _total: games.length });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
+    return res.status(200).json({ games: allGames, _total: allGames.length });
+
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
   }
 }
