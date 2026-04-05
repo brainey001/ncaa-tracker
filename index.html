@@ -11,6 +11,10 @@
 <link rel="icon" href="icon.png">
 <title>Seed Money Showdown 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 <style>
 :root{
   --bg:#1a1a1a;--bg2:#222;--bg3:#2a2a2a;--card:#242424;
@@ -227,8 +231,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
           <div class="rules-round-row"><span class="rules-round-lbl">R2</span><span>Round of 32 — Sat Mar 21 &amp; Sun Mar 22</span></div>
           <div class="rules-round-row"><span class="rules-round-lbl">S16</span><span>Sweet 16 — Thu Mar 26 &amp; Fri Mar 27</span></div>
           <div class="rules-round-row"><span class="rules-round-lbl">E8</span><span>Elite 8 — Sat Mar 28 &amp; Sun Mar 29</span></div>
-          <div class="rules-round-row"><span class="rules-round-lbl">FF</span><span>Final Four — Sat Apr 4 &amp; Sun Apr 5</span></div>
-          <div class="rules-round-row"><span class="rules-round-lbl">NC</span><span>Championship — Mon Apr 7</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">FF</span><span>Final Four — Sat Apr 4</span></div>
+          <div class="rules-round-row"><span class="rules-round-lbl">NC</span><span>Championship — Mon Apr 6</span></div>
         </div>
       </div>
     </div>
@@ -266,35 +270,30 @@ function getRound(d) {
 
   if (y !== 2026) return 0;
 
-  // Noon ET = 16:00 UTC. No round starts before noon ET on its scheduled day.
-  var isAM = hour < 16;
+  // Noon ET = 16:00 UTC (EDT). Games never start before noon ET on their scheduled day,
+  // so anything before 16:00 UTC on a transition day is the prior round finishing late.
+  var isAM = hour < 16; // before noon ET
 
   if (m === 2) { // March
-    // R1: Mar 19-20
     if (day === 19) return 1;
     if (day === 20) return 1;
-    if (day === 21 && isAM) return 1;   // late R1 finishing after midnight ET
-    // R2: Mar 21-22
+    if (day === 21 && isAM) return 1;  // late R1 game finishing after midnight ET
     if (day === 21 && !isAM) return 2;
     if (day === 22) return 2;
-    if (day === 23 && isAM) return 2;   // late R2 finishing after midnight ET
-    // S16: Mar 26-27
+    if (day === 23 && isAM) return 2;  // late R2 game finishing after midnight ET
     if (day === 26) return 3;
     if (day === 27) return 3;
-    if (day === 28 && isAM) return 3;   // late S16 finishing after midnight ET
-    // E8: Mar 28-29
+    if (day === 28 && isAM) return 3;  // late S16 game
     if (day === 28 && !isAM) return 4;
     if (day === 29) return 4;
-    if (day === 30 && isAM) return 4;   // late E8 finishing after midnight ET
+    if (day === 30 && isAM) return 4;  // late E8 game
     return 0;
   }
   if (m === 3) { // April
-    // FF: Apr 4-5
     if (day === 4) return 5;
-    if (day === 5 && isAM) return 5;    // late FF finishing after midnight ET
-    // NC: Apr 6-7
+    if (day === 5 && isAM) return 5;   // late FF game
     if (day === 6) return 6;
-    if (day === 7 && isAM) return 6;    // late NC finishing after midnight ET
+    if (day === 7 && isAM) return 6;   // late NC game
     return 0;
   }
   return 0;
