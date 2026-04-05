@@ -10,41 +10,34 @@ const dateStr = `${yyyy}${mm}${dd}`;
 
 ```
 const BASE = 'https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?limit=100&groups=50';
+const TODAY_URL = `${BASE}&dates=${dateStr}`;
 
-// Fetch general (historical) + today's date-specific feed
-const [r1, r2] = await Promise.allSettled([
-  fetch(BASE),
-  fetch(`${BASE}&dates=${dateStr}`)
-]);
+const [r1, r2] = await Promise.allSettled([fetch(BASE), fetch(TODAY_URL)]);
 
-const events = [];
 const seen = new Set();
+const games = [];
 
 for (const result of [r1, r2]) {
   if (result.status !== 'fulfilled' || !result.value.ok) continue;
-  const d = await result.value.json();
+  let d;
+  try { d = await result.value.json(); } catch(e) { continue; }
   for (const ev of (d.events || [])) {
-    if (!ev || !ev.id || seen.has(ev.id)) continue;
-    seen.add(ev.id);
-    events.push(ev);
+    try {
+      if (!ev || !ev.id || seen.has(ev.id)) continue;
+      seen.add(ev.id);
+      const c = ev.competitions[0];
+      const home = c.competitors.find(x => x.homeAway === 'home');
+      const away = c.competitors.find(x => x.homeAway === 'away');
+      if (!home || !away) continue;
+      games.push({
+        id: ev.id,
+        status: c.status.type.name,
+        home: { name: home.team.shortDisplayName, score: parseInt(home.score) || 0 },
+        away: { name: away.team.shortDisplayName, score: parseInt(away.score) || 0 },
+        start_time: ev.date,
+      });
+    } catch(e) { continue; }
   }
-}
-
-const games = [];
-for (const ev of events) {
-  try {
-    const c = ev.competitions[0];
-    const home = c.competitors.find(x => x.homeAway === 'home');
-    const away = c.competitors.find(x => x.homeAway === 'away');
-    if (!home || !away) continue;
-    games.push({
-      id: ev.id,
-      status: c.status.type.name,
-      home: { name: home.team.shortDisplayName, score: parseInt(home.score) || 0 },
-      away: { name: away.team.shortDisplayName, score: parseInt(away.score) || 0 },
-      start_time: ev.date,
-    });
-  } catch(e) { /* skip malformed */ }
 }
 
 res.json({ games, _total: games.length });
