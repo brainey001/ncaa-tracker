@@ -252,59 +252,39 @@ var TCOLORS = {bryan:'#3b82f6',nicole:'#d946b8',bethany:'#f5a623',sam_c:'#a78bfa
 var TLABELS = {bryan:'Bryan',nicole:'Nicole',bethany:'Bethany',sam_c:'Sam C',bennett_c:'Bennett C',neil:'Neil 🐔'};
 
 // ── ROUND DETECTION ──────────────────────────────────────────────────────────
-// Schedule (all times UTC, day boundaries):
-//   R1  = Mar 19–20  (Thu/Fri)
-//   R2  = Mar 21–22  (Sat/Sun)
-//   S16 = Mar 26–27  (Thu/Fri)
-//   E8  = Mar 28–29  (Sat/Sun)
-//   FF  = Apr 4      (Sat)
-//   NC  = Apr 6      (Mon)
-//
-// Strategy: assign round by game date, with fallback for STATUS_FINAL games
-// that may appear in the feed after their round has passed.
 function getRound(d) {
   var y = d.getUTCFullYear();
-  var m = d.getUTCMonth(); // 0-indexed: 2=Mar, 3=Apr
+  var m = d.getUTCMonth();
   var day = d.getUTCDate();
   var hour = d.getUTCHours();
 
   if (y !== 2026) return 0;
 
-  // Noon ET = 16:00 UTC (EDT). Games never start before noon ET on their scheduled day,
-  // so anything before 16:00 UTC on a transition day is the prior round finishing late.
-  var isAM = hour < 16; // before noon ET
+  var isAM = hour < 16;
 
-  if (m === 2) { // March
+  if (m === 2) {
     if (day === 19) return 1;
     if (day === 20) return 1;
-    if (day === 21 && isAM) return 1;  // late R1 game finishing after midnight ET
+    if (day === 21 && isAM) return 1;
     if (day === 21 && !isAM) return 2;
     if (day === 22) return 2;
-    if (day === 23 && isAM) return 2;  // late R2 game finishing after midnight ET
+    if (day === 23 && isAM) return 2;
     if (day === 26) return 3;
     if (day === 27) return 3;
-    if (day === 28 && isAM) return 3;  // late S16 game
+    if (day === 28 && isAM) return 3;
     if (day === 28 && !isAM) return 4;
     if (day === 29) return 4;
-    if (day === 30 && isAM) return 4;  // late E8 game
+    if (day === 30 && isAM) return 4;
     return 0;
   }
-  if (m === 3) { // April
+  if (m === 3) {
     if (day === 4) return 5;
-    if (day === 5 && isAM) return 5;   // late FF game
+    if (day === 5 && isAM) return 5;
     if (day === 6) return 6;
-    if (day === 7 && isAM) return 6;   // late NC game
+    if (day === 7 && isAM) return 6;
     return 0;
   }
   return 0;
-}
-
-// Fallback: if a STATUS_FINAL game has round=0, infer round from team state
-// (how many wins does that team already have?)
-function inferRound(key) {
-  var t = TS[key];
-  if (!t) return 0;
-  return t.wins.length + 1; // next expected round
 }
 
 // ── ESPN NAME MAP ─────────────────────────────────────────────────────────────
@@ -379,7 +359,6 @@ var EMAP = {
   "Hawai'i":"HAW",
   "Hawaii":"HAW",
   "Hofstra":"HOF",
-  "Saint Mary's":"SMC",
   "Kennesaw St":"KENN",
   "Idaho":"IDAHO",
   "Siena":"SIENA",
@@ -758,6 +737,35 @@ function initTS() {
   });
 }
 
+// ── HARDCODED RESULTS ─────────────────────────────────────────────────────────
+// Final Four (Round 5) — Apr 4, 2026
+// UConn 71, Illinois 62  → UConn wins R5, Illinois eliminated
+// Michigan 91, Arizona 73 → Michigan wins R5, Arizona eliminated
+function applyHardcodedResults() {
+  var HC = [
+    // [winnerKey, loserKey, winScore, loseScore, winName, loseName, round]
+    ['UCON', 'ILL',  71, 62, 'UConn',    'Illinois', 5],
+    ['MICH', 'ARIZ', 91, 73, 'Michigan', 'Arizona',  5]
+  ];
+  HC.forEach(function(r) {
+    var wk = r[0], lk = r[1], ws = r[2], ls = r[3], wn = r[4], ln = r[5], rnd = r[6];
+    var w = TS[wk], l = TS[lk];
+    if (w && w.wins.indexOf(rnd) === -1) {
+      w.wins.push(rnd);
+      w.wins.sort(function(a,b){return a-b;});
+      w.gs = 'final';
+      w.matchup = ws + '-' + ls + ' W vs ' + ln;
+      w.nextGame = '';
+    }
+    if (l) {
+      l.elim = true;
+      l.gs = 'final';
+      l.matchup = ls + '-' + ws + ' L vs ' + wn;
+      l.nextGame = '';
+    }
+  });
+}
+
 var hasStor = typeof window !== 'undefined' && window.storage && typeof window.storage.get === 'function';
 
 function saveState() {
@@ -814,8 +822,6 @@ function processGames(games) {
     var rnd = getRound(new Date(g.start_time));
     var status = g.status;
 
-    // For STATUS_FINAL games that fall on off-days in the feed,
-    // infer round from how many wins the team already has
     if (rnd < 1 && status === 'STATUS_FINAL') {
       var hKey2 = resolveKey(hN);
       var aKey2 = resolveKey(aN);
@@ -844,7 +850,6 @@ function processGames(games) {
         t.gs = 'live';
         t.matchup = score + '-' + oScore + ' vs ' + oName + ' — Live';
       } else {
-        // Scheduled — always update nextGame regardless of prior results
         var dt = new Date(g.start_time).toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
         if (!t.elim) t.nextGame = (isHome ? 'vs ' : '@ ') + oName + ' · ' + dt;
       }
@@ -853,6 +858,8 @@ function processGames(games) {
     upd(hKey, hS, aS, aN, true);
     upd(aKey, aS, hS, hN, false);
   });
+  // Re-apply hardcoded results after API data so they always win
+  applyHardcodedResults();
   saveState();
 }
 
@@ -958,14 +965,11 @@ function renderDetail() {
 
     var mh = '';
     if (t.gs === 'live') {
-      // Live: show live score
       var mc = 'mu';
       mh = '<span class="' + mc + '">' + t.matchup + '</span>';
     } else if (t.nextGame) {
-      // Has an upcoming game scheduled — always show it (takes priority over old final result)
       mh = t.nextGame;
     } else if (t.matchup) {
-      // No upcoming game yet, show last result
       var mc2 = t.matchup.indexOf(' W ') !== -1 ? 'mw' : t.matchup.indexOf(' L ') !== -1 ? 'ml' : 'mu';
       mh = '<span class="' + mc2 + '">' + t.matchup + '</span>';
     } else {
@@ -1092,6 +1096,7 @@ async function doFetch() {
 (async function init() {
   try {
     initTS();
+    applyHardcodedResults(); // FF results baked in before any API data
     await loadState();
     try {
       if (hasStor) {
